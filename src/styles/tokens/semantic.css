@@ -10,9 +10,9 @@
   --color-text-tertiary: var(--color-gray-400);
   --color-text-inverse: var(--color-white);
 
-  --color-accent: var(--color-purple-500);
-  --color-accent-hover: var(--color-purple-600);
-  --color-accent-light: var(--color-purple-100);
+  --color-accent: var(--color-accent-base);
+  --color-accent-hover: var(--color-accent-hover-base);
+  --color-accent-light: var(--color-accent-light-base);
 
   --color-border-subtle: rgba(0, 0, 0, 0.08);
   --color-border-medium: rgba(0, 0, 0, 0.12);

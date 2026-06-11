@@ -18,9 +18,9 @@ export default {
         },
         border: '#e5e5ea',
         accent: {
-          DEFAULT: '#0071e3',
-          hover: '#0077ed',
-          light: '#e8f0fe',
+          DEFAULT: 'var(--color-accent)',
+          hover: 'var(--color-accent-hover)',
+          light: 'var(--color-accent-light)',
         },
       },
       fontFamily: {

@@ -15,6 +15,12 @@
   --color-purple-400: #a974f8;
   --color-purple-500: #7b2ff7;
   --color-purple-600: #5c1fc9;
+
+  --color-accent-base: var(--color-blue-500);
+  --color-accent-hover-base: var(--color-blue-600);
+  --color-accent-light-base: var(--color-blue-100);
+
+  --color-blue-100: #e8f0fe;
   --color-blue-500: #0071e3;
   --color-blue-600: #0060c0;
   --color-green-500: #34c759;
