@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import { ExternalLink, Trash2 } from 'lucide-react';
-import type { KeptItem } from '../types';
-import Text from './atoms/Text';
-import Badge from './atoms/Badge';
-import IconButton from './atoms/IconButton';
+import { useTranslation } from 'react-i18next';
+import type { KeptItem } from '../../shared/types';
+import Text from '../../shared/components/atoms/Text';
+import Badge from '../../shared/components/atoms/Badge';
+import IconButton from '../../shared/components/atoms/IconButton';
 
 interface Props {
   item: KeptItem;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function LibraryCard({ item, onRemove }: Props) {
+  const { t } = useTranslation();
   const { video, keptAt } = item;
   const keptDate = new Date(keptAt).toLocaleDateString('en-US', {
     month: 'short',
@@ -74,14 +76,14 @@ export default function LibraryCard({ item, onRemove }: Props) {
               >
                 <IconButton
                   icon={ExternalLink}
-                  ariaLabel="Open summary"
+                  ariaLabel={t('card.openSummary')}
                   variant="filled"
                   size="sm"
                 />
               </Link>
               <IconButton
                 icon={Trash2}
-                ariaLabel="Remove"
+                ariaLabel={t('card.remove')}
                 variant="ghost"
                 size="sm"
                 onClick={() => onRemove(video.id)}

@@ -1,5 +1,5 @@
 import PlayPill from '../atoms/PlayPill';
-import { getGradientForChannel } from '../../data/podcasts.mock';
+import { getGradientForChannel } from '../podcasts.mock';
 import clsx from 'clsx';
 
 interface PodcastEpisodeCardProps {

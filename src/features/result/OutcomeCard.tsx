@@ -1,17 +1,20 @@
 import { CheckCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   outcomes: string[];
 }
 
 export default function OutcomeCard({ outcomes }: Props) {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white rounded-card shadow-card p-5 sm:p-6">
       <h2 className="font-display font-semibold text-lg text-ink mb-1">
-        After this video, you'll be able to…
+        {t('outcome.title')}
       </h2>
       <p className="text-sm text-ink-muted mb-4">
-        These are the concrete outcomes you can expect from watching.
+        {t('outcome.subtitle')}
       </p>
       <ul className="space-y-2.5">
         {outcomes.map((outcome, i) => (

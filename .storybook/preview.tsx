@@ -1,7 +1,8 @@
 import type { Preview } from '@storybook/react-vite'
-import '../src/styles/tokens/primitive.css'
-import '../src/styles/tokens/semantic.css'
-import '../src/styles/tokens/component.css'
+import '../src/shared/i18n'
+import '../src/shared/styles/tokens/primitive.css'
+import '../src/shared/styles/tokens/semantic.css'
+import '../src/shared/styles/tokens/component.css'
 import '../src/index.css'
 
 const preview: Preview = {

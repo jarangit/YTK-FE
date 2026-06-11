@@ -1,8 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Bookmark, Library, ArrowLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function AppHeader() {
+  const { t } = useTranslation();
   const location = useLocation();
   const isHome = location.pathname === '/';
   const isLibrary = location.pathname === '/library';
@@ -13,7 +16,7 @@ export default function AppHeader() {
         <Link to="/" className="flex items-center gap-2 text-ink no-underline">
           <Bookmark className="w-5 h-5 text-accent" />
           <span className="font-display font-semibold text-lg tracking-tight">
-            Youtive
+            {t('app.name')}
           </span>
         </Link>
 
@@ -27,7 +30,7 @@ export default function AppHeader() {
               )}
             >
               <ArrowLeft className="w-4 h-4" />
-              Home
+              {t('nav.home')}
             </Link>
           )}
           <Link
@@ -40,8 +43,9 @@ export default function AppHeader() {
             )}
           >
             <Library className="w-4 h-4" />
-            Library
+            {t('nav.library')}
           </Link>
+          <LanguageSwitcher />
         </nav>
       </div>
     </header>

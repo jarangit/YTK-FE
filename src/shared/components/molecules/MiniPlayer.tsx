@@ -4,6 +4,7 @@ import {
   SkipForward,
   Volume2,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
 interface MiniPlayerProps {
@@ -23,6 +24,8 @@ export default function MiniPlayer({
   onPlayPause,
   className,
 }: MiniPlayerProps) {
+  const { t } = useTranslation();
+
   return (
     <div
       className={clsx(
@@ -47,7 +50,7 @@ export default function MiniPlayer({
       <div className="flex items-center gap-3">
         <button
           type="button"
-          aria-label="Previous"
+          aria-label={t('player.previous')}
           className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
         >
           <SkipBack size={18} />
@@ -55,7 +58,7 @@ export default function MiniPlayer({
 
         <button
           type="button"
-          aria-label={isPlaying ? 'Pause' : 'Play'}
+          aria-label={isPlaying ? t('player.pause') : t('player.play')}
           onClick={onPlayPause}
           className={clsx(
             'flex items-center justify-center w-10 h-10 rounded-full transition-all',
@@ -68,7 +71,7 @@ export default function MiniPlayer({
 
         <button
           type="button"
-          aria-label="Next"
+          aria-label={t('player.next')}
           className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
         >
           <SkipForward size={18} />

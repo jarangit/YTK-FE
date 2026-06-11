@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import AppHeader from './components/AppHeader';
-import HomePage from './pages/HomePage';
-import ResultPage from './pages/ResultPage';
-import LibraryPage from './pages/LibraryPage';
+import AppHeader from './shared/components/AppHeader';
+import HomePage from './features/home/HomePage';
+import ResultPage from './features/result/ResultPage';
+import LibraryPage from './features/library/LibraryPage';
 
 function AppLayout() {
   const location = useLocation();

@@ -1,27 +1,29 @@
 import { useNavigate } from 'react-router-dom';
 import { Home, Bookmark } from 'lucide-react';
-import LibraryCard from '../components/LibraryCard';
-import EmptyState from '../components/EmptyState';
-import { useLibrary } from '../hooks/useLibrary';
-import AppShell from '../components/organisms/AppShell';
-import AppSidebar from '../components/organisms/AppSidebar';
-import Text from '../components/atoms/Text';
-import Badge from '../components/atoms/Badge';
+import { useTranslation } from 'react-i18next';
+import LibraryCard from './LibraryCard';
+import EmptyState from './EmptyState';
+import { useLibrary } from '../../shared/hooks/useLibrary';
+import AppShell from '../../shared/components/organisms/AppShell';
+import AppSidebar from '../../shared/components/organisms/AppSidebar';
+import Text from '../../shared/components/atoms/Text';
+import Badge from '../../shared/components/atoms/Badge';
 
 export default function LibraryPage() {
+  const { t } = useTranslation();
   const { items, hydrated, remove } = useLibrary();
   const navigate = useNavigate();
 
   const sidebarSections = [
     {
       items: [
-        { icon: Home, label: 'Home', path: '/' },
+        { icon: Home, label: t('nav.home'), path: '/' },
       ],
     },
     {
-      label: 'Library',
+      label: t('sidebar.library'),
       items: [
-        { icon: Bookmark, label: 'Saved', path: '/library', count: hydrated ? items.length : undefined },
+        { icon: Bookmark, label: t('nav.library'), path: '/library', count: hydrated ? items.length : undefined },
       ],
     },
   ];
@@ -38,14 +40,14 @@ export default function LibraryPage() {
     >
       <div className="flex items-center gap-3 mb-1">
         <Text variant="display" as="h1">
-          Your kept videos
+          {t('library.title')}
         </Text>
         {hydrated && items.length > 0 && (
-          <Badge variant="accent">{items.length} saved</Badge>
+          <Badge variant="accent">{t('library.count', { count: items.length })}</Badge>
         )}
       </div>
       <Text variant="body" color="secondary" className="mb-6 sm:mb-8">
-        Saved for later, ready when you are.
+        {t('library.subtitle')}
       </Text>
 
       {!hydrated ? null : items.length === 0 ? (

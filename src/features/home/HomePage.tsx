@@ -1,33 +1,34 @@
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Search, Bookmark, ChevronRight } from 'lucide-react';
-import UrlInputForm from '../components/UrlInputForm';
-
-const examples = [
-  { label: 'English Speaking Practice', url: 'https://youtube.com/watch?v=english-speaking-practice' },
-  { label: 'Product Management Talk', url: 'https://youtube.com/watch?v=product-discovery' },
-  { label: 'React Tutorial', url: 'https://youtube.com/watch?v=react-state-management' },
-];
-
-const steps = [
-  { icon: Search, title: 'Paste any YouTube URL', desc: 'No account needed. Just paste and go.' },
-  { icon: ArrowRight, title: 'See what you’ll get', desc: 'Understand the real outcomes before watching.' },
-  { icon: Bookmark, title: 'Keep for later', desc: 'Save it to your library and come back anytime.' },
-];
+import { useTranslation } from 'react-i18next';
+import UrlInputForm from './UrlInputForm';
 
 export default function HomePage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const examples = [
+    { label: 'English Speaking Practice', url: 'https://youtube.com/watch?v=english-speaking-practice' },
+    { label: 'Product Management Talk', url: 'https://youtube.com/watch?v=product-discovery' },
+    { label: 'React Tutorial', url: 'https://youtube.com/watch?v=react-state-management' },
+  ];
+
+  const steps = [
+    { icon: Search, title: t('home.step1Title'), desc: t('home.step1Desc') },
+    { icon: ArrowRight, title: t('home.step2Title'), desc: t('home.step2Desc') },
+    { icon: Bookmark, title: t('home.step3Title'), desc: t('home.step3Desc') },
+  ];
 
   return (
     <main className="min-h-[calc(100vh-56px)] flex flex-col">
       <section className="flex-1 flex flex-col items-center justify-center px-5 pt-16 pb-12 sm:pt-24 sm:pb-16">
         <div className="w-full max-w-[600px] text-center">
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-ink tracking-tight leading-[1.1] mb-3">
-            Know what you'll get
-            <br />
-            before watching.
-          </h1>
+          <h1
+            className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-ink tracking-tight leading-[1.1] mb-3"
+            dangerouslySetInnerHTML={{ __html: t('home.title') }}
+          />
           <p className="text-base sm:text-lg text-ink-muted max-w-[460px] mx-auto mb-8 leading-relaxed">
-            Paste a YouTube video and understand its real value in 2 minutes.
+            {t('home.subtitle')}
           </p>
 
           <div className="mb-6">

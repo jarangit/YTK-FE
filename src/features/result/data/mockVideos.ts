@@ -1,4 +1,4 @@
-import type { MockVideo } from '../types';
+import type { MockVideo } from '../../../shared/types';
 
 export const mockVideos: MockVideo[] = [
   {

@@ -1,4 +1,5 @@
 import { ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
 interface HorizontalRailProps {
@@ -14,6 +15,8 @@ export default function HorizontalRail({
   children,
   className,
 }: HorizontalRailProps) {
+  const { t } = useTranslation();
+
   return (
     <section className={clsx('space-y-3', className)}>
       <div className="flex items-center justify-between">
@@ -31,7 +34,7 @@ export default function HorizontalRail({
           type="button"
           className="flex items-center gap-0.5 text-[13px] font-[500] text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors"
         >
-          See All
+          {t('rail.seeAll')}
           <ChevronRight size={14} />
         </button>
       </div>

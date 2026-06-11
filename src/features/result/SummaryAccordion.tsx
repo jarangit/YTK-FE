@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, Lightbulb, List, BookOpen, RefreshCw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
-import type { MockVideo } from '../types';
+import type { MockVideo } from '../../shared/types';
 
 interface Props {
   summary: MockVideo['summary'];
 }
 
 export default function SummaryAccordion({ summary }: Props) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   return (
@@ -18,16 +20,16 @@ export default function SummaryAccordion({ summary }: Props) {
         className="w-full flex items-center justify-between p-5 sm:p-6 text-left transition-colors hover:bg-black/[0.02]"
       >
         <h2 className="font-display font-semibold text-lg text-ink">
-          Full Summary
+          {t('summary.fullSummary')}
         </h2>
         <span className="flex items-center gap-1.5 text-sm font-medium text-accent">
           {open ? (
             <>
-              Hide <ChevronUp className="w-4 h-4" />
+              {t('summary.hide')} <ChevronUp className="w-4 h-4" />
             </>
           ) : (
             <>
-              Read full summary <ChevronDown className="w-4 h-4" />
+              {t('summary.read')} <ChevronDown className="w-4 h-4" />
             </>
           )}
         </span>
@@ -43,7 +45,7 @@ export default function SummaryAccordion({ summary }: Props) {
           <section>
             <h3 className="flex items-center gap-1.5 text-sm font-semibold text-ink mb-2">
               <Lightbulb className="w-4 h-4 text-accent" />
-              Big Idea
+              {t('summary.bigIdea')}
             </h3>
             <p className="text-sm text-ink-muted leading-relaxed">
               {summary.bigIdea}
@@ -53,7 +55,7 @@ export default function SummaryAccordion({ summary }: Props) {
           <section>
             <h3 className="flex items-center gap-1.5 text-sm font-semibold text-ink mb-2">
               <List className="w-4 h-4 text-accent" />
-              Key Points
+              {t('summary.keyPoints')}
             </h3>
             <ul className="space-y-1.5">
               {summary.keyPoints.map((point, i) => (
@@ -68,7 +70,7 @@ export default function SummaryAccordion({ summary }: Props) {
           <section>
             <h3 className="flex items-center gap-1.5 text-sm font-semibold text-ink mb-2">
               <BookOpen className="w-4 h-4 text-accent" />
-              Useful Examples
+              {t('summary.usefulExamples')}
             </h3>
             <ul className="space-y-2">
               {summary.usefulExamples.map((ex, i) => (
@@ -76,7 +78,7 @@ export default function SummaryAccordion({ summary }: Props) {
                   key={i}
                   className="text-sm text-ink-muted leading-relaxed bg-surface rounded-lg px-3.5 py-2.5 italic"
                 >
-                  "{ex}"
+                  &ldquo;{ex}&rdquo;
                 </li>
               ))}
             </ul>
@@ -85,7 +87,7 @@ export default function SummaryAccordion({ summary }: Props) {
           <section>
             <h3 className="flex items-center gap-1.5 text-sm font-semibold text-ink mb-2">
               <RefreshCw className="w-4 h-4 text-accent" />
-              Things to Remember
+              {t('summary.thingsToRemember')}
             </h3>
             <ul className="space-y-1.5">
               {summary.thingsToRemember.map((item, i) => (

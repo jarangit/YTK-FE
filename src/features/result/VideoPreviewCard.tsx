@@ -1,11 +1,14 @@
 import { ExternalLink, Clock, User } from 'lucide-react';
-import type { MockVideo } from '../types';
+import { useTranslation } from 'react-i18next';
+import type { MockVideo } from '../../shared/types';
 
 interface Props {
   video: MockVideo;
 }
 
 export default function VideoPreviewCard({ video }: Props) {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white rounded-card shadow-card overflow-hidden">
       <div className="aspect-video bg-ink-faint/10 relative overflow-hidden">
@@ -40,7 +43,7 @@ export default function VideoPreviewCard({ video }: Props) {
           className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-accent hover:text-accent-hover transition-colors no-underline"
         >
           <ExternalLink className="w-3.5 h-3.5" />
-          Open on YouTube
+          {t('result.openOnYoutube')}
         </a>
       </div>
     </div>

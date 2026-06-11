@@ -1,4 +1,5 @@
 import { Play } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
 interface PlayPillProps {
@@ -9,6 +10,8 @@ interface PlayPillProps {
 }
 
 export default function PlayPill({ duration, isPlaying = false, onClick, className }: PlayPillProps) {
+  const { t } = useTranslation();
+
   return (
     <button
       type="button"
@@ -24,7 +27,7 @@ export default function PlayPill({ duration, isPlaying = false, onClick, classNa
       )}
     >
       <Play size={12} fill={isPlaying ? 'currentColor' : 'none'} />
-      <span>{isPlaying ? 'Playing' : duration}</span>
+      <span>{isPlaying ? t('player.playing') : duration}</span>
     </button>
   );
 }

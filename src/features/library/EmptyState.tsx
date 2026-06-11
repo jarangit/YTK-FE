@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom';
 import { Bookmark } from 'lucide-react';
-import Text from './atoms/Text';
-import IconButton from './atoms/IconButton';
+import { useTranslation } from 'react-i18next';
+import Text from '../../shared/components/atoms/Text';
+import IconButton from '../../shared/components/atoms/IconButton';
 
 interface Props {
   message?: string;
 }
 
 export default function EmptyState({ message }: Props) {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col items-center justify-center py-20 px-5 text-center">
       <div
@@ -17,15 +20,15 @@ export default function EmptyState({ message }: Props) {
         <Bookmark className="w-6 h-6" style={{ color: 'var(--color-accent)' }} />
       </div>
       <Text variant="title" as="p" className="mb-2">
-        {message ?? "You haven't kept anything yet."}
+        {message ?? t('empty.title')}
       </Text>
       <Text variant="body" color="secondary" className="mb-6">
-        Analyze a video and save it here to come back later.
+        {t('empty.subtitle')}
       </Text>
       <Link to="/" className="no-underline">
         <IconButton
           icon={Bookmark}
-          ariaLabel="Analyze a video"
+          ariaLabel={t('empty.action')}
           variant="filled"
           size="md"
         />

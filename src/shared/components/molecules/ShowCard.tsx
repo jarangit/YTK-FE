@@ -1,4 +1,4 @@
-import { getShowGradient } from '../../data/podcasts.mock';
+import { getShowGradient } from '../podcasts.mock';
 import clsx from 'clsx';
 
 interface ShowCardProps {
