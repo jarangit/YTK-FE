@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Bookmark, Library, ArrowLeft } from 'lucide-react';
+import { Bookmark, Library, ArrowLeft, Newspaper } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -8,6 +8,7 @@ export default function AppHeader() {
   const { t } = useTranslation();
   const location = useLocation();
   const isHome = location.pathname === '/';
+  const isFeed = location.pathname === '/feed';
   const isLibrary = location.pathname === '/library';
 
   return (
@@ -33,6 +34,18 @@ export default function AppHeader() {
               {t('nav.home')}
             </Link>
           )}
+          <Link
+            to="/feed"
+            className={clsx(
+              'flex items-center gap-inline-sm px-inline-md py-stack-xs rounded-btn text-sm font-medium transition-colors no-underline',
+              isFeed
+                ? 'text-accent bg-accent-light'
+                : 'text-ink-muted hover:text-ink hover:bg-black/5',
+            )}
+          >
+            <Newspaper className="w-4 h-4" />
+            {t('nav.feed')}
+          </Link>
           <Link
             to="/library"
             className={clsx(

@@ -4,6 +4,7 @@ const en = {
   },
   nav: {
     home: 'Home',
+    feed: 'Feed',
     library: 'Library',
   },
   language: {
@@ -33,6 +34,14 @@ const en = {
     title: 'Your kept videos',
     subtitle: 'Saved for later, ready when you are.',
     count: '{{count}} saved',
+  },
+  feed: {
+    eyebrow: 'Community Feed',
+    title: 'See what the community has already summarized.',
+    subtitle:
+      'Browse YouTube videos that people have already turned into short, useful summaries. Skim the signal before you watch the full thing.',
+    openVideo: 'Open video',
+    summaryCount: '{{count}} summaries',
   },
   result: {
     loading: 'Analyzing video...',
