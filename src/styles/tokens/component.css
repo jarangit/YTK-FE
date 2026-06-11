@@ -1,0 +1,15 @@
+:root {
+  --sidebar-width: 176px;
+  --sidebar-collapsed-width: 56px;
+  --app-header-height: 48px;
+  --mini-player-height: 64px;
+  --podcast-card-width: 216px;
+  --podcast-card-image-height: 200px;
+  --show-card-width: 168px;
+  --show-card-image-size: 168px;
+  --nav-item-height: 28px;
+  --nav-item-radius: 8px;
+  --content-max-width: 1440px;
+  --content-padding-x: 48px;
+  --content-padding-top: 32px;
+}

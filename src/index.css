@@ -1,10 +1,18 @@
+@import './styles/tokens/primitive.css';
+@import './styles/tokens/semantic.css';
+@import './styles/tokens/component.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-surface text-ink font-sans antialiased;
+    font-family: var(--font-family-sans);
+    background-color: var(--color-bg-app);
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   #root {

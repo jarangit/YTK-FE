@@ -1,0 +1,24 @@
+:root {
+  --color-bg-app: var(--color-white);
+  --color-bg-sidebar: rgba(248, 248, 250, 0.86);
+  --color-bg-card: var(--color-white);
+  --color-bg-hover: rgba(0, 0, 0, 0.04);
+  --color-bg-active: rgba(0, 0, 0, 0.06);
+
+  --color-text-primary: var(--color-gray-900);
+  --color-text-secondary: var(--color-gray-500);
+  --color-text-tertiary: var(--color-gray-400);
+  --color-text-inverse: var(--color-white);
+
+  --color-accent: var(--color-purple-500);
+  --color-accent-hover: var(--color-purple-600);
+  --color-accent-light: var(--color-purple-100);
+
+  --color-border-subtle: rgba(0, 0, 0, 0.08);
+  --color-border-medium: rgba(0, 0, 0, 0.12);
+
+  --font-family-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text',
+    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-family-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display',
+    'Helvetica Neue', Helvetica, Arial, sans-serif;
+}

@@ -1,18 +1,29 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import AppHeader from './components/AppHeader';
 import HomePage from './pages/HomePage';
 import ResultPage from './pages/ResultPage';
 import LibraryPage from './pages/LibraryPage';
 
-function App() {
+function AppLayout() {
+  const location = useLocation();
+  const isLibrary = location.pathname === '/library';
+
   return (
-    <BrowserRouter>
-      <AppHeader />
+    <>
+      {!isLibrary && <AppHeader />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/result" element={<ResultPage />} />
         <Route path="/library" element={<LibraryPage />} />
       </Routes>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppLayout />
     </BrowserRouter>
   );
 }
