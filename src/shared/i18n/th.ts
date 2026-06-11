@@ -11,7 +11,8 @@ const th = {
     th: 'ไทย',
   },
   home: {
-    title: 'รู้ก่อนดู<br/>วิดีโอนี้คุ้มไหม',
+    titleLine1: 'รู้ก่อนดู',
+    titleLine2: 'วิดีโอนี้คุ้มไหม',
     subtitle: 'วางลิงก์ YouTube เพื่อดูว่าวิดีโอนี้มีอะไรให้คุณได้บ้าง ใน 2 นาที',
     step1Title: 'วางลิงก์ YouTube',
     step1Desc: 'ไม่ต้องสมัครสมาชิก แค่วางลิงก์แล้วเริ่มได้เลย',
@@ -22,6 +23,8 @@ const th = {
     exampleLabel: 'ลองตัวอย่าง',
     inputPlaceholder: 'วางลิงก์ YouTube ที่นี่...',
     submit: 'วิเคราะห์',
+    invalidUrl: 'กรุณาใส่ลิงก์ YouTube ที่ถูกต้อง',
+    analyzing: 'กำลังวิเคราะห์...',
   },
   library: {
     title: 'วิดีโอที่เก็บไว้',

@@ -11,7 +11,8 @@ const en = {
     th: 'ไทย',
   },
   home: {
-    title: 'Know what you\'ll get<br/>before watching.',
+    titleLine1: 'Know what you\'ll get',
+    titleLine2: 'before watching.',
     subtitle: 'Paste a YouTube video and understand its real value in 2 minutes.',
     step1Title: 'Paste any YouTube URL',
     step1Desc: 'No account needed. Just paste and go.',
@@ -22,6 +23,8 @@ const en = {
     exampleLabel: 'Try an example',
     inputPlaceholder: 'Paste YouTube URL here...',
     submit: 'Analyze',
+    invalidUrl: 'Please enter a valid YouTube link',
+    analyzing: 'Analyzing...',
   },
   library: {
     title: 'Your kept videos',

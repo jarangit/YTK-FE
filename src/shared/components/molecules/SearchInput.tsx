@@ -33,7 +33,7 @@ export default function SearchInput({
         onChange={(e) => onChange?.(e.target.value)}
         placeholder={placeholder}
         className={clsx(
-          'w-full h-full pl-8 pr-3 bg-transparent border-none',
+          'w-full h-full pl-8 pr-inline-md bg-transparent border-none',
           'text-[13px] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)]',
           'focus:outline-none',
         )}

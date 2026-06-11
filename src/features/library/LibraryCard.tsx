@@ -40,17 +40,17 @@ export default function LibraryCard({ item, onRemove }: Props) {
             />
           </div>
         </div>
-        <div className="flex-1 p-4 sm:p-5 flex flex-col justify-between">
+        <div className="flex-1 p-inset-md sm:p-inset-lg flex flex-col justify-between">
           <div>
-            <div className="flex items-center gap-2 mb-1.5">
+            <div className="flex items-center gap-inline-sm mb-stack-xs">
               <Badge>{keptDate}</Badge>
             </div>
-            <Text variant="title" as="h3" className="line-clamp-2 mb-2">
+            <Text variant="title" as="h3" className="line-clamp-2 mb-stack-sm">
               {video.title}
             </Text>
-            <ul className="space-y-1 mb-2">
+            <ul className="space-y-stack-xs mb-stack-sm">
               {video.outcomes.slice(0, 2).map((o, i) => (
-                <li key={i} className="flex items-start gap-1.5">
+                <li key={i} className="flex items-start gap-inline-xs">
                   <span
                     className="w-3 h-3 rounded-full shrink-0 mt-0.5"
                     style={{ backgroundColor: 'var(--color-accent)' }}
@@ -63,13 +63,13 @@ export default function LibraryCard({ item, onRemove }: Props) {
             </ul>
           </div>
           <div
-            className="flex items-center justify-between mt-2 pt-2"
+            className="flex items-center justify-between mt-stack-sm pt-stack-sm"
             style={{ borderTop: '1px solid var(--color-border-subtle)' }}
           >
             <Text variant="caption" color="tertiary">
               {video.channelName}
             </Text>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-inline-xs">
               <Link
                 to={`/result?url=${encodeURIComponent(video.videoUrl)}`}
                 className="no-underline"

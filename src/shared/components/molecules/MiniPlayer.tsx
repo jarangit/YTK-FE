@@ -30,7 +30,7 @@ export default function MiniPlayer({
     <div
       className={clsx(
         'fixed bottom-6 left-1/2 -translate-x-1/2 z-[var(--z-player)]',
-        'flex items-center gap-4 h-[var(--mini-player-height)] px-5',
+        'flex items-center gap-inline-lg h-[var(--mini-player-height)] px-5',
         'rounded-[var(--radius-xl)] bg-white/80 backdrop-blur-xl',
         'shadow-[var(--shadow-heavy)] border border-[var(--color-border-subtle)]',
         'min-w-[480px] max-w-[600px]',
@@ -47,7 +47,7 @@ export default function MiniPlayer({
         </p>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-inline-md">
         <button
           type="button"
           aria-label={t('player.previous')}
@@ -78,7 +78,7 @@ export default function MiniPlayer({
         </button>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-inline-sm">
         <Volume2 size={14} className="text-[var(--color-text-tertiary)]" />
         <div className="w-16 h-1 rounded-full bg-[var(--color-gray-200)] overflow-hidden">
           <div

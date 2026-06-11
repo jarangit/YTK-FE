@@ -53,7 +53,7 @@ export default function ShowCard({
           </div>
         )}
       </div>
-      <div className="mt-2 px-0.5">
+      <div className="mt-stack-sm px-0.5">
         <h3
           className="text-[13px] font-[600] leading-[1.3] text-[var(--color-text-primary)] line-clamp-1"
           style={{ display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}

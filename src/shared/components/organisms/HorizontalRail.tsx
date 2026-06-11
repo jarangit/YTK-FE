@@ -39,7 +39,7 @@ export default function HorizontalRail({
         </button>
       </div>
       <div
-        className="flex gap-3 overflow-x-auto pb-2 -mx-[var(--content-padding-x)] px-[var(--content-padding-x)] scrollbar-thin"
+        className="flex gap-inline-md overflow-x-auto pb-stack-sm -mx-[var(--content-padding-x)] px-[var(--content-padding-x)] scrollbar-thin"
         style={{
           scrollbarWidth: 'thin',
           scrollbarColor: 'var(--color-gray-300) transparent',

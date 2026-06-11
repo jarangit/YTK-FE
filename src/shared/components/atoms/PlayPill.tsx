@@ -17,7 +17,7 @@ export default function PlayPill({ duration, isPlaying = false, onClick, classNa
       type="button"
       onClick={onClick}
       className={clsx(
-        'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-[600]',
+        'inline-flex items-center gap-inline-sm px-inline-md py-stack-xs rounded-full text-[12px] font-[600]',
         'backdrop-blur-md transition-all duration-200',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]',
         isPlaying

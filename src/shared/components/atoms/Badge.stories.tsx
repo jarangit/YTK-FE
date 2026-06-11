@@ -7,6 +7,7 @@ const meta: Meta<typeof Badge> = {
   tags: ['autodocs'],
   argTypes: {
     variant: { control: 'select', options: ['default', 'accent'] },
+    as: { control: 'select', options: ['span', 'button'] },
   },
 };
 
@@ -24,6 +25,14 @@ export const Accent: Story = {
   args: {
     children: 'New',
     variant: 'accent',
+  },
+};
+
+export const Clickable: Story = {
+  args: {
+    children: 'English Speaking Practice',
+    variant: 'default',
+    as: 'button',
   },
 };
 

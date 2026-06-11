@@ -38,7 +38,7 @@ export default function LibraryPage() {
         />
       }
     >
-      <div className="flex items-center gap-3 mb-1">
+      <div className="flex items-center gap-inline-md mb-stack-xs">
         <Text variant="display" as="h1">
           {t('library.title')}
         </Text>
@@ -46,14 +46,14 @@ export default function LibraryPage() {
           <Badge variant="accent">{t('library.count', { count: items.length })}</Badge>
         )}
       </div>
-      <Text variant="body" color="secondary" className="mb-6 sm:mb-8">
+      <Text variant="body" color="secondary" className="mb-stack-md sm:mb-stack-lg">
         {t('library.subtitle')}
       </Text>
 
       {!hydrated ? null : items.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className="space-y-4" style={{ maxWidth: 720 }}>
+        <div className="space-y-stack-md" style={{ maxWidth: 720 }}>
           {items.map((item) => (
             <LibraryCard
               key={item.video.id + item.keptAt}

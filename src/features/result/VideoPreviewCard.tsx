@@ -22,11 +22,11 @@ export default function VideoPreviewCard({ video }: Props) {
           {video.duration}
         </span>
       </div>
-      <div className="p-4 sm:p-5">
-        <h2 className="font-display font-semibold text-lg text-ink leading-snug mb-2">
+      <div className="p-inset-md sm:p-inset-lg">
+        <h2 className="font-display font-semibold text-lg text-ink leading-snug mb-stack-sm">
           {video.title}
         </h2>
-        <div className="flex items-center gap-4 text-xs text-ink-muted">
+        <div className="flex items-center gap-inline-lg text-xs text-ink-muted">
           <span className="flex items-center gap-1">
             <User className="w-3.5 h-3.5" />
             {video.channelName}
@@ -40,7 +40,7 @@ export default function VideoPreviewCard({ video }: Props) {
           href={video.videoUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium text-accent hover:text-accent-hover transition-colors no-underline"
+          className="inline-flex items-center gap-inline-xs mt-stack-sm text-xs font-medium text-accent hover:text-accent-hover transition-colors no-underline"
         >
           <ExternalLink className="w-3.5 h-3.5" />
           {t('result.openOnYoutube')}

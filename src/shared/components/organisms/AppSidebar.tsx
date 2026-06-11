@@ -37,7 +37,7 @@ export default function AppSidebar({
           'w-[var(--sidebar-collapsed-width)]',
           'bg-[var(--color-bg-sidebar)] backdrop-blur-xl',
           'border-r border-[var(--color-border-subtle)]',
-          'flex flex-col items-center gap-1 py-4',
+          'flex flex-col items-center gap-stack-xs py-stack-md',
           className,
         )}
       >
@@ -68,11 +68,11 @@ export default function AppSidebar({
         className,
       )}
     >
-      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-4 scrollbar-thin">
+      <div className="flex-1 overflow-y-auto px-inline-md py-stack-md space-y-stack-md scrollbar-thin">
         {sections.map((section, idx) => (
           <div key={idx}>
             {section.label && (
-              <p className="px-2 text-[11px] font-[600] tracking-[0.02em] uppercase text-[var(--color-text-tertiary)] mb-1">
+              <p className="px-inline-sm text-[11px] font-[600] tracking-[0.02em] uppercase text-[var(--color-text-tertiary)] mb-stack-xs">
                 {section.label}
               </p>
             )}

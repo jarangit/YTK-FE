@@ -21,4 +21,20 @@
     'Helvetica Neue', Helvetica, Arial, sans-serif;
   --font-family-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display',
     'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  --space-inset-xs: var(--space-1);
+  --space-inset-sm: var(--space-2);
+  --space-inset-md: var(--space-4);
+  --space-inset-lg: var(--space-6);
+
+  --space-stack-xs: var(--space-1);
+  --space-stack-sm: var(--space-2);
+  --space-stack-md: var(--space-4);
+  --space-stack-lg: var(--space-8);
+
+  --space-inline-xs: var(--space-1);
+  --space-inline-sm: var(--space-2);
+  --space-inline-md: var(--space-3);
+  --space-inline-lg: var(--space-4);
+  --space-inline-xl: var(--space-6);
 }

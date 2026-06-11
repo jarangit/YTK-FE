@@ -30,7 +30,7 @@ export default function SidebarNavItem({
         active
           ? 'bg-[var(--color-accent)] text-white font-[600]'
           : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]',
-        collapsed ? 'justify-center h-[var(--nav-item-height)] px-0' : 'h-[var(--nav-item-height)] px-2',
+        collapsed ? 'justify-center h-[var(--nav-item-height)] px-0' : 'h-[var(--nav-item-height)] px-inline-sm',
         className,
       )}
       title={collapsed ? label : undefined}

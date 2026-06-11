@@ -30,9 +30,9 @@ export default function ResultPage() {
 
   if (loading) {
     return (
-      <main className="min-h-[calc(100vh-56px)] flex items-center justify-center px-5">
+      <main className="min-h-[calc(100vh-56px)] flex items-center justify-center px-inset-lg">
         <div className="text-center">
-          <Loader2 className="w-8 h-8 text-accent animate-spin mx-auto mb-4" />
+          <Loader2 className="w-8 h-8 text-accent animate-spin mx-auto mb-stack-md" />
           <p className="text-sm text-ink-muted">{t('result.loading')}</p>
         </div>
       </main>
@@ -41,12 +41,12 @@ export default function ResultPage() {
 
   if (!video) {
     return (
-      <main className="min-h-[calc(100vh-56px)] flex items-center justify-center px-5">
+      <main className="min-h-[calc(100vh-56px)] flex items-center justify-center px-inset-lg">
         <div className="text-center">
-          <p className="text-sm text-ink-muted mb-4">{t('result.error')}</p>
+          <p className="text-sm text-ink-muted mb-stack-md">{t('result.error')}</p>
           <Link
             to="/"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-hover no-underline"
+            className="inline-flex items-center gap-inline-xs text-sm font-medium text-accent hover:text-accent-hover no-underline"
           >
             <ArrowLeft className="w-4 h-4" /> {t('result.retry')}
           </Link>
@@ -56,8 +56,8 @@ export default function ResultPage() {
   }
 
   return (
-    <main className="min-h-[calc(100vh-56px)] px-5 py-6 sm:py-10">
-      <div className="mx-auto max-w-read space-y-5 sm:space-y-6">
+    <main className="min-h-[calc(100vh-56px)] px-inset-lg py-stack-md sm:py-10">
+      <div className="mx-auto max-w-read space-y-stack-md sm:space-y-stack-lg">
         <VideoPreviewCard video={video} />
         <OutcomeCard outcomes={video.outcomes} />
         <SummaryAccordion summary={video.summary} />

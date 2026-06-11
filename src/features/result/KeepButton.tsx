@@ -30,18 +30,18 @@ export default function KeepButton({ video, onKeep, onRemove, initiallyKept }: P
 
   return (
     <>
-      <div className="bg-white rounded-card shadow-card p-5 sm:p-6">
-        <h2 className="font-display font-semibold text-lg text-ink mb-1">
+      <div className="bg-white rounded-card shadow-card p-inset-md sm:p-inset-lg">
+        <h2 className="font-display font-semibold text-lg text-ink mb-stack-xs">
           {t('keep.title')}
         </h2>
-        <p className="text-sm text-ink-muted mb-4">
+        <p className="text-sm text-ink-muted mb-stack-md">
           {t('keep.desc')}
         </p>
         <button
           type="button"
           onClick={handleClick}
           className={clsx(
-            'inline-flex items-center gap-2 px-5 py-2.5 rounded-btn text-sm font-semibold transition-all active:scale-[0.98]',
+            'inline-flex items-center gap-inline-sm px-inset-md py-stack-sm rounded-btn text-sm font-semibold transition-all active:scale-[0.98]',
             kept
               ? 'bg-accent-light text-accent border border-accent/20'
               : 'bg-accent text-white hover:bg-accent-hover',
@@ -53,7 +53,7 @@ export default function KeepButton({ video, onKeep, onRemove, initiallyKept }: P
       </div>
 
       {toast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-ink text-white text-sm font-medium px-4 py-2.5 rounded-btn shadow-lg animate-[fadeInUp_0.3s_ease-out]">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-ink text-white text-sm font-medium px-inset-md py-stack-sm rounded-btn shadow-lg animate-[fadeInUp_0.3s_ease-out]">
           {t('keep.toast')}
         </div>
       )}

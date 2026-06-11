@@ -12,20 +12,20 @@ export default function AppHeader() {
 
   return (
     <header className="sticky top-0 z-50 bg-surface/80 backdrop-blur-lg border-b border-border/50">
-      <div className="mx-auto max-w-[1120px] px-5 h-14 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 text-ink no-underline">
+      <div className="mx-auto max-w-[1120px] px-inline-lg h-14 flex items-center justify-between">
+          <Link to="/" className="flex items-center gap-inline-sm text-ink no-underline">
           <Bookmark className="w-5 h-5 text-accent" />
           <span className="font-display font-semibold text-lg tracking-tight">
             {t('app.name')}
           </span>
         </Link>
 
-        <nav className="flex items-center gap-1">
+        <nav className="flex items-center gap-inline-xs">
           {!isHome && (
             <Link
               to="/"
               className={clsx(
-                'flex items-center gap-1.5 px-3 py-1.5 rounded-btn text-sm font-medium transition-colors no-underline',
+                'flex items-center gap-inline-sm px-inline-md py-stack-xs rounded-btn text-sm font-medium transition-colors no-underline',
                 'text-ink-muted hover:text-ink hover:bg-black/5',
               )}
             >
@@ -36,7 +36,7 @@ export default function AppHeader() {
           <Link
             to="/library"
             className={clsx(
-              'flex items-center gap-1.5 px-3 py-1.5 rounded-btn text-sm font-medium transition-colors no-underline',
+              'flex items-center gap-inline-sm px-inline-md py-stack-xs rounded-btn text-sm font-medium transition-colors no-underline',
               isLibrary
                 ? 'text-accent bg-accent-light'
                 : 'text-ink-muted hover:text-ink hover:bg-black/5',
