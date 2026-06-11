@@ -25,6 +25,9 @@ const en = {
     submit: 'Analyze',
     invalidUrl: 'Please enter a valid YouTube link',
     analyzing: 'Analyzing...',
+    paste: 'Paste',
+    pasteUrl: 'Paste URL from clipboard',
+    pasteError: 'Could not read clipboard. Check your browser permissions.',
   },
   library: {
     title: 'Your kept videos',

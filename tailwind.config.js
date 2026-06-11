@@ -8,15 +8,15 @@ export default {
     extend: {
       colors: {
         surface: {
-          DEFAULT: '#faf8f6',
-          card: '#ffffff',
+          DEFAULT: '#f5f5f7',
+          card: 'var(--color-bg-card)',
         },
         ink: {
           DEFAULT: '#1d1d1f',
-          muted: '#6e6e73',
+          muted: '#86868b',
           faint: '#aeaeb2',
         },
-        border: '#e5e5ea',
+        border: '#d2d2d7',
         accent: {
           DEFAULT: 'var(--color-accent)',
           hover: 'var(--color-accent-hover)',
@@ -42,22 +42,28 @@ export default {
         'stack-sm': 'var(--space-stack-sm)',
         'stack-md': 'var(--space-stack-md)',
         'stack-lg': 'var(--space-stack-lg)',
+        'stack-xl': 'var(--space-stack-xl)',
+        'stack-2xl': 'var(--space-stack-2xl)',
         'inline-xs': 'var(--space-inline-xs)',
         'inline-sm': 'var(--space-inline-sm)',
         'inline-md': 'var(--space-inline-md)',
         'inline-lg': 'var(--space-inline-lg)',
         'inline-xl': 'var(--space-inline-xl)',
+        'inline-2xl': 'var(--space-inline-2xl)',
       },
       maxWidth: {
         read: '680px',
+        newsroom: 'var(--content-newsroom-width)',
       },
       borderRadius: {
-        card: '16px',
+        card: '18px',
         btn: '12px',
+        newsroom: 'var(--radius-newsroom-card)',
+        pill: 'var(--radius-newsroom-pill)',
       },
       boxShadow: {
-        card: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.04)',
-        'card-hover': '0 2px 8px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06)',
+        card: 'none',
+        'card-hover': 'none',
       },
     },
   },

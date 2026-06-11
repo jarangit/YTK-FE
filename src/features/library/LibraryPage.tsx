@@ -38,31 +38,33 @@ export default function LibraryPage() {
         />
       }
     >
-      <div className="flex items-center gap-inline-md mb-stack-xs">
-        <Text variant="display" as="h1">
-          {t('library.title')}
+      <div className="max-w-[var(--library-content-width)]">
+        <div className="flex items-center gap-inline-md mb-[var(--library-header-gap)]">
+          <Text variant="display" as="h1">
+            {t('library.title')}
+          </Text>
+          {hydrated && items.length > 0 && (
+            <Badge variant="accent">{t('library.count', { count: items.length })}</Badge>
+          )}
+        </div>
+        <Text variant="body" color="secondary" className="mb-[var(--library-section-gap)]">
+          {t('library.subtitle')}
         </Text>
-        {hydrated && items.length > 0 && (
-          <Badge variant="accent">{t('library.count', { count: items.length })}</Badge>
+
+        {!hydrated ? null : items.length === 0 ? (
+          <EmptyState />
+        ) : (
+          <div className="space-y-[var(--library-card-gap)] max-w-[var(--library-list-width)]">
+            {items.map((item) => (
+              <LibraryCard
+                key={item.video.id + item.keptAt}
+                item={item}
+                onRemove={remove}
+              />
+            ))}
+          </div>
         )}
       </div>
-      <Text variant="body" color="secondary" className="mb-stack-md sm:mb-stack-lg">
-        {t('library.subtitle')}
-      </Text>
-
-      {!hydrated ? null : items.length === 0 ? (
-        <EmptyState />
-      ) : (
-        <div className="space-y-stack-md" style={{ maxWidth: 720 }}>
-          {items.map((item) => (
-            <LibraryCard
-              key={item.video.id + item.keptAt}
-              item={item}
-              onRemove={remove}
-            />
-          ))}
-        </div>
-      )}
     </AppShell>
   );
 }

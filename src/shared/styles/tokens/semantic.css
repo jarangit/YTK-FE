@@ -1,7 +1,7 @@
 :root {
   --color-bg-app: var(--color-white);
-  --color-bg-sidebar: rgba(248, 248, 250, 0.86);
-  --color-bg-card: var(--color-white);
+  --color-bg-sidebar: rgba(245, 245, 247, 0.86);
+  --color-bg-card: var(--color-gray-50);
   --color-bg-hover: rgba(0, 0, 0, 0.04);
   --color-bg-active: rgba(0, 0, 0, 0.06);
 
@@ -15,7 +15,7 @@
   --color-accent-light: var(--color-accent-light-base);
 
   --color-border-subtle: rgba(0, 0, 0, 0.08);
-  --color-border-medium: rgba(0, 0, 0, 0.12);
+  --color-border-medium: rgba(0, 0, 0, 0.16);
 
   --font-family-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text',
     'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -31,10 +31,16 @@
   --space-stack-sm: var(--space-2);
   --space-stack-md: var(--space-4);
   --space-stack-lg: var(--space-8);
+  --space-stack-xl: var(--space-12);
+  --space-stack-2xl: var(--space-20);
 
   --space-inline-xs: var(--space-1);
   --space-inline-sm: var(--space-2);
   --space-inline-md: var(--space-3);
   --space-inline-lg: var(--space-4);
   --space-inline-xl: var(--space-6);
+  --space-inline-2xl: var(--space-8);
+
+  --font-size-editorial-title: 32px;
+  --line-height-editorial-title: 44px;
 }

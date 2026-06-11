@@ -8,8 +8,22 @@
   --show-card-width: 168px;
   --show-card-image-size: 168px;
   --nav-item-height: 28px;
-  --nav-item-radius: 8px;
+  --nav-item-radius: 10px;
   --content-max-width: 1440px;
   --content-padding-x: 48px;
   --content-padding-top: 32px;
+  --content-newsroom-width: 980px;
+  --radius-newsroom-card: 32px;
+  --radius-newsroom-pill: 30px;
+  --newsroom-card-padding: 32px;
+  --library-content-width: 720px;
+  --library-list-width: var(--library-content-width);
+  --library-card-thumbnail-width: 192px;
+  --library-card-radius: var(--radius-xl);
+  --library-header-gap: var(--space-2);
+  --library-section-gap: var(--space-8);
+  --library-card-gap: var(--space-4);
+  --library-empty-padding-y: var(--space-16);
+  --library-card-padding: var(--space-6);
+  --library-card-meta-gap: var(--space-2);
 }

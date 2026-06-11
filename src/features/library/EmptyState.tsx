@@ -12,12 +12,9 @@ export default function EmptyState({ message }: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col items-center justify-center py-20 px-inset-lg text-center">
-      <div
-        className="w-14 h-14 rounded-full flex items-center justify-center mb-stack-md"
-        style={{ backgroundColor: 'var(--color-accent-light)' }}
-      >
-        <Bookmark className="w-6 h-6" style={{ color: 'var(--color-accent)' }} />
+    <div className="flex flex-col items-center justify-center py-[var(--library-empty-padding-y)] px-inset-lg text-center">
+      <div className="w-14 h-14 rounded-full flex items-center justify-center mb-stack-md bg-[var(--color-accent-light)]">
+        <Bookmark className="w-6 h-6 text-[var(--color-accent)]" />
       </div>
       <Text variant="title" as="p" className="mb-stack-sm">
         {message ?? t('empty.title')}
