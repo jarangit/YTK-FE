@@ -105,3 +105,7 @@ export const feedMock: FeedItem[] = Array.from({ length: 50 }, (_, index) => {
     tags,
   };
 });
+
+export function getFeedItemById(id: string) {
+  return feedMock.find((item) => item.id === id);
+}

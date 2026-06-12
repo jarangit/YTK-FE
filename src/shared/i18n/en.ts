@@ -41,7 +41,13 @@ const en = {
     subtitle:
       'Browse YouTube videos that people have already turned into short, useful summaries. Skim the signal before you watch the full thing.',
     openVideo: 'Open video',
+    openChannel: 'Open channel',
     summaryCount: '{{count}} summaries',
+    backToFeed: 'Back to feed',
+    communitySummary: 'Community summary',
+    detailNote: 'Open the original video to watch the full context and compare it with this community snapshot.',
+    notFoundTitle: 'This summary could not be found.',
+    notFoundSubtitle: 'The item may have been removed, or the link may be incorrect.',
   },
   result: {
     loading: 'Analyzing video...',

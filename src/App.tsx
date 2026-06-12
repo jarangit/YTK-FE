@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import AppHeader from './shared/components/AppHeader';
 import HomePage from './features/home/HomePage';
 import FeedPage from './features/feed/FeedPage';
+import FeedDetailPage from './features/feed/FeedDetailPage';
 import ResultPage from './features/result/ResultPage';
 import LibraryPage from './features/library/LibraryPage';
 
@@ -15,6 +16,7 @@ function AppLayout() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/feed" element={<FeedPage />} />
+        <Route path="/feed/:id" element={<FeedDetailPage />} />
         <Route path="/result" element={<ResultPage />} />
         <Route path="/library" element={<LibraryPage />} />
       </Routes>
