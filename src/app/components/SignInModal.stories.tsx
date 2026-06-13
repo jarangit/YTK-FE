@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useEffect } from 'react';
-import { useAuth } from '../../auth/AuthContext';
+import { useAuth } from '../../shared/auth/AuthContext';
 import SignInModal from './SignInModal';
 
 function OpenModalPreview() {
@@ -14,7 +14,7 @@ function OpenModalPreview() {
 }
 
 const meta: Meta<typeof SignInModal> = {
-  title: 'Organisms/SignInModal',
+  title: 'App/SignInModal',
   component: SignInModal,
   tags: ['autodocs'],
   parameters: {

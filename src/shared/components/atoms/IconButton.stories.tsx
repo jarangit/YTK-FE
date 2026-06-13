@@ -3,7 +3,7 @@ import { Heart, Play, Plus, Share2 } from 'lucide-react';
 import IconButton from './IconButton';
 
 const meta: Meta<typeof IconButton> = {
-  title: 'Atoms/IconButton',
+  title: 'UI/IconButton',
   component: IconButton,
   tags: ['autodocs'],
   argTypes: {

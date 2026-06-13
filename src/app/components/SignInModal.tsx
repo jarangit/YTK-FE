@@ -1,8 +1,10 @@
-import { Loader2, X } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import clsx from 'clsx';
-import { useAuth } from '../../auth/AuthContext';
+import { useAuth } from '../../shared/auth/AuthContext';
+import Avatar from '../../shared/components/atoms/Avatar';
+import { Button } from '../../shared/components/atoms/Button';
+import Dialog from '../../shared/components/organisms/Dialog';
 
 export default function SignInModal() {
   const { t } = useTranslation();
@@ -36,22 +38,8 @@ export default function SignInModal() {
   }, [closeSignInModal, isSignInModalOpen]);
 
   return (
-    <div
-      className={clsx(
-        'fixed inset-0 z-50 flex items-center justify-center px-inset-md transition-opacity duration-200',
-        isSignInModalOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
-      )}
-      aria-hidden={!isSignInModalOpen}
-    >
-      <button
-        type="button"
-        aria-label={t('auth.close')}
-        onClick={closeSignInModal}
-        className="absolute inset-0 bg-[var(--modal-overlay-background)] backdrop-blur-sm"
-      />
-
-      <section className="relative w-full max-w-[var(--modal-max-width)] rounded-[var(--modal-radius)] border border-border/60 bg-white p-[var(--modal-padding)] shadow-[var(--modal-shadow)] sm:p-[var(--modal-padding-wide)]">
-        <div className="flex items-start justify-between gap-inline-md">
+    <Dialog open={isSignInModalOpen} onClose={closeSignInModal} closeLabel={t('auth.close')}>
+        <div className="flex items-start justify-between gap-inline-md pr-[var(--app-header-control-height)]">
           <div>
             <p className="text-[length:var(--modal-eyebrow-font-size)] font-semibold uppercase tracking-[var(--modal-eyebrow-letter-spacing)] text-ink-faint">
               {t('auth.eyebrow')}
@@ -60,14 +48,6 @@ export default function SignInModal() {
               {isAuthenticated ? t('auth.accountTitle') : t('auth.title')}
             </h2>
           </div>
-          <button
-            type="button"
-            onClick={closeSignInModal}
-            aria-label={t('auth.close')}
-            className="inline-flex h-[var(--app-header-control-height)] w-[var(--app-header-control-height)] items-center justify-center rounded-full text-ink-muted transition-colors hover:bg-[var(--color-bg-hover)] hover:text-ink"
-          >
-            <X className="h-4 w-4" />
-          </button>
         </div>
 
         {!isAuthenticated ? (
@@ -76,11 +56,13 @@ export default function SignInModal() {
               {t('auth.subtitle')}
             </p>
 
-            <button
+            <Button
               type="button"
               onClick={() => void signInWithGoogle()}
               disabled={isSigningIn}
-              className="mt-stack-lg inline-flex w-full items-center justify-center gap-inline-sm rounded-full border border-border bg-white px-5 py-3.5 text-[length:var(--text-body-size)] font-semibold text-ink transition-all hover:border-ink-faint hover:bg-surface disabled:cursor-not-allowed disabled:opacity-60"
+              variant="secondary"
+              fullWidth
+              className="mt-stack-lg h-auto py-3.5 text-[length:var(--text-body-size)]"
             >
               {isSigningIn ? (
                 <>
@@ -95,7 +77,7 @@ export default function SignInModal() {
                   {t('auth.continueWithGoogle')}
                 </>
               )}
-            </button>
+            </Button>
 
             <p className="mt-stack-md text-[length:var(--text-caption-size)] leading-[var(--modal-disclaimer-line-height)] text-ink-faint">
               {t('auth.disclaimer')}
@@ -107,11 +89,7 @@ export default function SignInModal() {
         ) : (
           <>
             <div className="mt-stack-xl flex items-center gap-inline-md rounded-[var(--modal-card-radius)] bg-surface px-inset-md py-stack-md">
-              <img
-                src={user?.avatarUrl}
-                alt={user?.name}
-                className="h-12 w-12 rounded-full object-cover"
-              />
+              <Avatar src={user?.avatarUrl} alt={user?.name} fallback={user?.name} />
               <div>
                 <p className="text-[length:var(--text-body-size)] font-semibold text-ink">{user?.name}</p>
                 <p className="mt-stack-xs text-[length:var(--text-caption-size)] text-ink-muted">{user?.email}</p>
@@ -123,24 +101,25 @@ export default function SignInModal() {
             </p>
 
             <div className="mt-stack-lg flex gap-inline-sm">
-              <button
+              <Button
                 type="button"
                 onClick={closeSignInModal}
-                className="inline-flex flex-1 items-center justify-center rounded-full bg-surface px-5 py-3 text-[length:var(--app-header-control-font-size)] font-semibold text-ink transition-colors hover:bg-[var(--color-bg-hover)]"
+                variant="ghost"
+                fullWidth
               >
                 {t('auth.done')}
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
                 onClick={signOut}
-                className="inline-flex flex-1 items-center justify-center rounded-full border border-border px-5 py-3 text-[length:var(--app-header-control-font-size)] font-semibold text-ink-muted transition-colors hover:border-ink-faint hover:text-ink"
+                variant="secondary"
+                fullWidth
               >
                 {t('auth.signOut')}
-              </button>
+              </Button>
             </div>
           </>
         )}
-      </section>
-    </div>
+    </Dialog>
   );
 }

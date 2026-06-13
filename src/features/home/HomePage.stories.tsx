@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import AppHeader from '../../shared/components/AppHeader';
+import AppHeader from '../../app/components/AppHeader';
 import HomePage from './HomePage';
 
 const meta: Meta<typeof HomePage> = {

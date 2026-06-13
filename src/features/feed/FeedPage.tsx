@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import FeedCard from './FeedCard';
 import FeedDetailContent from './FeedDetailContent';
-import SlideDrawer from '../../shared/components/organisms/SlideDrawer';
+import Drawer from '../../shared/components/organisms/Drawer';
 import Text from '../../shared/components/atoms/Text';
 import SearchInput from '../../shared/components/molecules/SearchInput';
 import { useTranslation } from 'react-i18next';
@@ -58,7 +58,7 @@ export default function FeedPage() {
         </div>
       </section>
 
-      <SlideDrawer isOpen={!!selectedItem} onClose={closeDrawer}>
+      <Drawer open={!!selectedItem} onClose={closeDrawer} title="Detail">
         {selectedItem && (
           <FeedDetailContent
             item={selectedItem}
@@ -67,7 +67,7 @@ export default function FeedPage() {
             initiallyKept={false}
           />
         )}
-      </SlideDrawer>
+      </Drawer>
     </main>
   );
 }

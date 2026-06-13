@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Text from './Text';
 
 const meta: Meta<typeof Text> = {
-  title: 'Atoms/Text',
+  title: 'UI/Text',
   component: Text,
   tags: ['autodocs'],
   argTypes: {
@@ -43,7 +43,7 @@ export const Title: Story = {
 export const Body: Story = {
   args: {
     variant: 'body',
-    children: 'Body typography for paragraphs and general content. Apple Podcasts uses clean, readable text.',
+    children: 'Body typography for paragraphs and general content. The system uses clean, readable text.',
     color: 'primary',
   },
 };

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import PlayPill from './PlayPill';
 
 const meta: Meta<typeof PlayPill> = {
-  title: 'Atoms/PlayPill',
+  title: 'Features/Podcast/PlayPill',
   component: PlayPill,
   tags: ['autodocs'],
   argTypes: {

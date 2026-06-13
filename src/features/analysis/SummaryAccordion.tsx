@@ -3,6 +3,7 @@ import { ChevronDown, ChevronUp, Lightbulb, List, BookOpen, RefreshCw } from 'lu
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import type { VideoAnalysis } from './types';
+import Card from '../../shared/components/atoms/Card';
 
 interface Props {
   summary: VideoAnalysis['summary'];
@@ -13,7 +14,7 @@ export default function SummaryAccordion({ summary }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="bg-white rounded-card shadow-card overflow-hidden">
+    <Card as="div" className="bg-white">
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -100,6 +101,6 @@ export default function SummaryAccordion({ summary }: Props) {
           </section>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

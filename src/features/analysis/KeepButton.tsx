@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Bookmark } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import clsx from 'clsx';
 import type { VideoAnalysis } from './types';
 import { useAuth } from '../../shared/auth/AuthContext';
+import { Button } from '../../shared/components/atoms/Button';
+import Card from '../../shared/components/atoms/Card';
+import Toast from '../../shared/components/molecules/Toast';
 
 interface Props {
   video: VideoAnalysis;
@@ -40,39 +42,27 @@ export default function KeepButton({ video, onKeep, onRemove, initiallyKept }: P
 
   return (
     <>
-      <div className="bg-white rounded-card shadow-card p-inset-md sm:p-inset-lg">
+      <Card padded className="bg-white">
         <h2 className="font-display font-semibold text-lg text-ink mb-stack-xs">
           {t('keep.title')}
         </h2>
         <p className="text-sm text-ink-muted mb-stack-md">
           {t('keep.desc')}
         </p>
-        <button
+        <Button
           type="button"
           onClick={handleClick}
-          className={clsx(
-            'inline-flex items-center gap-inline-sm px-inset-md py-stack-sm rounded-btn text-sm font-semibold transition-all active:scale-[0.98]',
-            kept
-              ? 'bg-accent-light text-accent border border-accent/20'
-              : 'bg-accent text-white hover:bg-accent-hover',
-          )}
+          variant={kept ? 'secondary' : 'primary'}
+          iconLeft={Bookmark}
+          className={kept ? 'border-accent/20 bg-accent-light text-accent hover:bg-accent-light' : undefined}
         >
-          <Bookmark className={clsx('w-4 h-4', kept && 'fill-accent')} />
           {kept ? t('keep.kept') : t('keep.button')}
-        </button>
-      </div>
+        </Button>
+      </Card>
 
-      {toast && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-ink text-white text-sm font-medium px-inset-md py-stack-sm rounded-btn shadow-lg animate-[fadeInUp_0.3s_ease-out]">
-          {t('keep.toast')}
-        </div>
-      )}
+      <Toast visible={toast}>{t('keep.toast')}</Toast>
 
-      {signInToast && (
-        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-btn bg-ink px-inset-md py-stack-sm text-sm font-medium text-white shadow-lg animate-[fadeInUp_0.3s_ease-out]">
-          {t('auth.keepRequiresSignIn')}
-        </div>
-      )}
+      <Toast visible={signInToast}>{t('auth.keepRequiresSignIn')}</Toast>
     </>
   );
 }

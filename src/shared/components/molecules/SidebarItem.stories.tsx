@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Home, Compass, Library, Clock } from 'lucide-react';
-import SidebarNavItem from './SidebarNavItem';
+import SidebarItem from './SidebarItem';
 
-const meta: Meta<typeof SidebarNavItem> = {
-  title: 'Molecules/SidebarNavItem',
-  component: SidebarNavItem,
+const meta: Meta<typeof SidebarItem> = {
+  title: 'UI/SidebarItem',
+  component: SidebarItem,
   tags: ['autodocs'],
   argTypes: {
     active: { control: 'boolean' },
@@ -13,7 +13,7 @@ const meta: Meta<typeof SidebarNavItem> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof SidebarNavItem>;
+type Story = StoryObj<typeof SidebarItem>;
 
 export const Inactive: Story = {
   args: {
@@ -52,15 +52,15 @@ export const SidebarList: Story = {
   render: () => (
     <div className="w-[var(--sidebar-width)] p-[var(--sidebar-inset-x)]">
       <div className="flex flex-col gap-[var(--sidebar-nav-gap)]">
-        <SidebarNavItem icon={Home} label="Home" active />
-        <SidebarNavItem icon={Compass} label="New" />
+        <SidebarItem icon={Home} label="Home" active />
+        <SidebarItem icon={Compass} label="New" />
       </div>
       <div className="mt-[var(--sidebar-section-gap)]">
         <p className="mb-[var(--sidebar-section-label-margin-bottom)] px-[var(--sidebar-section-label-padding-x)] text-[11px] font-[600] uppercase tracking-[0.02em] text-[var(--color-text-tertiary)]">
           Library
         </p>
-        <SidebarNavItem icon={Clock} label="Recently Updated" />
-        <SidebarNavItem icon={Library} label="Shows" />
+        <SidebarItem icon={Clock} label="Recently Updated" />
+        <SidebarItem icon={Library} label="Shows" />
       </div>
     </div>
   ),

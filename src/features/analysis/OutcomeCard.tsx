@@ -1,5 +1,6 @@
 import { CheckCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import Card from '../../shared/components/atoms/Card';
 
 interface Props {
   outcomes: string[];
@@ -9,7 +10,7 @@ export default function OutcomeCard({ outcomes }: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="bg-white rounded-card shadow-card p-inset-md sm:p-inset-lg">
+    <Card padded className="bg-white">
       <h2 className="font-display font-semibold text-lg text-ink mb-stack-xs">
         {t('outcome.title')}
       </h2>
@@ -24,6 +25,6 @@ export default function OutcomeCard({ outcomes }: Props) {
           </li>
         ))}
       </ul>
-    </div>
+    </Card>
   );
 }

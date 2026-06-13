@@ -3,7 +3,7 @@ import { Bookmark, Library, Rss } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import LanguageSwitcher from './LanguageSwitcher';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../../shared/auth/AuthContext';
 
 export default function AppHeader() {
   const { t } = useTranslation();

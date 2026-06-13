@@ -1,5 +1,5 @@
 import { type LucideIcon } from 'lucide-react';
-import SidebarNavItem from '../molecules/SidebarNavItem';
+import SidebarItem from '../../shared/components/molecules/SidebarItem';
 import clsx from 'clsx';
 
 interface NavItem {
@@ -43,7 +43,7 @@ export default function AppSidebar({
       >
         {sections.flatMap((section) =>
           section.items.map((item) => (
-            <SidebarNavItem
+            <SidebarItem
               key={item.path}
               icon={item.icon}
               label={item.label}
@@ -78,7 +78,7 @@ export default function AppSidebar({
             )}
             <nav className="space-y-[var(--sidebar-nav-gap)]">
               {section.items.map((item) => (
-                <SidebarNavItem
+                <SidebarItem
                   key={item.path}
                   icon={item.icon}
                   label={item.label}

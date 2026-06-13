@@ -2,68 +2,82 @@ import { useEffect, type ReactNode } from 'react';
 import { X } from 'lucide-react';
 import clsx from 'clsx';
 
-interface SlideDrawerProps {
-  isOpen: boolean;
+interface DrawerProps {
+  open: boolean;
   onClose: () => void;
   children: ReactNode;
+  title?: ReactNode;
+  closeLabel?: string;
+  className?: string;
 }
 
-export default function SlideDrawer({ isOpen, onClose, children }: SlideDrawerProps) {
+export default function Drawer({
+  open,
+  onClose,
+  children,
+  title,
+  closeLabel = 'Close',
+  className,
+}: DrawerProps) {
   useEffect(() => {
-    if (!isOpen) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+    if (!open) return;
+
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
     };
+
     document.addEventListener('keydown', handler);
     return () => document.removeEventListener('keydown', handler);
-  }, [isOpen, onClose]);
+  }, [open, onClose]);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = open ? 'hidden' : '';
+
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isOpen]);
+  }, [open]);
 
   return (
     <>
       <div
         className={clsx(
           'fixed inset-0 z-40 bg-[var(--drawer-overlay-background)] backdrop-blur-sm transition-opacity duration-300',
-          isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none',
+          open ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         onClick={onClose}
         aria-hidden="true"
       />
 
-      <div
+      <aside
+        role="dialog"
+        aria-modal="true"
+        aria-label={typeof title === 'string' ? title : undefined}
         className={clsx(
           'fixed right-0 top-0 z-50 h-full w-full bg-[var(--color-bg-app)] shadow-[var(--shadow-heavy)] sm:max-w-[var(--drawer-width)]',
           'transform transition-transform duration-300 ease-in-out',
-          isOpen ? 'translate-x-0' : 'translate-x-full',
+          open ? 'translate-x-0' : 'translate-x-full',
+          className,
         )}
       >
         <div className="flex h-[var(--drawer-header-height)] items-center justify-between border-b border-[var(--color-border-subtle)] px-inset-lg">
-          <span className="font-display text-[length:var(--app-header-control-font-size)] font-semibold uppercase tracking-[var(--drawer-title-letter-spacing)] text-[var(--color-text-tertiary)]">
-            Detail
-          </span>
+          <div className="font-display text-[length:var(--app-header-control-font-size)] font-semibold uppercase tracking-[var(--drawer-title-letter-spacing)] text-[var(--color-text-tertiary)]">
+            {title}
+          </div>
           <button
             type="button"
             onClick={onClose}
             className="flex h-[var(--control-size-sm)] w-[var(--control-size-sm)] items-center justify-center rounded-full bg-[var(--color-bg-hover)] text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]"
+            aria-label={closeLabel}
           >
-            <X className="w-4 h-4" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
         <div className="h-[calc(100%-var(--drawer-header-height))] overflow-y-auto">
           {children}
         </div>
-      </div>
+      </aside>
     </>
   );
 }

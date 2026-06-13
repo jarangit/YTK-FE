@@ -4,6 +4,9 @@ import type { FeedItem } from './types';
 import Text from '../../shared/components/atoms/Text';
 import Badge from '../../shared/components/atoms/Badge';
 import IconButton from '../../shared/components/atoms/IconButton';
+import Card from '../../shared/components/atoms/Card';
+import MediaThumbnail from '../../shared/components/molecules/MediaThumbnail';
+import MetadataRow from '../../shared/components/molecules/MetadataRow';
 import { useTranslation } from 'react-i18next';
 
 interface FeedCardProps {
@@ -35,19 +38,9 @@ export default function FeedCard({ item, to, onClick, onRemove }: FeedCardProps)
       );
 
   return (
-    <article className="overflow-hidden rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
+    <Card interactive>
       <CardLink>
-        <div className="aspect-video relative overflow-hidden bg-surface">
-          <img
-            src={item.thumbnailUrl}
-            alt={item.title}
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
-          <span className="absolute bottom-2 right-2 rounded-md bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
-            {item.duration}
-          </span>
-        </div>
+        <MediaThumbnail src={item.thumbnailUrl} alt={item.title} duration={item.duration} />
 
         <div className="p-inset-md sm:p-inset-lg">
           <div className="mb-stack-sm flex flex-wrap items-center gap-inline-sm">
@@ -65,20 +58,14 @@ export default function FeedCard({ item, to, onClick, onRemove }: FeedCardProps)
             {item.excerpt}
           </Text>
 
-          <div className="mb-stack-md flex flex-wrap items-center gap-inline-md text-[12px] text-[var(--color-text-secondary)]">
-            <span className="flex items-center gap-inline-xs">
-              <FileText className="w-3.5 h-3.5" />
-              {t('feed.summaryCount', { count: item.summaryCount })}
-            </span>
-            <span className="flex items-center gap-inline-xs">
-              <Heart className="w-3.5 h-3.5" />
-              {item.likes}
-            </span>
-            <span className="flex items-center gap-inline-xs">
-              <Bookmark className="w-3.5 h-3.5" />
-              {item.savedCount}
-            </span>
-          </div>
+          <MetadataRow
+            className="mb-stack-md flex flex-wrap items-center gap-inline-md text-[12px] text-[var(--color-text-secondary)]"
+            items={[
+              { icon: FileText, label: t('feed.summaryCount', { count: item.summaryCount }) },
+              { icon: Heart, label: item.likes },
+              { icon: Bookmark, label: item.savedCount },
+            ]}
+          />
 
           <div className="mb-stack-md flex flex-wrap gap-inline-xs">
             {item.tags.map((tag) => (
@@ -115,6 +102,6 @@ export default function FeedCard({ item, to, onClick, onRemove }: FeedCardProps)
           </div>
         </div>
       </div>
-    </article>
+    </Card>
   );
 }

@@ -1,4 +1,4 @@
-import PlayPill from '../../shared/components/atoms/PlayPill';
+import PlayPill from './components/PlayPill';
 import { getGradientForChannel } from './podcasts.mock';
 import clsx from 'clsx';
 

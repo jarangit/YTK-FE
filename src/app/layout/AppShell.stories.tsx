@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Home, Bookmark } from 'lucide-react';
 import AppShell from './AppShell';
 import AppSidebar from './AppSidebar';
-import HorizontalRail from './HorizontalRail';
+import HorizontalRail from '../../features/podcast/components/HorizontalRail';
 
 const sidebarSections = [
   {
@@ -15,7 +15,7 @@ const sidebarSections = [
 ];
 
 const meta: Meta<typeof AppShell> = {
-  title: 'Organisms/AppShell',
+  title: 'App/AppShell',
   component: AppShell,
   tags: ['autodocs'],
   parameters: {

@@ -3,7 +3,7 @@ import { Home, Bookmark } from 'lucide-react';
 import AppSidebar from './AppSidebar';
 
 const meta: Meta<typeof AppSidebar> = {
-  title: 'Organisms/AppSidebar',
+  title: 'App/AppSidebar',
   component: AppSidebar,
   tags: ['autodocs'],
   argTypes: {

@@ -1,7 +1,7 @@
 import { type LucideIcon } from 'lucide-react';
 import clsx from 'clsx';
 
-interface SidebarNavItemProps {
+interface SidebarItemProps {
   icon: LucideIcon;
   label: string;
   active?: boolean;
@@ -11,7 +11,7 @@ interface SidebarNavItemProps {
   className?: string;
 }
 
-export default function SidebarNavItem({
+export default function SidebarItem({
   icon: Icon,
   label,
   active = false,
@@ -19,7 +19,7 @@ export default function SidebarNavItem({
   count,
   onClick,
   className,
-}: SidebarNavItemProps) {
+}: SidebarItemProps) {
   return (
     <button
       type="button"

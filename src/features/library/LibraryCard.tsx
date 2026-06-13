@@ -5,6 +5,9 @@ import Badge from '../../shared/components/atoms/Badge';
 import IconButton from '../../shared/components/atoms/IconButton';
 import Text from '../../shared/components/atoms/Text';
 import type { KeptItem } from './types';
+import Card from '../../shared/components/atoms/Card';
+import MediaThumbnail from '../../shared/components/molecules/MediaThumbnail';
+import MetadataRow from '../../shared/components/molecules/MetadataRow';
 
 interface LibraryCardProps {
   item: KeptItem;
@@ -16,22 +19,12 @@ export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
   const { video } = item;
 
   return (
-    <article className="overflow-hidden rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
+    <Card interactive>
       <Link
         to={`/result?url=${encodeURIComponent(video.videoUrl)}`}
         className="block text-inherit no-underline"
       >
-        <div className="relative aspect-video overflow-hidden bg-surface">
-          <img
-            src={video.thumbnailUrl}
-            alt={video.title}
-            className="h-full w-full object-cover"
-            loading="lazy"
-          />
-          <span className="absolute bottom-2 right-2 rounded-md bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
-            {video.duration}
-          </span>
-        </div>
+        <MediaThumbnail src={video.thumbnailUrl} alt={video.title} duration={video.duration} />
 
         <div className="p-inset-md sm:p-inset-lg">
           <div className="mb-stack-sm flex flex-wrap items-center gap-inline-sm">
@@ -53,16 +46,13 @@ export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
             {video.outcomes[0] ?? video.summary.bigIdea}
           </Text>
 
-          <div className="mb-stack-md flex flex-wrap items-center gap-inline-md text-[12px] text-[var(--color-text-secondary)]">
-            <span className="flex items-center gap-inline-xs">
-              <FileText className="h-3.5 w-3.5" />
-              {video.outcomes.length}
-            </span>
-            <span className="flex items-center gap-inline-xs">
-              <Bookmark className="h-3.5 w-3.5" />
-              {t('keep.kept')}
-            </span>
-          </div>
+          <MetadataRow
+            className="mb-stack-md flex flex-wrap items-center gap-inline-md text-[12px] text-[var(--color-text-secondary)]"
+            items={[
+              { icon: FileText, label: video.outcomes.length },
+              { icon: Bookmark, label: t('keep.kept') },
+            ]}
+          />
         </div>
       </Link>
 
@@ -80,6 +70,6 @@ export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
           />
         </div>
       </div>
-    </article>
+    </Card>
   );
 }

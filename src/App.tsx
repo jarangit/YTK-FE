@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import AppHeader from './shared/components/AppHeader';
-import AppFooter from './shared/components/AppFooter';
+import AppHeader from './app/components/AppHeader';
+import AppFooter from './app/components/AppFooter';
 import HomePage from './features/home/HomePage';
 import FeedPage from './features/feed/FeedPage';
 import FeedDetailPage from './features/feed/FeedDetailPage';
@@ -11,8 +11,8 @@ import AccountPage from './features/account/AccountPage';
 import StaticPage from './features/static/StaticPage';
 import NotFoundPage from './features/static/NotFoundPage';
 import { AuthProvider } from './shared/auth/AuthContext';
-import SignInModal from './shared/components/organisms/SignInModal';
-import ProtectedRoute from './shared/components/organisms/ProtectedRoute';
+import SignInModal from './app/components/SignInModal';
+import ProtectedRoute from './app/components/ProtectedRoute';
 import { useAuth } from './shared/auth/AuthContext';
 
 function AppLayout() {

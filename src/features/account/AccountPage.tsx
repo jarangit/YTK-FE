@@ -1,33 +1,27 @@
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../shared/auth/AuthContext';
-import Text from '../../shared/components/atoms/Text';
+import Avatar from '../../shared/components/atoms/Avatar';
+import { Button } from '../../shared/components/atoms/Button';
+import Card from '../../shared/components/atoms/Card';
+import PageHeader from '../../shared/components/organisms/PageHeader';
+import PageLayout from '../../shared/components/organisms/PageLayout';
 
 export default function AccountPage() {
   const { t } = useTranslation();
   const { user, signOut } = useAuth();
 
   return (
-    <main className="min-h-[calc(100vh-var(--app-header-height))] bg-white px-inset-lg py-stack-xl sm:px-8 sm:py-stack-2xl">
-      <section className="mx-auto w-full max-w-read">
-        <Text variant="label" color="tertiary" as="p" className="mb-stack-sm">
-          {t('account.eyebrow')}
-        </Text>
-        <Text variant="display" as="h1" className="mb-stack-md font-display">
-          {t('account.title')}
-        </Text>
-        <Text variant="body" color="secondary" as="p" className="mb-stack-lg leading-7">
-          {t('account.subtitle')}
-        </Text>
+    <PageLayout width="read">
+      <PageHeader
+        eyebrow={t('account.eyebrow')}
+        title={t('account.title')}
+        subtitle={t('account.subtitle')}
+        className="mb-stack-lg"
+      />
 
-        <div className="rounded-card border border-border/60 bg-surface p-inset-lg">
+        <Card padded as="div" className="bg-surface">
           <div className="flex items-center gap-inline-md">
-            {user?.avatarUrl && (
-              <img
-                src={user.avatarUrl}
-                alt={user.name}
-                className="h-12 w-12 rounded-full object-cover"
-              />
-            )}
+            <Avatar src={user?.avatarUrl} alt={user?.name} fallback={user?.name} />
             <div>
               <p className="text-[length:var(--text-body-size)] font-semibold text-[var(--color-text-primary)]">
                 {user?.name}
@@ -38,15 +32,15 @@ export default function AccountPage() {
             </div>
           </div>
 
-          <button
+          <Button
             type="button"
             onClick={signOut}
-            className="mt-stack-lg inline-flex h-[var(--app-header-control-height)] items-center rounded-full border border-border bg-white px-[var(--app-header-control-padding-x)] text-[length:var(--app-header-control-font-size)] font-semibold text-ink transition-colors hover:border-ink-faint hover:bg-white/70"
+            variant="secondary"
+            className="mt-stack-lg"
           >
             {t('auth.signOut')}
-          </button>
-        </div>
-      </section>
-    </main>
+          </Button>
+        </Card>
+    </PageLayout>
   );
 }

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import HorizontalRail from './HorizontalRail';
 
 const meta: Meta<typeof HorizontalRail> = {
-  title: 'Organisms/HorizontalRail',
+  title: 'Features/Podcast/HorizontalRail',
   component: HorizontalRail,
   tags: ['autodocs'],
   argTypes: {

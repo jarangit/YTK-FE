@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { setLanguage } from '../i18n';
+import { setLanguage } from '../../shared/i18n';
 import clsx from 'clsx';
 
 export default function LanguageSwitcher() {

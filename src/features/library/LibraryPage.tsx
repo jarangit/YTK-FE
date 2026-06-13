@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import EmptyState from './EmptyState';
 import LibraryCard from './LibraryCard';
 import { useLibraryQuery } from './hooks/useLibraryQuery';
-import AppShell from '../../shared/components/organisms/AppShell';
-import AppSidebar from '../../shared/components/organisms/AppSidebar';
+import AppShell from '../../app/layout/AppShell';
+import AppSidebar from '../../app/layout/AppSidebar';
 import Text from '../../shared/components/atoms/Text';
 import Badge from '../../shared/components/atoms/Badge';
 
