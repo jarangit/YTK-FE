@@ -2,13 +2,10 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
-import VideoPreviewCard from './VideoPreviewCard';
-import OutcomeCard from './OutcomeCard';
-import SummaryAccordion from './SummaryAccordion';
-import KeepButton from './KeepButton';
+import type { MockVideo } from '../../shared/types';
 import { findMockVideo } from './data/mockVideos';
 import { useLibrary } from '../../shared/hooks/useLibrary';
-import type { MockVideo } from '../../shared/types';
+import ResultContent from './ResultContent';
 
 export default function ResultPage() {
   const { t } = useTranslation();
@@ -57,17 +54,12 @@ export default function ResultPage() {
 
   return (
     <main className="min-h-[calc(100vh-56px)] px-inset-lg py-stack-md sm:py-10">
-      <div className="mx-auto max-w-read space-y-stack-md sm:space-y-stack-lg">
-        <VideoPreviewCard video={video} />
-        <OutcomeCard outcomes={video.outcomes} />
-        <SummaryAccordion summary={video.summary} />
-        <KeepButton
-          video={video}
-          onKeep={add}
-          onRemove={remove}
-          initiallyKept={check(video.id)}
-        />
-      </div>
+      <ResultContent
+        video={video}
+        onKeep={add}
+        onRemove={remove}
+        initiallyKept={check(video.id)}
+      />
     </main>
   );
 }

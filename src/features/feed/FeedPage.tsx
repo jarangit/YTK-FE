@@ -1,13 +1,18 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { feedMock } from './data/feed.mock';
 import FeedCard from './FeedCard';
+import FeedDetailContent from './FeedDetailContent';
+import SlideDrawer from '../../shared/components/organisms/SlideDrawer';
 import Text from '../../shared/components/atoms/Text';
 import SearchInput from '../../shared/components/molecules/SearchInput';
 import { useTranslation } from 'react-i18next';
+import { useLibrary } from '../../shared/hooks/useLibrary';
 
 export default function FeedPage() {
   const { t } = useTranslation();
   const [query, setQuery] = useState('');
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const { add, remove } = useLibrary();
 
   const filteredItems = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -24,6 +29,19 @@ export default function FeedPage() {
       item.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery)),
     );
   }, [query]);
+
+  const selectedItem = useMemo(
+    () => filteredItems.find((item) => item.id === selectedItemId) ?? null,
+    [filteredItems, selectedItemId],
+  );
+
+  const handleCardClick = useCallback((id: string) => {
+    setSelectedItemId(id);
+  }, []);
+
+  const closeDrawer = useCallback(() => {
+    setSelectedItemId(null);
+  }, []);
 
   return (
     <main className="min-h-[calc(100vh-56px)] bg-[var(--color-bg-app)]">
@@ -48,12 +66,23 @@ export default function FeedPage() {
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-inline-xl sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-inline-xl sm:grid-cols-2 lg:grid-cols-3">
           {filteredItems.map((item) => (
-            <FeedCard key={item.id} item={item} />
+            <FeedCard key={item.id} item={item} onClick={handleCardClick} />
           ))}
         </div>
       </section>
+
+      <SlideDrawer isOpen={!!selectedItem} onClose={closeDrawer}>
+        {selectedItem && (
+          <FeedDetailContent
+            item={selectedItem}
+            onKeep={add}
+            onRemove={remove}
+            initiallyKept={false}
+          />
+        )}
+      </SlideDrawer>
     </main>
   );
 }

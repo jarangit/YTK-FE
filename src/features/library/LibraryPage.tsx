@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { Home, Bookmark } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import LibraryCard from './LibraryCard';
 import EmptyState from './EmptyState';
+import FeedCard from '../feed/FeedCard';
 import { useLibrary } from '../../shared/hooks/useLibrary';
+import { keptItemToFeedItem } from '../../shared/utils/storage';
 import AppShell from '../../shared/components/organisms/AppShell';
 import AppSidebar from '../../shared/components/organisms/AppSidebar';
 import Text from '../../shared/components/atoms/Text';
@@ -38,27 +39,30 @@ export default function LibraryPage() {
         />
       }
     >
-      <div className="max-w-[var(--library-content-width)]">
-        <div className="flex items-center gap-inline-md mb-[var(--library-header-gap)]">
-          <Text variant="display" as="h1">
-            {t('library.title')}
+      <div className="w-full">
+        <div className="max-w-[720px]">
+          <div className="flex items-center gap-inline-md mb-stack-sm">
+            <Text variant="display" as="h1">
+              {t('library.title')}
+            </Text>
+            {hydrated && items.length > 0 && (
+              <Badge variant="accent">{t('library.count', { count: items.length })}</Badge>
+            )}
+          </div>
+          <Text variant="body" color="secondary" className="mb-stack-lg">
+            {t('library.subtitle')}
           </Text>
-          {hydrated && items.length > 0 && (
-            <Badge variant="accent">{t('library.count', { count: items.length })}</Badge>
-          )}
         </div>
-        <Text variant="body" color="secondary" className="mb-[var(--library-section-gap)]">
-          {t('library.subtitle')}
-        </Text>
 
         {!hydrated ? null : items.length === 0 ? (
           <EmptyState />
         ) : (
-          <div className="space-y-[var(--library-card-gap)] max-w-[var(--library-list-width)]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-inline-lg">
             {items.map((item) => (
-              <LibraryCard
+              <FeedCard
                 key={item.video.id + item.keptAt}
-                item={item}
+                item={keptItemToFeedItem(item)}
+                to={`/result?url=${encodeURIComponent(item.video.videoUrl)}`}
                 onRemove={remove}
               />
             ))}

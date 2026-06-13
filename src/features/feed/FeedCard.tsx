@@ -1,20 +1,42 @@
-import { ExternalLink, Heart, Bookmark, FileText } from 'lucide-react';
+import { ExternalLink, Heart, Bookmark, FileText, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { FeedItem } from '../../shared/types';
 import Text from '../../shared/components/atoms/Text';
 import Badge from '../../shared/components/atoms/Badge';
+import IconButton from '../../shared/components/atoms/IconButton';
 import { useTranslation } from 'react-i18next';
 
 interface FeedCardProps {
   item: FeedItem;
+  to?: string;
+  onClick?: (id: string) => void;
+  onRemove?: (id: string) => void;
 }
 
-export default function FeedCard({ item }: FeedCardProps) {
+export default function FeedCard({ item, to, onClick, onRemove }: FeedCardProps) {
   const { t } = useTranslation();
+
+  const CardLink = onClick
+    ? ({ children }: { children: React.ReactNode }) => (
+        <div
+          className="block no-underline text-inherit cursor-pointer"
+          onClick={() => onClick(item.id)}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick(item.id); }}
+        >
+          {children}
+        </div>
+      )
+    : ({ children }: { children: React.ReactNode }) => (
+        <Link to={to ?? `/feed/${item.id}`} className="block no-underline text-inherit">
+          {children}
+        </Link>
+      );
 
   return (
     <article className="overflow-hidden rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
-      <Link to={`/feed/${item.id}`} className="block no-underline text-inherit">
+      <CardLink>
         <div className="aspect-video relative overflow-hidden bg-surface">
           <img
             src={item.thumbnailUrl}
@@ -64,22 +86,33 @@ export default function FeedCard({ item }: FeedCardProps) {
             ))}
           </div>
         </div>
-      </Link>
+      </CardLink>
 
       <div className="px-inset-md sm:px-inset-lg pb-inset-md sm:pb-inset-lg">
         <div className="flex items-center justify-between gap-inline-md border-t border-[var(--color-border-subtle)] pt-stack-sm">
           <Text variant="caption" color="tertiary" className="truncate">
             {item.channelName}
           </Text>
-          <a
-            href={item.videoUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex shrink-0 items-center gap-inline-xs text-xs font-medium text-accent no-underline transition-colors hover:text-accent-hover"
-          >
-            <ExternalLink className="w-3.5 h-3.5" />
-            {t('feed.openVideo')}
-          </a>
+          <div className="flex items-center gap-inline-xs">
+            {onRemove && (
+              <IconButton
+                icon={Trash2}
+                ariaLabel={t('card.remove')}
+                variant="ghost"
+                size="sm"
+                onClick={() => onRemove(item.id)}
+              />
+            )}
+            <a
+              href={item.videoUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex shrink-0 items-center gap-inline-xs text-xs font-medium text-accent no-underline transition-colors hover:text-accent-hover"
+            >
+              <ExternalLink className="w-3.5 h-3.5" />
+              {t('feed.openVideo')}
+            </a>
+          </div>
         </div>
       </div>
     </article>

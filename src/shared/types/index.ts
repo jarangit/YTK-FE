@@ -37,4 +37,11 @@ export interface FeedItem {
   publishedAt: string;
   excerpt: string;
   tags: string[];
+  outcomes: string[];
+  summary: {
+    bigIdea: string;
+    keyPoints: string[];
+    usefulExamples: string[];
+    thingsToRemember: string[];
+  };
 }
