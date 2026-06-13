@@ -11,8 +11,13 @@ interface IconButtonProps {
 }
 
 const sizeStyles = {
-  sm: 'w-8 h-8',
-  md: 'w-10 h-10',
+  sm: 'h-[var(--control-size-sm)] w-[var(--control-size-sm)]',
+  md: 'h-[var(--control-size-md)] w-[var(--control-size-md)]',
+};
+
+const iconSizes = {
+  sm: 'var(--control-icon-size-sm)',
+  md: 'var(--control-icon-size-md)',
 };
 
 const variantStyles = {
@@ -43,7 +48,7 @@ export default function IconButton({
         className,
       )}
     >
-      <Icon size={size === 'sm' ? 16 : 20} />
+      <Icon size={iconSizes[size]} />
     </button>
   );
 }

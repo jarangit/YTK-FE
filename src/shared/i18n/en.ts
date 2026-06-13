@@ -7,6 +7,13 @@ const en = {
     feed: 'Feed',
     library: 'Library',
   },
+  footer: {
+    about: 'About',
+    help: 'Help',
+    contact: 'Contact',
+    privacy: 'Privacy',
+    terms: 'Terms',
+  },
   language: {
     en: 'English',
     th: 'ไทย',
@@ -57,6 +64,69 @@ const en = {
     title: 'Your kept videos',
     subtitle: 'Saved for later, ready when you are.',
     count: '{{count}} saved',
+  },
+  account: {
+    eyebrow: 'Account',
+    title: 'Your account',
+    subtitle: 'Manage the Google account connected to your Youtive library.',
+  },
+  static: {
+    backHome: 'Back to home',
+    about: {
+      eyebrow: 'About',
+      title: 'Youtive helps you decide what is worth watching.',
+      body: 'We turn the first decision around a YouTube video into a reading experience, so you can scan the value before spending your time.',
+      items: [
+        'Use Youtive when you want the main outcomes, key ideas, and practical examples from a video before watching.',
+        'The product is built for learners, makers, and curious people who collect useful videos but want a faster way to understand them.',
+        'Our goal is simple: help you spend more time learning and less time guessing whether a video is useful.',
+      ],
+    },
+    contact: {
+      eyebrow: 'Contact',
+      title: 'Send feedback or support questions.',
+      body: 'Youtive is still evolving. Clear feedback helps us understand what feels useful, confusing, or missing.',
+      items: [
+        'For product feedback, include what you were trying to do and where the experience broke down.',
+        'For account questions, include the email connected to your Google sign-in.',
+        'For content concerns, include the YouTube URL and a short description of the issue.',
+      ],
+    },
+    help: {
+      eyebrow: 'Help',
+      title: 'Basic help for using Youtive.',
+      body: 'These notes cover the core flow: paste a video, read the summary, and keep useful videos for later.',
+      items: [
+        'Paste a YouTube link on the home page to open a reading-first summary experience.',
+        'Browse the community feed when you want to discover videos that already have summaries.',
+        'Sign in before keeping videos, so your saved library can follow your account.',
+      ],
+    },
+    privacy: {
+      eyebrow: 'Privacy',
+      title: 'Privacy basics.',
+      body: 'This page explains the product intent for privacy. It should be reviewed before production launch.',
+      items: [
+        'Youtive uses your sign-in state to keep your saved library connected to your account.',
+        'YouTube URLs are used to create or display summaries and related preview information.',
+        'We should only collect data that is needed to provide the product experience and support the service.',
+      ],
+    },
+    terms: {
+      eyebrow: 'Terms',
+      title: 'Terms of use.',
+      body: 'These terms are a plain-language placeholder and should be reviewed before production launch.',
+      items: [
+        'Use Youtive responsibly and only with content you are allowed to access.',
+        'Summaries are generated to help learning and should not replace the original video context.',
+        'We may update the product, change features, or remove unavailable content as the service evolves.',
+      ],
+    },
+  },
+  notFound: {
+    eyebrow: '404',
+    title: 'This page does not exist.',
+    subtitle: 'The link may be old, mistyped, or no longer available.',
   },
   feed: {
     eyebrow: 'Community Feed',

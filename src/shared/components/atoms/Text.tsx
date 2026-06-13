@@ -9,18 +9,19 @@ interface TextProps {
 }
 
 const variantStyles: Record<NonNullable<TextProps['variant']>, string> = {
-  display: 'text-[24px] leading-[1.2] font-[700]',
-  title: 'text-[17px] leading-[1.3] font-[600]',
-  body: 'text-[15px] leading-[1.4] font-[400]',
-  caption: 'text-[13px] leading-[1.4] font-[400]',
-  label: 'text-[11px] leading-[1.3] font-[600] tracking-[0.02em] uppercase',
+  display: 'text-[length:var(--text-display-size)] leading-[1.2] font-[700]',
+  title: 'text-[length:var(--text-title-size)] leading-[1.3] font-[600]',
+  body: 'text-[length:var(--text-body-size)] leading-[1.4] font-[400]',
+  caption: 'text-[length:var(--text-caption-size)] leading-[1.4] font-[400]',
+  label:
+    'text-[length:var(--text-label-size)] leading-[1.3] font-[600] tracking-[var(--badge-letter-spacing)] uppercase',
 };
 
-const colorMap: Record<NonNullable<TextProps['color']>, string> = {
-  primary: '--color-text-primary',
-  secondary: '--color-text-secondary',
-  tertiary: '--color-text-tertiary',
-  inverse: '--color-text-inverse',
+const colorStyles: Record<NonNullable<TextProps['color']>, string> = {
+  primary: 'text-[var(--color-text-primary)]',
+  secondary: 'text-[var(--color-text-secondary)]',
+  tertiary: 'text-[var(--color-text-tertiary)]',
+  inverse: 'text-[var(--color-text-inverse)]',
 };
 
 export default function Text({
@@ -31,10 +32,7 @@ export default function Text({
   className,
 }: TextProps) {
   return (
-    <Tag
-      className={clsx(variantStyles[variant], className)}
-      style={{ color: `var(${colorMap[color]})` }}
-    >
+    <Tag className={clsx(variantStyles[variant], colorStyles[color], className)}>
       {children}
     </Tag>
   );

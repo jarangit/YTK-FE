@@ -25,23 +25,27 @@ export default function SidebarNavItem({
       type="button"
       onClick={onClick}
       className={clsx(
-        'flex items-center gap-2.5 w-full rounded-[var(--nav-item-radius)] transition-all duration-150',
+        'flex w-full items-center gap-[var(--nav-item-gap)] rounded-[var(--nav-item-radius)] transition-all duration-150',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]',
         active
-          ? 'bg-[var(--color-accent)] text-white font-[600]'
+          ? 'bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] font-[600]'
           : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]',
-        collapsed ? 'justify-center h-[var(--nav-item-height)] px-0' : 'h-[var(--nav-item-height)] px-inline-sm',
+        collapsed
+          ? 'h-[var(--nav-item-height)] justify-center px-0'
+          : 'h-[var(--nav-item-height)] px-[var(--nav-item-padding-x)]',
         className,
       )}
       title={collapsed ? label : undefined}
     >
-      <Icon size={18} />
+      <Icon size="var(--nav-item-icon-size)" />
       {!collapsed && (
-        <span className="flex-1 text-[13px] leading-none text-left">{label}</span>
+        <span className="flex-1 text-left text-[length:var(--nav-item-label-size)] leading-none">
+          {label}
+        </span>
       )}
       {!collapsed && count !== undefined && (
         <span className={clsx(
-          'text-[11px] font-[500]',
+          'text-[length:var(--nav-item-count-size)] font-[500]',
           active ? 'text-white/70' : 'text-[var(--color-text-tertiary)]',
         )}>
           {count}

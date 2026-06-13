@@ -22,7 +22,7 @@ export default function Badge({ children, variant = 'default', as: Tag = 'span',
         type="button"
         onClick={onClick}
         className={clsx(
-          'inline-flex items-center gap-inline-xs px-inline-sm py-stack-xs rounded-full text-[11px] font-[600] tracking-[0.02em] cursor-pointer transition-all active:scale-[0.97]',
+          'inline-flex cursor-pointer items-center gap-inline-xs rounded-full px-inline-sm py-stack-xs text-[length:var(--badge-font-size)] font-[600] tracking-[var(--badge-letter-spacing)] transition-all active:scale-[0.97]',
           variantStyles[variant],
           onClick && 'hover:opacity-80',
           className,
@@ -36,7 +36,7 @@ export default function Badge({ children, variant = 'default', as: Tag = 'span',
   return (
     <span
       className={clsx(
-        'inline-flex items-center px-inline-sm py-stack-xs rounded-full text-[11px] font-[600] tracking-[0.02em]',
+        'inline-flex items-center rounded-full px-inline-sm py-stack-xs text-[length:var(--badge-font-size)] font-[600] tracking-[var(--badge-letter-spacing)]',
         variantStyles[variant],
         className,
       )}

@@ -5,22 +5,23 @@ interface AppShellProps {
   children: React.ReactNode;
   player?: React.ReactNode;
   className?: string;
+  contentClassName?: string;
 }
 
-export default function AppShell({ sidebar, children, player, className }: AppShellProps) {
+export default function AppShell({
+  sidebar,
+  children,
+  player,
+  className,
+  contentClassName,
+}: AppShellProps) {
   return (
-    <div className={clsx('min-h-screen bg-[var(--color-bg-app)]', className)}>
+    <div className={clsx('app-shell', className)}>
       {sidebar}
-      <main
-        className="min-h-screen"
-        style={{
-          marginLeft: 'var(--sidebar-width)',
-          padding: 'var(--content-padding-top) var(--content-padding-x)',
-          paddingBottom: 'calc(var(--mini-player-height) + var(--space-6) + 24px)',
-          maxWidth: 'var(--content-max-width)',
-        }}
-      >
-        {children}
+      <main className="app-shell__main">
+        <div className={clsx('app-shell__content', contentClassName)}>
+          {children}
+        </div>
       </main>
       {player}
     </div>

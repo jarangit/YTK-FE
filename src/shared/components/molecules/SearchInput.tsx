@@ -18,14 +18,14 @@ export default function SearchInput({
     <div
       className={clsx(
         'relative flex items-center',
-        'h-9 rounded-[var(--radius-sm)] bg-[var(--color-gray-100)]',
+        'h-[var(--search-input-height)] rounded-[var(--radius-sm)] bg-[var(--color-gray-100)]',
         'transition-colors duration-200 focus-within:bg-white focus-within:ring-1 focus-within:ring-[var(--color-border-subtle)]',
         className,
       )}
     >
       <Search
-        size={15}
-        className="absolute left-3 text-[var(--color-text-tertiary)] pointer-events-none"
+        size="var(--search-input-icon-size)"
+        className="pointer-events-none absolute left-[var(--search-input-icon-left)] text-[var(--color-text-tertiary)]"
       />
       <input
         type="text"
@@ -33,8 +33,8 @@ export default function SearchInput({
         onChange={(e) => onChange?.(e.target.value)}
         placeholder={placeholder}
         className={clsx(
-          'w-full h-full pl-8 pr-inline-md bg-transparent border-none',
-          'text-[13px] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)]',
+          'h-full w-full border-none bg-transparent pl-[var(--search-input-padding-left)] pr-inline-md',
+          'text-[length:var(--search-input-font-size)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)]',
           'focus:outline-none',
         )}
       />

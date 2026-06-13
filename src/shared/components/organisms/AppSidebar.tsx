@@ -37,7 +37,7 @@ export default function AppSidebar({
           'w-[var(--sidebar-collapsed-width)]',
           'bg-[var(--color-bg-sidebar)] backdrop-blur-xl',
           'border-r border-[var(--color-border-subtle)]',
-          'flex flex-col items-center gap-stack-xs py-stack-md',
+          'flex flex-col items-center gap-[var(--sidebar-nav-gap)] py-[var(--sidebar-inset-y)]',
           className,
         )}
       >
@@ -68,15 +68,15 @@ export default function AppSidebar({
         className,
       )}
     >
-      <div className="flex-1 overflow-y-auto px-inline-md py-stack-md space-y-stack-md scrollbar-thin">
+      <div className="flex-1 space-y-[var(--sidebar-section-gap)] overflow-y-auto px-[var(--sidebar-inset-x)] py-[var(--sidebar-inset-y)] scrollbar-thin">
         {sections.map((section, idx) => (
           <div key={idx}>
             {section.label && (
-              <p className="px-inline-sm text-[11px] font-[600] tracking-[0.02em] uppercase text-[var(--color-text-tertiary)] mb-stack-xs">
+              <p className="mb-[var(--sidebar-section-label-margin-bottom)] px-[var(--sidebar-section-label-padding-x)] text-[length:var(--sidebar-section-label-size)] font-[600] uppercase tracking-[var(--sidebar-section-label-letter-spacing)] text-[var(--color-text-tertiary)]">
                 {section.label}
               </p>
             )}
-            <nav className="space-y-0.5">
+            <nav className="space-y-[var(--sidebar-nav-gap)]">
               {section.items.map((item) => (
                 <SidebarNavItem
                   key={item.path}

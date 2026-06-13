@@ -50,13 +50,13 @@ export const CollapsedActive: Story = {
 
 export const SidebarList: Story = {
   render: () => (
-    <div style={{ width: 176, padding: 12 }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+    <div className="w-[var(--sidebar-width)] p-[var(--sidebar-inset-x)]">
+      <div className="flex flex-col gap-[var(--sidebar-nav-gap)]">
         <SidebarNavItem icon={Home} label="Home" active />
         <SidebarNavItem icon={Compass} label="New" />
       </div>
-      <div style={{ marginTop: 16 }}>
-        <p style={{ fontSize: 11, color: '#aeaeb2', fontWeight: 600, padding: '0 8px', marginBottom: 4, letterSpacing: '0.02em', textTransform: 'uppercase' }}>
+      <div className="mt-[var(--sidebar-section-gap)]">
+        <p className="mb-[var(--sidebar-section-label-margin-bottom)] px-[var(--sidebar-section-label-padding-x)] text-[11px] font-[600] uppercase tracking-[0.02em] text-[var(--color-text-tertiary)]">
           Library
         </p>
         <SidebarNavItem icon={Clock} label="Recently Updated" />

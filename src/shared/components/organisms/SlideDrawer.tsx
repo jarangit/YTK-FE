@@ -33,7 +33,7 @@ export default function SlideDrawer({ isOpen, onClose, children }: SlideDrawerPr
     <>
       <div
         className={clsx(
-          'fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300',
+          'fixed inset-0 z-40 bg-[var(--drawer-overlay-background)] backdrop-blur-sm transition-opacity duration-300',
           isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none',
         )}
         onClick={onClose}
@@ -42,25 +42,25 @@ export default function SlideDrawer({ isOpen, onClose, children }: SlideDrawerPr
 
       <div
         className={clsx(
-          'fixed top-0 right-0 z-50 h-full w-full sm:max-w-[560px] bg-[var(--color-bg-app)] shadow-[var(--shadow-heavy)]',
+          'fixed right-0 top-0 z-50 h-full w-full bg-[var(--color-bg-app)] shadow-[var(--shadow-heavy)] sm:max-w-[var(--drawer-width)]',
           'transform transition-transform duration-300 ease-in-out',
           isOpen ? 'translate-x-0' : 'translate-x-full',
         )}
       >
-        <div className="flex items-center justify-between px-inset-lg pt-stack-lg pb-stack-sm border-b border-[var(--color-border-subtle)]">
-          <span className="font-display font-semibold text-sm text-[var(--color-text-tertiary)] tracking-[0.06em] uppercase">
+        <div className="flex h-[var(--drawer-header-height)] items-center justify-between border-b border-[var(--color-border-subtle)] px-inset-lg">
+          <span className="font-display text-[length:var(--app-header-control-font-size)] font-semibold uppercase tracking-[var(--drawer-title-letter-spacing)] text-[var(--color-text-tertiary)]">
             Detail
           </span>
           <button
             type="button"
             onClick={onClose}
-            className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--color-bg-hover)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
+            className="flex h-[var(--control-size-sm)] w-[var(--control-size-sm)] items-center justify-center rounded-full bg-[var(--color-bg-hover)] text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text-primary)]"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="h-[calc(100%-56px)] overflow-y-auto">
+        <div className="h-[calc(100%-var(--drawer-header-height))] overflow-y-auto">
           {children}
         </div>
       </div>

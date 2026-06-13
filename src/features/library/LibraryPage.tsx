@@ -39,9 +39,9 @@ export default function LibraryPage() {
         />
       }
     >
-      <div className="w-full">
-        <div className="max-w-[720px]">
-          <div className="flex items-center gap-inline-md mb-stack-sm">
+      <div>
+        <header className="mb-stack-lg max-w-read">
+          <div className="mb-stack-sm flex items-center gap-inline-md">
             <Text variant="display" as="h1">
               {t('library.title')}
             </Text>
@@ -49,15 +49,15 @@ export default function LibraryPage() {
               <Badge variant="accent">{t('library.count', { count: items.length })}</Badge>
             )}
           </div>
-          <Text variant="body" color="secondary" className="mb-stack-lg">
+          <Text variant="body" color="secondary">
             {t('library.subtitle')}
           </Text>
-        </div>
+        </header>
 
         {!hydrated ? null : items.length === 0 ? (
           <EmptyState />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-inline-lg">
+          <div className="grid grid-cols-1 gap-inline-lg sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {items.map((item) => (
               <FeedCard
                 key={item.video.id + item.keptAt}
