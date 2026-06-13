@@ -2,9 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { Home, Bookmark } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import EmptyState from './EmptyState';
-import FeedCard from '../feed/FeedCard';
-import { useLibrary } from '../../shared/hooks/useLibrary';
-import { keptItemToFeedItem } from '../../shared/utils/storage';
+import LibraryCard from './LibraryCard';
+import { useLibraryQuery } from './hooks/useLibraryQuery';
 import AppShell from '../../shared/components/organisms/AppShell';
 import AppSidebar from '../../shared/components/organisms/AppSidebar';
 import Text from '../../shared/components/atoms/Text';
@@ -12,7 +11,7 @@ import Badge from '../../shared/components/atoms/Badge';
 
 export default function LibraryPage() {
   const { t } = useTranslation();
-  const { items, hydrated, remove } = useLibrary();
+  const { items, hydrated, remove } = useLibraryQuery();
   const navigate = useNavigate();
 
   const sidebarSections = [
@@ -59,10 +58,9 @@ export default function LibraryPage() {
         ) : (
           <div className="grid grid-cols-1 gap-inline-lg sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {items.map((item) => (
-              <FeedCard
+              <LibraryCard
                 key={item.video.id + item.keptAt}
-                item={keptItemToFeedItem(item)}
-                to={`/result?url=${encodeURIComponent(item.video.videoUrl)}`}
+                item={item}
                 onRemove={remove}
               />
             ))}

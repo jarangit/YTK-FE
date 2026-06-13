@@ -1,4 +1,4 @@
-import type { FeedItem } from '../../../shared/types';
+import type { FeedItem } from '../types';
 
 const TOPICS = [
   'English',

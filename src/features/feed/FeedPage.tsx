@@ -1,47 +1,32 @@
-import { useMemo, useState, useCallback } from 'react';
-import { feedMock } from './data/feed.mock';
+import { useCallback } from 'react';
 import FeedCard from './FeedCard';
 import FeedDetailContent from './FeedDetailContent';
 import SlideDrawer from '../../shared/components/organisms/SlideDrawer';
 import Text from '../../shared/components/atoms/Text';
 import SearchInput from '../../shared/components/molecules/SearchInput';
 import { useTranslation } from 'react-i18next';
-import { useLibrary } from '../../shared/hooks/useLibrary';
+import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
+import { useFeedQuery } from './hooks/useFeedQuery';
+import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
+import { clearSelectedFeedItem, selectFeedItem, setFeedQuery } from './state/feedSlice';
 
 export default function FeedPage() {
   const { t } = useTranslation();
-  const [query, setQuery] = useState('');
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-  const { add, remove } = useLibrary();
+  const dispatch = useAppDispatch();
+  const query = useAppSelector((state) => state.feed.query);
+  const selectedItemId = useAppSelector((state) => state.feed.selectedItemId);
+  const { data: filteredItems = [] } = useFeedQuery(query);
+  const { add, remove } = useLibraryQuery();
 
-  const filteredItems = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase();
-
-    if (!normalizedQuery) {
-      return feedMock;
-    }
-
-    return feedMock.filter((item) =>
-      item.title.toLowerCase().includes(normalizedQuery) ||
-      item.channelName.toLowerCase().includes(normalizedQuery) ||
-      item.topic.toLowerCase().includes(normalizedQuery) ||
-      item.excerpt.toLowerCase().includes(normalizedQuery) ||
-      item.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery)),
-    );
-  }, [query]);
-
-  const selectedItem = useMemo(
-    () => filteredItems.find((item) => item.id === selectedItemId) ?? null,
-    [filteredItems, selectedItemId],
-  );
+  const selectedItem = filteredItems.find((item) => item.id === selectedItemId) ?? null;
 
   const handleCardClick = useCallback((id: string) => {
-    setSelectedItemId(id);
-  }, []);
+    dispatch(selectFeedItem(id));
+  }, [dispatch]);
 
   const closeDrawer = useCallback(() => {
-    setSelectedItemId(null);
-  }, []);
+    dispatch(clearSelectedFeedItem());
+  }, [dispatch]);
 
   return (
     <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
@@ -62,7 +47,7 @@ export default function FeedPage() {
           <SearchInput
             placeholder={t('search.placeholder')}
             value={query}
-            onChange={setQuery}
+            onChange={(value) => dispatch(setFeedQuery(value))}
           />
         </div>
 

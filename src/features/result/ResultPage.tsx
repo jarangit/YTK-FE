@@ -1,31 +1,18 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
-import type { MockVideo } from '../../shared/types';
-import { findMockVideo } from './data/mockVideos';
-import { useLibrary } from '../../shared/hooks/useLibrary';
+import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import ResultContent from './ResultContent';
+import { useVideoAnalysisQuery } from './hooks/useVideoAnalysisQuery';
 
 export default function ResultPage() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const url = searchParams.get('url') ?? '';
-  const [video, setVideo] = useState<MockVideo | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { add, remove, check } = useLibrary();
+  const { data: video, isLoading } = useVideoAnalysisQuery(url);
+  const { add, remove, check } = useLibraryQuery();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const found = findMockVideo(url);
-      setVideo(found ?? null);
-      setLoading(false);
-    }, 800);
-
-    return () => clearTimeout(timer);
-  }, [url]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-inset-lg">
         <div className="text-center">

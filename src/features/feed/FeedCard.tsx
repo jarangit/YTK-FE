@@ -1,6 +1,6 @@
 import { ExternalLink, Heart, Bookmark, FileText, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import type { FeedItem } from '../../shared/types';
+import type { FeedItem } from './types';
 import Text from '../../shared/components/atoms/Text';
 import Badge from '../../shared/components/atoms/Badge';
 import IconButton from '../../shared/components/atoms/IconButton';

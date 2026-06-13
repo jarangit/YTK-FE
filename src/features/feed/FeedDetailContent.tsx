@@ -1,15 +1,16 @@
 import { ExternalLink } from 'lucide-react';
-import type { FeedItem, MockVideo } from '../../shared/types';
-import ResultContent from '../result/ResultContent';
+import type { VideoAnalysis } from '../analysis/types';
+import type { FeedItem } from './types';
+import AnalysisContent from '../analysis/AnalysisContent';
 
 interface FeedDetailContentProps {
   item: FeedItem;
-  onKeep: (video: MockVideo) => void;
+  onKeep: (video: VideoAnalysis) => void;
   onRemove: (videoId: string) => void;
   initiallyKept: boolean;
 }
 
-function toMockVideo(item: FeedItem): MockVideo {
+function toVideoAnalysis(item: FeedItem): VideoAnalysis {
   return {
     id: item.id,
     videoId: item.id,
@@ -31,7 +32,7 @@ export default function FeedDetailContent({
   onRemove,
   initiallyKept,
 }: FeedDetailContentProps) {
-  const video = toMockVideo(item);
+  const video = toVideoAnalysis(item);
 
   return (
     <div className="p-inset-md sm:p-inset-lg">
@@ -49,7 +50,7 @@ export default function FeedDetailContent({
           <ExternalLink className="w-4 h-4" />
         </a>
       </div>
-      <ResultContent
+      <AnalysisContent
         video={video}
         onKeep={onKeep}
         onRemove={onRemove}

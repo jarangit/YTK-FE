@@ -64,6 +64,7 @@ const en = {
     title: 'Your kept videos',
     subtitle: 'Saved for later, ready when you are.',
     count: '{{count}} saved',
+    savedBadge: 'Saved',
   },
   account: {
     eyebrow: 'Account',

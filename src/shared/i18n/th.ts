@@ -63,6 +63,7 @@ const th = {
     title: 'วิดีโอที่เก็บไว้',
     subtitle: 'เก็บไว้ดูทีหลัง พร้อมเมื่อคุณต้องการ',
     count: '{{count}} รายการ',
+    savedBadge: 'บันทึกแล้ว',
   },
   account: {
     eyebrow: 'บัญชี',

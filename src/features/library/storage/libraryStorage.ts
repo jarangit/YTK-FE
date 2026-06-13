@@ -1,4 +1,5 @@
-import type { KeptItem, MockVideo, FeedItem } from '../types';
+import type { KeptItem } from '../types';
+import type { VideoAnalysis } from '../../analysis/types';
 
 const STORAGE_KEY = 'youtive_kept';
 
@@ -16,7 +17,7 @@ export function getKeptItems(userId?: string): KeptItem[] {
   }
 }
 
-export function saveKeptItem(video: MockVideo, userId?: string): void {
+export function saveKeptItem(video: VideoAnalysis, userId?: string): void {
   const items = getKeptItems(userId);
   const exists = items.some((item) => item.video.id === video.id);
   if (!exists) {
@@ -32,29 +33,4 @@ export function removeKeptItem(videoId: string, userId?: string): void {
 
 export function isKept(videoId: string, userId?: string): boolean {
   return getKeptItems(userId).some((item) => item.video.id === videoId);
-}
-
-export function keptItemToFeedItem(kept: KeptItem): FeedItem {
-  return {
-    id: kept.video.id,
-    title: kept.video.title,
-    channelName: kept.video.channelName,
-    channelUrl: kept.video.channelUrl,
-    thumbnailUrl: kept.video.thumbnailUrl,
-    videoUrl: kept.video.videoUrl,
-    duration: kept.video.duration,
-    topic: 'Saved',
-    summaryCount: 0,
-    likes: 0,
-    savedCount: 0,
-    publishedAt: new Date(kept.keptAt).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }),
-    excerpt: kept.video.outcomes[0] ?? '',
-    tags: [],
-    outcomes: kept.video.outcomes,
-    summary: kept.video.summary,
-  };
 }

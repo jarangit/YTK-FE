@@ -1,10 +1,10 @@
 import { ArrowRight, Clock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import type { MockVideo } from '../../shared/types';
+import type { VideoAnalysis } from '../analysis/types';
 
 interface ExampleAnalysisCardProps {
-  video: MockVideo;
+  video: VideoAnalysis;
 }
 
 export default function ExampleAnalysisCard({ video }: ExampleAnalysisCardProps) {

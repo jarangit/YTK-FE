@@ -2,10 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Home, Bookmark } from 'lucide-react';
 import AppShell from './AppShell';
 import AppSidebar from './AppSidebar';
-import MiniPlayer from '../molecules/MiniPlayer';
 import HorizontalRail from './HorizontalRail';
-import PodcastEpisodeCard from '../molecules/PodcastEpisodeCard';
-import ShowCard from '../molecules/ShowCard';
 
 const sidebarSections = [
   {
@@ -29,53 +26,36 @@ const meta: Meta<typeof AppShell> = {
 export default meta;
 type Story = StoryObj<typeof AppShell>;
 
+function DemoTile({ title }: { title: string }) {
+  return (
+    <div className="h-[160px] w-[216px] shrink-0 rounded-card bg-surface p-inset-md">
+      <p className="text-sm font-semibold text-ink">{title}</p>
+      <p className="mt-stack-xs text-xs text-ink-muted">Shared shell content</p>
+    </div>
+  );
+}
+
 const content = (
   <div style={{ maxWidth: 940 }}>
     <HorizontalRail title="Up Next" subtitle="Continue listening">
-      <PodcastEpisodeCard
-        title="Easy English: Daily Phrases for Beginners"
-        description="Simple and useful English phrases for everyday conversations."
-        channelName="Easy Natural English"
-        date="Jun 10"
-        duration="15 min"
-        backgroundColor="#f5a623"
-        textColor="#1d1d1f"
-      />
-      <PodcastEpisodeCard
-        title="ESL Podcast 1105: Workplace Communication"
-        description="Learn key phrases for professional email."
-        channelName="Speak English with ESLPod.com"
-        date="Jun 9"
-        duration="22 min"
-        backgroundColor="#4a90d9"
-        textColor="#ffffff"
-      />
-      <PodcastEpisodeCard
-        title="6 Minute English: The Future of AI"
-        description="Join Neil and Sam as they discuss AI."
-        channelName="BBC Learning English"
-        date="Jun 8"
-        duration="6 min"
-        backgroundColor="#7b2ff7"
-        textColor="#ffffff"
-      />
-      <PodcastEpisodeCard
-        title="How to Stay Motivated While Learning"
-        description="Practical tips to maintain your learning momentum."
-        channelName="TED Talks Daily"
-        date="Jun 7"
-        duration="18 min"
-        backgroundColor="#e84d4d"
-        textColor="#ffffff"
-      />
+      <DemoTile title="First item" />
+      <DemoTile title="Second item" />
+      <DemoTile title="Third item" />
+      <DemoTile title="Fourth item" />
     </HorizontalRail>
     <div style={{ height: 32 }} />
     <HorizontalRail title="Your Top Shows" subtitle="Based on your listening history">
-      <ShowCard title="American English Podcast" category="Education" meta="Updated daily" />
-      <ShowCard title="Speak English" category="Language Learning" meta="Updated weekly" />
-      <ShowCard title="English Conversations" category="Education" meta="Updated every 2 days" />
-      <ShowCard title="Thinking in English" category="Language Learning" meta="Updated Mon-Fri" />
+      <DemoTile title="Saved item" />
+      <DemoTile title="Recent item" />
+      <DemoTile title="Pinned item" />
+      <DemoTile title="Archived item" />
     </HorizontalRail>
+  </div>
+);
+
+const demoPlayer = (
+  <div className="fixed bottom-6 left-1/2 z-[var(--z-player)] flex h-[var(--mini-player-height)] min-w-[360px] -translate-x-1/2 items-center rounded-[var(--radius-xl)] border border-[var(--color-border-subtle)] bg-white/80 px-inset-lg shadow-[var(--shadow-heavy)] backdrop-blur-xl">
+    <p className="text-sm font-semibold text-ink">Demo player</p>
   </div>
 );
 
@@ -83,7 +63,7 @@ export const Default: Story = {
   args: {
     sidebar: <AppSidebar sections={sidebarSections} activePath="/" />,
     children: content,
-    player: <MiniPlayer />,
+    player: demoPlayer,
   },
 };
 

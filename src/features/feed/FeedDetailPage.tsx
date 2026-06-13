@@ -1,18 +1,18 @@
 import { ArrowLeft } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { getFeedItemById } from './data/feed.mock';
-import { useLibrary } from '../../shared/hooks/useLibrary';
+import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import Text from '../../shared/components/atoms/Text';
 import FeedDetailContent from './FeedDetailContent';
+import { useFeedItemQuery } from './hooks/useFeedItemQuery';
 
 export default function FeedDetailPage() {
   const { id = '' } = useParams();
   const { t } = useTranslation();
-  const item = getFeedItemById(id);
-  const { add, remove } = useLibrary();
+  const { data: item, isLoading } = useFeedItemQuery(id);
+  const { add, remove } = useLibraryQuery();
 
-  if (!item) {
+  if (!isLoading && !item) {
     return (
       <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
         <section className="mx-auto w-full max-w-read px-inset-lg pt-stack-xl pb-stack-2xl">
@@ -48,12 +48,14 @@ export default function FeedDetailPage() {
           {t('feed.backToFeed')}
         </Link>
 
-        <FeedDetailContent
-          item={item}
-          onKeep={add}
-          onRemove={remove}
-          initiallyKept={false}
-        />
+        {item && (
+          <FeedDetailContent
+            item={item}
+            onKeep={add}
+            onRemove={remove}
+            initiallyKept={false}
+          />
+        )}
       </section>
     </main>
   );

@@ -3,11 +3,11 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import UrlInputForm from './UrlInputForm';
 import ExampleAnalysisCard from './ExampleAnalysisCard';
-import { mockVideos } from '../result/data/mockVideos';
+import { useExampleAnalysisQuery } from './hooks/useExampleAnalysisQuery';
 
 export default function HomePage() {
   const { t } = useTranslation();
-  const exampleVideo = mockVideos[0];
+  const { data: exampleVideo } = useExampleAnalysisQuery();
 
   return (
     <main className="min-h-[calc(100vh-64px)] bg-white">
@@ -58,7 +58,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <ExampleAnalysisCard video={exampleVideo} />
+            {exampleVideo && <ExampleAnalysisCard video={exampleVideo} />}
           </div>
         </div>
       </section>

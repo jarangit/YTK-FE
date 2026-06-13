@@ -1,6 +1,6 @@
-import type { MockVideo } from '../../../shared/types';
+import type { VideoAnalysis } from '../../analysis/types';
 
-export const mockVideos: MockVideo[] = [
+export const mockVideos: VideoAnalysis[] = [
   {
     id: 'english-speaking',
     videoId: 'dQw4w9WgXcQ',
@@ -123,7 +123,7 @@ export const mockVideos: MockVideo[] = [
   },
 ];
 
-export function findMockVideo(url: string): MockVideo | undefined {
+export function findVideoAnalysis(url: string): VideoAnalysis | undefined {
   const lower = url.toLowerCase();
   const match = mockVideos.find((v) =>
     v.keywords.some((kw) => lower.includes(kw)),

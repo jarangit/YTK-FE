@@ -1,9 +1,9 @@
 import { ExternalLink, Clock, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import type { MockVideo } from '../../shared/types';
+import type { VideoAnalysis } from './types';
 
 interface Props {
-  video: MockVideo;
+  video: VideoAnalysis;
 }
 
 export default function VideoPreviewCard({ video }: Props) {

@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { Bookmark } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
-import type { MockVideo } from '../../shared/types';
+import type { VideoAnalysis } from './types';
 import { useAuth } from '../../shared/auth/AuthContext';
 
 interface Props {
-  video: MockVideo;
-  onKeep: (video: MockVideo) => void;
+  video: VideoAnalysis;
+  onKeep: (video: VideoAnalysis) => void;
   onRemove: (videoId: string) => void;
   initiallyKept?: boolean;
 }

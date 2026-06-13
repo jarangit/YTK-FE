@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { ChevronDown, ChevronUp, Lightbulb, List, BookOpen, RefreshCw } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
-import type { MockVideo } from '../../shared/types';
+import type { VideoAnalysis } from './types';
 
 interface Props {
-  summary: MockVideo['summary'];
+  summary: VideoAnalysis['summary'];
 }
 
 export default function SummaryAccordion({ summary }: Props) {
