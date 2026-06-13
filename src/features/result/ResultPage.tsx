@@ -27,7 +27,7 @@ export default function ResultPage() {
 
   if (loading) {
     return (
-      <main className="min-h-[calc(100vh-56px)] flex items-center justify-center px-inset-lg">
+      <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-inset-lg">
         <div className="text-center">
           <Loader2 className="w-8 h-8 text-accent animate-spin mx-auto mb-stack-md" />
           <p className="text-sm text-ink-muted">{t('result.loading')}</p>
@@ -38,7 +38,7 @@ export default function ResultPage() {
 
   if (!video) {
     return (
-      <main className="min-h-[calc(100vh-56px)] flex items-center justify-center px-inset-lg">
+      <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-inset-lg">
         <div className="text-center">
           <p className="text-sm text-ink-muted mb-stack-md">{t('result.error')}</p>
           <Link
@@ -53,7 +53,7 @@ export default function ResultPage() {
   }
 
   return (
-    <main className="min-h-[calc(100vh-56px)] px-inset-lg py-stack-md sm:py-10">
+    <main className="min-h-[calc(100vh-64px)] px-inset-lg py-stack-md sm:py-10">
       <ResultContent
         video={video}
         onKeep={add}

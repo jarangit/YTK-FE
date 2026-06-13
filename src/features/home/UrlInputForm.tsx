@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Loader2 } from 'lucide-react';
+import { Link2, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
@@ -54,78 +54,80 @@ export default function UrlInputForm({ onAnalyze, compact }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className={clsx('flex gap-inline-sm sm:gap-inline-md', compact && 'flex-col')}>
-        <div className="relative flex-1">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-ink-faint pointer-events-none" />
-          <input
-            id="youtube-url"
-            name="youtube-url"
-            type="url"
-            value={url}
-            onChange={(e) => {
-              setUrl(e.target.value);
-              if (error) setError('');
-            }}
-            placeholder={t('home.inputPlaceholder')}
-            className={clsx(
-              'w-full h-12 pl-inline-xl pr-12 bg-white border rounded-btn text-sm text-ink placeholder:text-ink-faint outline-none transition-shadow',
-              error
-                ? 'border-red-400 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]'
-                : 'border-border focus:border-accent focus:shadow-[0_0_0_3px_rgba(0,113,227,0.15)]',
-            )}
-            autoFocus={!compact}
-            required
-            disabled={isLoading}
-          />
-          {!isLoading && (
-            <button
-              type="button"
-              onClick={handlePaste}
-              disabled={isPasting}
-              title={t('home.pasteUrl')}
-              aria-label={t('home.pasteUrl')}
+      <div className="rounded-[30px] border border-border/70 bg-white p-2 shadow-[0_24px_60px_rgba(15,23,42,0.06)]">
+        <div className={clsx('flex gap-2', compact ? 'flex-col' : 'flex-col sm:flex-row')}>
+          <div className="relative flex-1 rounded-[24px] bg-surface">
+            <Link2 className="pointer-events-none absolute left-5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-faint" />
+            <input
+              id="youtube-url"
+              name="youtube-url"
+              type="url"
+              value={url}
+              onChange={(e) => {
+                setUrl(e.target.value);
+                if (error) setError('');
+              }}
+              placeholder={t('home.inputPlaceholder')}
               className={clsx(
-                'absolute right-2 top-1/2 -translate-y-1/2 h-7 px-2.5 rounded-md text-[11px] font-[600] tracking-[0.02em] border transition-all',
-                isPasting
-                  ? 'text-ink-faint border-border/40 cursor-not-allowed'
-                  : 'text-ink-muted border-border bg-white hover:text-ink hover:border-ink-faint active:scale-[0.95]',
+                'h-16 w-full rounded-[24px] border bg-surface pl-12 pr-28 text-[16px] text-ink outline-none transition-shadow placeholder:text-ink-faint sm:pr-32',
+                error
+                  ? 'border-red-400 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,0.15)]'
+                  : 'border-transparent focus:border-accent focus:bg-white focus:shadow-[0_0_0_4px_rgba(0,113,227,0.12)]',
               )}
-            >
-              {isPasting ? (
-                <Loader2 className="w-3 h-3 animate-spin" />
-              ) : (
-                t('home.paste')
-              )}
-            </button>
-          )}
-          {error && (
-            <p className="text-[11px] text-red-500 text-left mt-stack-xs pl-inline-xs">
-              {error}
-            </p>
-          )}
+              autoFocus={!compact}
+              required
+              disabled={isLoading}
+            />
+            {!isLoading && (
+              <button
+                type="button"
+                onClick={handlePaste}
+                disabled={isPasting}
+                title={t('home.pasteUrl')}
+                aria-label={t('home.pasteUrl')}
+                className={clsx(
+                  'absolute right-3 top-1/2 -translate-y-1/2 inline-flex h-10 min-w-[76px] items-center justify-center rounded-full px-3 text-[13px] font-semibold tracking-[0.01em] transition-all',
+                  isPasting
+                    ? 'cursor-not-allowed border border-border/40 bg-white text-ink-faint'
+                    : 'border border-border bg-white text-ink-muted hover:border-ink-faint hover:text-ink active:scale-[0.98]',
+                )}
+              >
+                {isPasting ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : (
+                  t('home.paste')
+                )}
+              </button>
+            )}
+            {error && (
+              <p className="pl-1 pt-2 text-left text-[12px] text-red-500">
+                {error}
+              </p>
+            )}
+          </div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={clsx(
+              'inline-flex h-16 items-center justify-center gap-2 rounded-[24px] px-8 text-[16px] font-semibold text-white transition-all sm:min-w-[170px]',
+              compact ? 'bg-[#333336]' : 'bg-accent',
+              isLoading
+                ? 'opacity-60 cursor-not-allowed'
+                : compact
+                  ? 'active:scale-[0.98] hover:bg-black'
+                  : 'active:scale-[0.98] hover:bg-accent-hover',
+            )}
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span className="hidden sm:inline">{t('home.analyzing')}</span>
+              </>
+            ) : (
+              t('home.submit')
+            )}
+          </button>
         </div>
-        <button
-          type="submit"
-          disabled={isLoading}
-          className={clsx(
-            'h-12 px-inset-md sm:px-inset-lg text-white text-sm font-semibold transition-all flex items-center justify-center gap-2',
-            compact ? 'rounded-pill bg-[#333336]' : 'rounded-btn bg-accent',
-            isLoading
-              ? 'opacity-60 cursor-not-allowed'
-              : compact
-                ? 'hover:bg-black active:scale-[0.98]'
-                : 'hover:bg-accent-hover active:scale-[0.98]',
-          )}
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              <span className="hidden sm:inline">{t('home.analyzing')}</span>
-            </>
-          ) : (
-            t('home.submit')
-          )}
-        </button>
       </div>
     </form>
   );

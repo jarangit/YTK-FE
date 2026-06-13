@@ -44,7 +44,7 @@ export default function FeedPage() {
   }, []);
 
   return (
-    <main className="min-h-[calc(100vh-56px)] bg-[var(--color-bg-app)]">
+    <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
       <section className="mx-auto w-full max-w-[1120px] px-inset-lg pt-stack-xl pb-stack-2xl">
         <div className="mb-stack-xl max-w-[760px]">
           <Text as="p" variant="label" color="secondary" className="mb-stack-sm normal-case tracking-[0.08em]">

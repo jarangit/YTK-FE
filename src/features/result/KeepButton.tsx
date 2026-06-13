@@ -3,6 +3,7 @@ import { Bookmark } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import type { MockVideo } from '../../shared/types';
+import { useAuth } from '../../shared/auth/AuthContext';
 
 interface Props {
   video: MockVideo;
@@ -13,10 +14,19 @@ interface Props {
 
 export default function KeepButton({ video, onKeep, onRemove, initiallyKept }: Props) {
   const { t } = useTranslation();
+  const { isAuthenticated, openSignInModal } = useAuth();
   const [kept, setKept] = useState(initiallyKept ?? false);
   const [toast, setToast] = useState(false);
+  const [signInToast, setSignInToast] = useState(false);
 
   const handleClick = () => {
+    if (!isAuthenticated) {
+      openSignInModal();
+      setSignInToast(true);
+      setTimeout(() => setSignInToast(false), 2500);
+      return;
+    }
+
     if (kept) {
       onRemove(video.id);
       setKept(false);
@@ -55,6 +65,12 @@ export default function KeepButton({ video, onKeep, onRemove, initiallyKept }: P
       {toast && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-ink text-white text-sm font-medium px-inset-md py-stack-sm rounded-btn shadow-lg animate-[fadeInUp_0.3s_ease-out]">
           {t('keep.toast')}
+        </div>
+      )}
+
+      {signInToast && (
+        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-btn bg-ink px-inset-md py-stack-sm text-sm font-medium text-white shadow-lg animate-[fadeInUp_0.3s_ease-out]">
+          {t('auth.keepRequiresSignIn')}
         </div>
       )}
     </>

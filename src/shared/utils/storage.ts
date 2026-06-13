@@ -2,9 +2,13 @@ import type { KeptItem, MockVideo, FeedItem } from '../types';
 
 const STORAGE_KEY = 'youtive_kept';
 
-export function getKeptItems(): KeptItem[] {
+function getStorageKey(userId?: string) {
+  return userId ? `${STORAGE_KEY}_${userId}` : STORAGE_KEY;
+}
+
+export function getKeptItems(userId?: string): KeptItem[] {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(getStorageKey(userId));
     if (!raw) return [];
     return JSON.parse(raw) as KeptItem[];
   } catch {
@@ -12,22 +16,22 @@ export function getKeptItems(): KeptItem[] {
   }
 }
 
-export function saveKeptItem(video: MockVideo): void {
-  const items = getKeptItems();
+export function saveKeptItem(video: MockVideo, userId?: string): void {
+  const items = getKeptItems(userId);
   const exists = items.some((item) => item.video.id === video.id);
   if (!exists) {
     items.unshift({ video, keptAt: new Date().toISOString() });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    localStorage.setItem(getStorageKey(userId), JSON.stringify(items));
   }
 }
 
-export function removeKeptItem(videoId: string): void {
-  const items = getKeptItems().filter((item) => item.video.id !== videoId);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+export function removeKeptItem(videoId: string, userId?: string): void {
+  const items = getKeptItems(userId).filter((item) => item.video.id !== videoId);
+  localStorage.setItem(getStorageKey(userId), JSON.stringify(items));
 }
 
-export function isKept(videoId: string): boolean {
-  return getKeptItems().some((item) => item.video.id === videoId);
+export function isKept(videoId: string, userId?: string): boolean {
+  return getKeptItems(userId).some((item) => item.video.id === videoId);
 }
 
 export function keptItemToFeedItem(kept: KeptItem): FeedItem {

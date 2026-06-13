@@ -14,7 +14,7 @@ export default function FeedDetailPage() {
 
   if (!item) {
     return (
-      <main className="min-h-[calc(100vh-56px)] bg-[var(--color-bg-app)]">
+      <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
         <section className="mx-auto w-full max-w-read px-inset-lg pt-stack-xl pb-stack-2xl">
           <Link
             to="/feed"
@@ -38,7 +38,7 @@ export default function FeedDetailPage() {
   }
 
   return (
-    <main className="min-h-[calc(100vh-56px)] bg-[var(--color-bg-app)]">
+    <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
       <section className="mx-auto w-full max-w-read px-inset-lg pt-stack-xl pb-stack-2xl">
         <Link
           to="/feed"
