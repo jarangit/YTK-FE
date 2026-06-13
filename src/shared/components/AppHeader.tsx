@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Bookmark, Library } from 'lucide-react';
+import { Bookmark, Library, Rss } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -8,6 +8,7 @@ import { useAuth } from '../auth/AuthContext';
 export default function AppHeader() {
   const { t } = useTranslation();
   const location = useLocation();
+  const isFeed = location.pathname.startsWith('/feed');
   const isLibrary = location.pathname === '/library';
   const { isAuthenticated, openSignInModal, user } = useAuth();
 
@@ -24,6 +25,18 @@ export default function AppHeader() {
         </Link>
 
         <nav className="flex items-center gap-inline-sm sm:gap-inline-md">
+          <Link
+            to="/feed"
+            className={clsx(
+              'inline-flex items-center gap-inline-xs rounded-full px-4 py-2 text-sm font-medium no-underline transition-colors',
+              isFeed
+                ? 'bg-surface text-ink'
+                : 'text-ink-muted hover:bg-surface hover:text-ink',
+            )}
+          >
+            <Rss className="h-4 w-4" />
+            <span className="hidden sm:inline">{t('nav.feed')}</span>
+          </Link>
           <Link
             to={isAuthenticated ? '/library' : '/'}
             onClick={(event) => {

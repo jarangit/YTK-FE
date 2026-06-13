@@ -1,4 +1,6 @@
 import { useTranslation } from 'react-i18next';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import UrlInputForm from './UrlInputForm';
 import ExampleAnalysisCard from './ExampleAnalysisCard';
 import { mockVideos } from '../result/data/mockVideos';
@@ -29,6 +31,14 @@ export default function HomePage() {
             <div className="mx-auto mt-10 max-w-[860px]">
               <UrlInputForm />
             </div>
+
+            <Link
+              to="/feed"
+              className="mx-auto mt-6 inline-flex items-center gap-inline-xs text-[15px] font-semibold text-accent no-underline transition-colors hover:text-accent-hover"
+            >
+              {t('home.feedCta')}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </section>

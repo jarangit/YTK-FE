@@ -33,6 +33,7 @@ const en = {
     paste: 'Paste',
     pasteUrl: 'Paste URL from clipboard',
     pasteError: 'Could not read clipboard. Check your browser permissions.',
+    feedCta: 'Browse community feed',
   },
   auth: {
     signIn: 'Sign In',
