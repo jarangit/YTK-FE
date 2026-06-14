@@ -23,3 +23,28 @@
     -webkit-tap-highlight-color: transparent;
   }
 }
+
+@keyframes content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer components {
+  .content-transition-enter {
+    animation: content-enter var(--motion-duration-content-enter)
+      var(--motion-easing-content-enter) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content-transition-enter {
+    animation: none;
+  }
+}

@@ -41,6 +41,10 @@ const en = {
     pasteUrl: 'Paste URL from clipboard',
     pasteError: 'Could not read clipboard. Check your browser permissions.',
     feedCta: 'Browse community feed',
+    exampleLoading: 'Loading example analysis',
+    exampleErrorTitle: 'The example could not be loaded.',
+    exampleErrorDescription: 'Try again to see what an analysis looks like before you submit a video.',
+    exampleRetry: 'Try again',
   },
   auth: {
     signIn: 'Sign In',
