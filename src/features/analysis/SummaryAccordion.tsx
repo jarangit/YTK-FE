@@ -7,11 +7,12 @@ import Card from '../../shared/components/atoms/Card';
 
 interface Props {
   summary: VideoAnalysis['summary'];
+  defaultOpen?: boolean;
 }
 
-export default function SummaryAccordion({ summary }: Props) {
+export default function SummaryAccordion({ summary, defaultOpen = false }: Props) {
   const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
 
   return (
     <Card as="div" className="bg-white">

@@ -1,7 +1,12 @@
 import { ExternalLink } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { VideoAnalysis } from '../analysis/types';
 import type { FeedItem } from './types';
-import AnalysisContent from '../analysis/AnalysisContent';
+import KeepAction from '../analysis/KeepAction';
+import OutcomeCard from '../analysis/OutcomeCard';
+import SummaryAccordion from '../analysis/SummaryAccordion';
+import VideoPreviewCard from '../analysis/VideoPreviewCard';
+import Card from '../../shared/components/atoms/Card';
 
 interface FeedDetailContentProps {
   item: FeedItem;
@@ -33,6 +38,7 @@ export default function FeedDetailContent({
   onRemove,
   initiallyKept,
 }: FeedDetailContentProps) {
+  const { t } = useTranslation();
   const video = toVideoAnalysis(item);
 
   return (
@@ -51,12 +57,23 @@ export default function FeedDetailContent({
           <ExternalLink className="w-4 h-4" />
         </a>
       </div>
-      <AnalysisContent
-        video={video}
-        onKeep={onKeep}
-        onRemove={onRemove}
-        initiallyKept={initiallyKept}
-      />
+      <div className="space-y-stack-md sm:space-y-stack-lg">
+        <VideoPreviewCard video={video} />
+        <OutcomeCard outcomes={video.outcomes} />
+        <SummaryAccordion summary={video.summary} />
+        <Card padded as="section" className="bg-white">
+          <h2 className="font-display text-lg font-semibold text-ink">{t('keep.title')}</h2>
+          <p className="mb-stack-md mt-stack-xs text-sm text-ink-muted">
+            {t('keep.desc')}
+          </p>
+          <KeepAction
+            video={video}
+            onKeep={onKeep}
+            onRemove={onRemove}
+            initiallyKept={initiallyKept}
+          />
+        </Card>
+      </div>
     </div>
   );
 }

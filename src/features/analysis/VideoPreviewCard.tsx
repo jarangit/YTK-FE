@@ -7,20 +7,24 @@ import MetadataRow from '../../shared/components/molecules/MetadataRow';
 
 interface Props {
   video: VideoAnalysis;
+  action?: React.ReactNode;
 }
 
-export default function VideoPreviewCard({ video }: Props) {
+export default function VideoPreviewCard({ video, action }: Props) {
   const { t } = useTranslation();
 
   return (
     <Card className="bg-white">
       <MediaThumbnail src={video.thumbnailUrl} alt={video.title} duration={video.duration} />
       <div className="p-inset-md sm:p-inset-lg">
-        <h2 className="font-display font-semibold text-lg text-ink leading-snug mb-stack-sm">
-          {video.title}
-        </h2>
+        <div className="flex flex-col gap-stack-md sm:flex-row sm:items-start sm:justify-between">
+          <h2 className="font-display text-lg font-semibold leading-snug text-ink">
+            {video.title}
+          </h2>
+          {action && <div className="shrink-0">{action}</div>}
+        </div>
         <MetadataRow
-          className="flex items-center gap-inline-lg text-xs text-ink-muted"
+          className="mt-stack-sm flex items-center gap-inline-lg text-xs text-ink-muted"
           items={[
             { icon: User, label: video.channelName },
             { icon: Clock, label: video.duration },
