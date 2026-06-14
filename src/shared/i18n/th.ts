@@ -68,6 +68,7 @@ const th = {
     subtitle: 'เก็บไว้ดูทีหลัง พร้อมเมื่อคุณต้องการ',
     count: '{{count}} รายการ',
     savedBadge: 'บันทึกแล้ว',
+    loading: 'กำลังโหลดคลังของคุณ',
   },
   account: {
     eyebrow: 'บัญชี',

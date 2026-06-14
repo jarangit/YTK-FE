@@ -69,6 +69,7 @@ const en = {
     subtitle: 'Saved for later, ready when you are.',
     count: '{{count}} saved',
     savedBadge: 'Saved',
+    loading: 'Loading your library',
   },
   account: {
     eyebrow: 'Account',

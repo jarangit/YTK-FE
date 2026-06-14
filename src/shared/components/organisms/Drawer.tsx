@@ -42,7 +42,7 @@ export default function Drawer({
     <>
       <div
         className={clsx(
-          'fixed inset-0 z-40 bg-[var(--drawer-overlay-background)] backdrop-blur-sm transition-opacity duration-300',
+          'reduce-motion-transitions fixed inset-0 z-40 bg-[var(--drawer-overlay-background)] backdrop-blur-sm transition-opacity duration-300',
           open ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
         onClick={onClose}
@@ -53,9 +53,11 @@ export default function Drawer({
         role="dialog"
         aria-modal="true"
         aria-label={typeof title === 'string' ? title : undefined}
+        aria-hidden={!open}
+        inert={!open}
         className={clsx(
           'fixed right-0 top-0 z-50 h-full w-full bg-[var(--color-bg-app)] shadow-[var(--shadow-heavy)] sm:max-w-[var(--drawer-width)]',
-          'transform transition-transform duration-300 ease-in-out',
+          'reduce-motion-transitions transform transition-transform duration-300 ease-in-out',
           open ? 'translate-x-0' : 'translate-x-full',
           className,
         )}

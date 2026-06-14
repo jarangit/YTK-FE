@@ -19,7 +19,7 @@ export default function Card({
     <Tag
       className={clsx(
         'overflow-hidden rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] shadow-card',
-        interactive && 'transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover',
+        interactive && 'reduce-motion-transitions transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover',
         padded && 'p-inset-md sm:p-inset-lg',
         className,
       )}

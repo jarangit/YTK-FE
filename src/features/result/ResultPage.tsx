@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import ResultContent from './ResultContent';
 import { useVideoAnalysisQuery } from './hooks/useVideoAnalysisQuery';
+import ContentTransition from '../../shared/components/atoms/ContentTransition';
 
 export default function ResultPage() {
   const { t } = useTranslation();
@@ -12,8 +13,12 @@ export default function ResultPage() {
   const { data: video, isLoading } = useVideoAnalysisQuery(url);
   const { add, remove, check } = useLibraryQuery();
 
+  const resultState = isLoading ? 'loading' : video ? 'success' : 'error';
+
+  let content: React.ReactNode;
+
   if (isLoading) {
-    return (
+    content = (
       <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-inset-lg">
         <div className="text-center">
           <Loader2 className="w-8 h-8 text-accent animate-spin mx-auto mb-stack-md" />
@@ -21,10 +26,8 @@ export default function ResultPage() {
         </div>
       </main>
     );
-  }
-
-  if (!video) {
-    return (
+  } else if (!video) {
+    content = (
       <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-inset-lg">
         <div className="text-center">
           <p className="text-sm text-ink-muted mb-stack-md">{t('result.error')}</p>
@@ -37,16 +40,22 @@ export default function ResultPage() {
         </div>
       </main>
     );
+  } else {
+    content = (
+      <main className="min-h-[calc(100vh-64px)] px-inset-lg py-stack-md sm:py-10">
+        <ResultContent
+          video={video}
+          onKeep={add}
+          onRemove={remove}
+          initiallyKept={check(video.id)}
+        />
+      </main>
+    );
   }
 
   return (
-    <main className="min-h-[calc(100vh-64px)] px-inset-lg py-stack-md sm:py-10">
-      <ResultContent
-        video={video}
-        onKeep={add}
-        onRemove={remove}
-        initiallyKept={check(video.id)}
-      />
-    </main>
+    <ContentTransition transitionKey={resultState}>
+      {content}
+    </ContentTransition>
   );
 }

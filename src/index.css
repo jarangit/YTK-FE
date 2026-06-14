@@ -41,10 +41,35 @@
     animation: content-enter var(--motion-duration-content-enter)
       var(--motion-easing-content-enter) both;
   }
+
+  .toast-presence {
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-50%, 6px) scale(0.98);
+    transition:
+      opacity var(--motion-duration-fast) ease-in,
+      transform var(--motion-duration-fast) ease-in,
+      visibility 0s linear var(--motion-duration-fast);
+  }
+
+  .toast-presence[data-visible='true'] {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+    transition:
+      opacity var(--motion-duration-standard) var(--motion-easing-standard),
+      transform var(--motion-duration-standard) var(--motion-easing-standard),
+      visibility 0s;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .content-transition-enter {
     animation: none;
+  }
+
+  .reduce-motion-transitions,
+  .toast-presence {
+    transition-duration: 0.01ms !important;
   }
 }

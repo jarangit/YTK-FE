@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Bookmark, FileText, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -17,9 +18,19 @@ interface LibraryCardProps {
 export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
   const { t } = useTranslation();
   const { video } = item;
+  const [isRemoving, setIsRemoving] = useState(false);
+
+  const handleRemove = () => {
+    setIsRemoving(true);
+    window.setTimeout(() => onRemove(video.id), 160);
+  };
 
   return (
-    <Card interactive>
+    <Card
+      interactive
+      aria-hidden={isRemoving}
+      className={isRemoving ? 'pointer-events-none scale-[0.98] opacity-0' : 'scale-100 opacity-100'}
+    >
       <Link
         to={`/result?url=${encodeURIComponent(video.videoUrl)}`}
         className="block text-inherit no-underline"
@@ -66,7 +77,7 @@ export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
             ariaLabel={t('card.remove')}
             variant="ghost"
             size="sm"
-            onClick={() => onRemove(video.id)}
+            onClick={handleRemove}
           />
         </div>
       </div>

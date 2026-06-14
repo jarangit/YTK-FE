@@ -9,6 +9,7 @@ import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import { useFeedQuery } from './hooks/useFeedQuery';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { clearSelectedFeedItem, selectFeedItem, setFeedQuery } from './state/feedSlice';
+import ContentTransition from '../../shared/components/atoms/ContentTransition';
 
 export default function FeedPage() {
   const { t } = useTranslation();
@@ -51,21 +52,25 @@ export default function FeedPage() {
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-inline-xl sm:grid-cols-2 lg:grid-cols-3">
-          {filteredItems.map((item) => (
-            <FeedCard key={item.id} item={item} onClick={handleCardClick} />
-          ))}
-        </div>
+        <ContentTransition transitionKey={`${query.trim().toLowerCase()}:${filteredItems.map((item) => item.id).join(',')}`}>
+          <div className="grid grid-cols-1 gap-inline-xl sm:grid-cols-2 lg:grid-cols-3">
+            {filteredItems.map((item) => (
+              <FeedCard key={item.id} item={item} onClick={handleCardClick} />
+            ))}
+          </div>
+        </ContentTransition>
       </section>
 
       <Drawer open={!!selectedItem} onClose={closeDrawer} title="Detail">
         {selectedItem && (
-          <FeedDetailContent
-            item={selectedItem}
-            onKeep={add}
-            onRemove={remove}
-            initiallyKept={false}
-          />
+          <ContentTransition transitionKey={selectedItem.id}>
+            <FeedDetailContent
+              item={selectedItem}
+              onKeep={add}
+              onRemove={remove}
+              initiallyKept={false}
+            />
+          </ContentTransition>
         )}
       </Drawer>
     </main>

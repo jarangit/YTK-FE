@@ -54,7 +54,9 @@ export default function KeepButton({ video, onKeep, onRemove, initiallyKept }: P
           onClick={handleClick}
           variant={kept ? 'secondary' : 'primary'}
           iconLeft={Bookmark}
-          className={kept ? 'border-accent/20 bg-accent-light text-accent hover:bg-accent-light' : undefined}
+          className={kept
+            ? 'reduce-motion-transitions scale-[1.02] border-accent/20 bg-accent-light text-accent transition-transform duration-[var(--motion-duration-fast)] hover:bg-accent-light'
+            : 'reduce-motion-transitions scale-100 transition-transform duration-[var(--motion-duration-fast)]'}
         >
           {kept ? t('keep.kept') : t('keep.button')}
         </Button>

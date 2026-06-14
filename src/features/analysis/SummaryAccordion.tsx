@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Lightbulb, List, BookOpen, RefreshCw } from 'lucide-react';
+import { ChevronDown, Lightbulb, List, BookOpen, RefreshCw } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import type { VideoAnalysis } from './types';
@@ -19,30 +19,30 @@ export default function SummaryAccordion({ summary }: Props) {
         type="button"
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between p-inset-md sm:p-inset-lg text-left transition-colors hover:bg-black/[0.02]"
+        aria-expanded={open}
       >
         <h2 className="font-display font-semibold text-lg text-ink">
           {t('summary.fullSummary')}
         </h2>
         <span className="flex items-center gap-inline-xs text-sm font-medium text-accent">
-          {open ? (
-            <>
-              {t('summary.hide')} <ChevronUp className="w-4 h-4" />
-            </>
-          ) : (
-            <>
-              {t('summary.read')} <ChevronDown className="w-4 h-4" />
-            </>
-          )}
+          {open ? t('summary.hide') : t('summary.read')}
+          <ChevronDown
+            className={clsx(
+              'reduce-motion-transitions h-4 w-4 transition-transform duration-[var(--motion-duration-standard)]',
+              open && 'rotate-180',
+            )}
+          />
         </span>
       </button>
 
       <div
         className={clsx(
-          'transition-all duration-300 ease-in-out',
-          open ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden',
+          'reduce-motion-transitions grid transition-[grid-template-rows,opacity] duration-[var(--motion-duration-standard)] ease-[var(--motion-easing-standard)]',
+          open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
         )}
       >
-        <div className="px-inset-md sm:px-inset-lg pb-inset-md sm:pb-inset-lg space-y-stack-md border-t border-border/50 pt-inset-md">
+        <div className="min-h-0 overflow-hidden">
+          <div className="px-inset-md sm:px-inset-lg pb-inset-md sm:pb-inset-lg space-y-stack-md border-t border-border/50 pt-inset-md">
           <section>
             <h3 className="flex items-center gap-inline-xs text-sm font-semibold text-ink mb-stack-sm">
               <Lightbulb className="w-4 h-4 text-accent" />
@@ -99,6 +99,7 @@ export default function SummaryAccordion({ summary }: Props) {
               ))}
             </ul>
           </section>
+          </div>
         </div>
       </div>
     </Card>

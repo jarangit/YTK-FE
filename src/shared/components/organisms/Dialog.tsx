@@ -12,10 +12,12 @@ export default function Dialog({ open, onClose, closeLabel, children }: DialogPr
   return (
     <div
       className={clsx(
-        'fixed inset-0 z-50 flex items-center justify-center px-inset-md transition-opacity duration-200',
+        'reduce-motion-transitions fixed inset-0 z-50 flex items-center justify-center px-inset-md transition-opacity',
+        'duration-[var(--motion-duration-overlay)] ease-[var(--motion-easing-standard)]',
         open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
       )}
       aria-hidden={!open}
+      inert={!open}
     >
       <button
         type="button"
@@ -23,7 +25,15 @@ export default function Dialog({ open, onClose, closeLabel, children }: DialogPr
         onClick={onClose}
         className="absolute inset-0 bg-[var(--modal-overlay-background)] backdrop-blur-sm"
       />
-      <section className="relative w-full max-w-[var(--modal-max-width)] rounded-[var(--modal-radius)] border border-border/60 bg-white p-[var(--modal-padding)] shadow-[var(--modal-shadow)] sm:p-[var(--modal-padding-wide)]">
+      <section
+        role="dialog"
+        aria-modal="true"
+        className={clsx(
+          'reduce-motion-transitions relative w-full max-w-[var(--modal-max-width)] rounded-[var(--modal-radius)] border border-border/60 bg-white p-[var(--modal-padding)] shadow-[var(--modal-shadow)] sm:p-[var(--modal-padding-wide)]',
+          'transition-[opacity,transform] duration-[var(--motion-duration-overlay)] ease-[var(--motion-easing-standard)]',
+          open ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-2 scale-[0.98] opacity-0',
+        )}
+      >
         <button
           type="button"
           onClick={onClose}
