@@ -85,6 +85,8 @@
   --radius-newsroom-card: 32px;
   --radius-newsroom-pill: 30px;
   --newsroom-card-padding: 32px;
+  --example-analysis-media-width: 280px;
+  --example-analysis-summary-width: 220px;
   --modal-overlay-background: rgba(0, 0, 0, 0.18);
   --modal-max-width: 420px;
   --modal-radius: 28px;

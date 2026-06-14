@@ -13,7 +13,7 @@ export default function ExampleAnalysisCard({ video }: ExampleAnalysisCardProps)
 
   return (
     <article className="overflow-hidden rounded-[32px] border border-border/60 bg-white shadow-[0_20px_80px_rgba(15,23,42,0.06)]">
-      <div className="grid gap-0 lg:grid-cols-[320px_1fr]">
+      <div className="grid gap-0 lg:grid-cols-[var(--example-analysis-media-width)_minmax(0,1fr)]">
         <div className="relative bg-surface p-4 sm:p-5 lg:p-6">
           <div className="overflow-hidden rounded-[24px] bg-white">
             <img
@@ -25,7 +25,7 @@ export default function ExampleAnalysisCard({ video }: ExampleAnalysisCardProps)
           </div>
         </div>
 
-        <div className="px-6 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-10">
+        <div className="min-w-0 px-6 py-6 sm:px-8 sm:py-8 lg:px-8 lg:py-8">
           <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border/70 pb-6">
             <div className="max-w-[560px]">
               <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-faint">
@@ -43,7 +43,7 @@ export default function ExampleAnalysisCard({ video }: ExampleAnalysisCardProps)
             </div>
           </div>
 
-          <div className="grid gap-8 pt-6 lg:grid-cols-[1fr_280px]">
+          <div className="grid gap-6 pt-6 xl:grid-cols-[minmax(0,1fr)_var(--example-analysis-summary-width)] xl:gap-8">
             <div>
               <h4 className="text-[19px] font-semibold leading-[1.35] text-ink sm:text-[22px]">
                 {t('home.exampleOutcomeTitle')}
