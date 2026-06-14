@@ -1,3 +1,9 @@
+export interface TranscriptSegment {
+  startSeconds: number;
+  endSeconds?: number;
+  text: string;
+}
+
 export interface VideoAnalysis {
   id: string;
   videoId: string;
@@ -15,4 +21,5 @@ export interface VideoAnalysis {
     thingsToRemember: string[];
   };
   keywords: string[];
+  transcript: TranscriptSegment[];
 }

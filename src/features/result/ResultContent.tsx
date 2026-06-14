@@ -1,5 +1,6 @@
 import AnalysisContent from '../analysis/AnalysisContent';
 import type { VideoAnalysis } from '../analysis/types';
+import TranscriptSection from './TranscriptSection';
 
 interface ResultContentProps {
   video: VideoAnalysis;
@@ -9,5 +10,12 @@ interface ResultContentProps {
 }
 
 export default function ResultContent(props: ResultContentProps) {
-  return <AnalysisContent {...props} />;
+  return (
+    <>
+      <AnalysisContent {...props} />
+      <div className="mx-auto mt-stack-md max-w-read sm:mt-stack-lg">
+        <TranscriptSection transcript={props.video.transcript} />
+      </div>
+    </>
+  );
 }

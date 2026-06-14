@@ -40,6 +40,16 @@ export const mockVideos: VideoAnalysis[] = [
         'Focus on 5 phrases per week rather than trying to learn everything at once',
       ],
     },
+    transcript: [
+      { startSeconds: 0, endSeconds: 18, text: 'Welcome back. Today we are going to practice simple English for talking about your daily routine.' },
+      { startSeconds: 18, endSeconds: 42, text: 'You do not need difficult grammar. You need a few useful sentence patterns that you can repeat every day.' },
+      { startSeconds: 42, endSeconds: 71, text: 'Let us begin with the morning. You can say: I wake up at seven, I have breakfast, and I go to work.' },
+      { startSeconds: 71, endSeconds: 104, text: 'Notice that we use the present simple because these actions are part of a regular routine.' },
+      { startSeconds: 104, endSeconds: 139, text: 'When someone asks how your day was, start with a short answer such as it was busy but good.' },
+      { startSeconds: 139, endSeconds: 176, text: 'Then add one detail. For example, I had a meeting in the morning and finished work at six.' },
+      { startSeconds: 176, endSeconds: 214, text: 'If you need more time to think, use a natural filler like well or let me think.' },
+      { startSeconds: 214, endSeconds: 252, text: 'Practice each sentence out loud three times. Repetition will help the words feel natural when you speak.' },
+    ],
   },
   {
     id: 'product-discovery',
@@ -80,6 +90,14 @@ export const mockVideos: VideoAnalysis[] = [
         'A problem well-stated is a problem half-solved',
       ],
     },
+    transcript: [
+      { startSeconds: 0, endSeconds: 26, text: 'Product discovery starts with a customer problem, not with a feature that your team wants to build.' },
+      { startSeconds: 26, endSeconds: 58, text: 'A feature request is useful evidence, but it is not yet a clear description of the underlying need.' },
+      { startSeconds: 58, endSeconds: 94, text: 'Ask what happened the last time the customer experienced the problem. Real stories are more reliable than hypothetical answers.' },
+      { startSeconds: 94, endSeconds: 131, text: 'Look for workarounds. When people build spreadsheets or manual processes, they are showing you where the product is missing value.' },
+      { startSeconds: 131, endSeconds: 169, text: 'Use the five whys to move from the visible symptom toward the root cause.' },
+      { startSeconds: 169, endSeconds: 207, text: 'Finally, compare problems by frequency, impact, and the number of customers who experience them.' },
+    ],
   },
   {
     id: 'react-state',
@@ -120,6 +138,15 @@ export const mockVideos: VideoAnalysis[] = [
         'Ask: "Would this break if I unmounted this component?" — if no, it can be local',
       ],
     },
+    transcript: [
+      { startSeconds: 0, endSeconds: 24, text: 'The simplest rule for React state is to keep it close to the component that uses it.' },
+      { startSeconds: 24, endSeconds: 55, text: 'Start with useState. Move state upward only when two or more components need the same value.' },
+      { startSeconds: 55, endSeconds: 91, text: 'Passing props through a few levels is not automatically a problem. Composition can often keep the code clear.' },
+      { startSeconds: 91, endSeconds: 128, text: 'Context is useful for values such as authentication or theme that many parts of the app need.' },
+      { startSeconds: 128, endSeconds: 166, text: 'Server data should be treated differently from local UI state because it has caching, loading, and synchronization concerns.' },
+      { startSeconds: 166, endSeconds: 205, text: 'Choose a global state library only after the application has a real coordination problem that local state cannot solve cleanly.' },
+      { startSeconds: 3661, endSeconds: 3694, text: 'For long recordings, timestamps continue to include the hour so copied transcripts remain easy to navigate.' },
+    ],
   },
 ];
 

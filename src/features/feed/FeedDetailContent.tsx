@@ -23,6 +23,7 @@ function toVideoAnalysis(item: FeedItem): VideoAnalysis {
     keywords: item.tags,
     outcomes: item.outcomes,
     summary: item.summary,
+    transcript: [],
   };
 }
 
