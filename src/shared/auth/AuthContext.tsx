@@ -8,9 +8,8 @@ import {
   type ReactNode,
 } from 'react';
 import {
-  clearStoredSession,
-  getStoredSession,
-  persistSession,
+  getAuthSession,
+  signOutSession,
   signInWithGoogleProvider,
   type AuthUser,
 } from './authService';
@@ -24,8 +23,9 @@ interface AuthContextValue {
   isSignInModalOpen: boolean;
   openSignInModal: () => void;
   closeSignInModal: () => void;
-  signInWithGoogle: () => Promise<void>;
-  signOut: () => void;
+  reportGoogleSignInError: () => void;
+  signInWithGoogle: (idToken: string) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -38,8 +38,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
 
   useEffect(() => {
-    setUser(getStoredSession());
-    setIsReady(true);
+    let active = true;
+
+    void getAuthSession().then((sessionUser) => {
+      if (!active) return;
+      setUser(sessionUser);
+      setIsReady(true);
+    });
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   const openSignInModal = useCallback(() => {
@@ -53,12 +62,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsSignInModalOpen(false);
   }, [isSigningIn]);
 
-  const signInWithGoogle = useCallback(async () => {
+  const reportGoogleSignInError = useCallback(() => {
+    setAuthError('auth.googlePopupError');
+  }, []);
+
+  const signInWithGoogle = useCallback(async (idToken: string) => {
     try {
       setIsSigningIn(true);
       setAuthError('');
-      const signedInUser = await signInWithGoogleProvider();
-      persistSession(signedInUser);
+      const signedInUser = await signInWithGoogleProvider(idToken);
       setUser(signedInUser);
       setIsSignInModalOpen(false);
     } catch {
@@ -68,11 +80,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const signOut = useCallback(() => {
-    clearStoredSession();
-    setUser(null);
-    setAuthError('');
-    setIsSignInModalOpen(false);
+  const signOut = useCallback(async () => {
+    try {
+      await signOutSession();
+    } finally {
+      setUser(null);
+      setAuthError('');
+      setIsSignInModalOpen(false);
+    }
   }, []);
 
   const value = useMemo<AuthContextValue>(
@@ -85,6 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isSignInModalOpen,
       openSignInModal,
       closeSignInModal,
+      reportGoogleSignInError,
       signInWithGoogle,
       signOut,
     }),
@@ -95,6 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isSignInModalOpen,
       isSigningIn,
       openSignInModal,
+      reportGoogleSignInError,
       signInWithGoogle,
       signOut,
       user,

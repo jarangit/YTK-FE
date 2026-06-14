@@ -57,6 +57,8 @@ const en = {
     disclaimer: 'Your library is available after sign-in. Analyze stays open to everyone.',
     close: 'Close dialog',
     signInError: 'Something went wrong while signing in. Please try again.',
+    googleNotConfigured: 'Google Sign-In is not configured for this environment.',
+    googlePopupError: 'Google Sign-In could not be completed. Please try again.',
     accountTitle: 'You\'re signed in.',
     accountDescription:
       'Your library is ready whenever you want to keep a useful video for later.',

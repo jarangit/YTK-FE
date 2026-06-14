@@ -13,7 +13,9 @@ export default function AppHeader() {
   const isLibrary = location.pathname === '/library';
   const { isAuthenticated, openSignInModal, user } = useAuth();
 
-  const authLabel = isAuthenticated ? user?.name.split(' ')[0] : t('auth.signIn');
+  const authLabel = isAuthenticated
+    ? user?.name?.split(' ')[0] || user?.email || t('account.title')
+    : t('auth.signIn');
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-white/88 backdrop-blur-xl">

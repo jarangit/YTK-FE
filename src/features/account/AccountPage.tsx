@@ -21,7 +21,11 @@ export default function AccountPage() {
 
         <Card padded as="div" className="bg-surface">
           <div className="flex items-center gap-inline-md">
-            <Avatar src={user?.avatarUrl} alt={user?.name} fallback={user?.name} />
+            <Avatar
+              src={user?.avatarUrl ?? undefined}
+              alt={user?.name ?? user?.email}
+              fallback={user?.name ?? user?.email}
+            />
             <div>
               <p className="text-[length:var(--text-body-size)] font-semibold text-[var(--color-text-primary)]">
                 {user?.name}
@@ -34,7 +38,7 @@ export default function AccountPage() {
 
           <Button
             type="button"
-            onClick={signOut}
+            onClick={() => void signOut()}
             variant="secondary"
             className="mt-stack-lg"
           >

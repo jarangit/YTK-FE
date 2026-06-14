@@ -20,6 +20,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   const { query, headers, ...init } = options;
   const response = await fetch(buildUrl(path, query), {
     ...init,
+    credentials: init.credentials ?? 'include',
     headers: {
       'Content-Type': 'application/json',
       ...headers,

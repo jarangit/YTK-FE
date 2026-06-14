@@ -1,6 +1,7 @@
 import { Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../../shared/auth/AuthContext';
 import Avatar from '../../shared/components/atoms/Avatar';
 import { Button } from '../../shared/components/atoms/Button';
@@ -15,6 +16,7 @@ export default function SignInModal() {
     authError,
     isSignInModalOpen,
     closeSignInModal,
+    reportGoogleSignInError,
     signInWithGoogle,
     signOut,
   } = useAuth();
@@ -56,28 +58,29 @@ export default function SignInModal() {
               {t('auth.subtitle')}
             </p>
 
-            <Button
-              type="button"
-              onClick={() => void signInWithGoogle()}
-              disabled={isSigningIn}
-              variant="secondary"
-              fullWidth
-              className="mt-stack-lg h-auto py-3.5 text-[length:var(--text-body-size)]"
-            >
+            <div className="mt-stack-lg flex min-h-[44px] items-center justify-center">
               {isSigningIn ? (
-                <>
+                <div className="inline-flex items-center gap-inline-sm text-sm font-medium text-ink-muted">
                   <Loader2 className="h-4 w-4 animate-spin" />
                   {t('auth.signingIn')}
-                </>
+                </div>
+              ) : import.meta.env.VITE_GOOGLE_CLIENT_ID && import.meta.env.VITE_API_BASE_URL ? (
+                <GoogleLogin
+                  onSuccess={(response) => {
+                    if (response.credential) void signInWithGoogle(response.credential);
+                  }}
+                  onError={reportGoogleSignInError}
+                  useOneTap={false}
+                  theme="outline"
+                  shape="pill"
+                  size="large"
+                  width="340"
+                  text="continue_with"
+                />
               ) : (
-                <>
-                  <span className="grid h-5 w-5 place-items-center rounded-full border border-border bg-white text-[length:var(--text-label-size)] font-bold text-[var(--modal-google-color)]">
-                    G
-                  </span>
-                  {t('auth.continueWithGoogle')}
-                </>
+                <p className="text-sm text-red-500">{t('auth.googleNotConfigured')}</p>
               )}
-            </Button>
+            </div>
 
             <p className="mt-stack-md text-[length:var(--text-caption-size)] leading-[var(--modal-disclaimer-line-height)] text-ink-faint">
               {t('auth.disclaimer')}
@@ -89,7 +92,11 @@ export default function SignInModal() {
         ) : (
           <>
             <div className="mt-stack-xl flex items-center gap-inline-md rounded-[var(--modal-card-radius)] bg-surface px-inset-md py-stack-md">
-              <Avatar src={user?.avatarUrl} alt={user?.name} fallback={user?.name} />
+              <Avatar
+                src={user?.avatarUrl ?? undefined}
+                alt={user?.name ?? user?.email}
+                fallback={user?.name ?? user?.email}
+              />
               <div>
                 <p className="text-[length:var(--text-body-size)] font-semibold text-ink">{user?.name}</p>
                 <p className="mt-stack-xs text-[length:var(--text-caption-size)] text-ink-muted">{user?.email}</p>
@@ -111,7 +118,7 @@ export default function SignInModal() {
               </Button>
               <Button
                 type="button"
-                onClick={signOut}
+                onClick={() => void signOut()}
                 variant="secondary"
                 fullWidth
               >
