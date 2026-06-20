@@ -28,7 +28,7 @@ export default function SidebarItem({
         'flex w-full items-center gap-[var(--nav-item-gap)] rounded-[var(--nav-item-radius)] transition-all duration-150',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]',
         active
-          ? 'bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] font-[600]'
+          ? 'bg-accent text-[var(--color-accent-contrast)] font-[600]'
           : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]',
         collapsed
           ? 'h-[var(--nav-item-height)] justify-center px-0'

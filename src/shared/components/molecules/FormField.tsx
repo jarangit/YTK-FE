@@ -25,7 +25,7 @@ export default function FormField({ id, label, error, helperText, children, clas
           id={`${id}-description`}
           className={clsx(
             'pl-1 pt-stack-xs text-left text-[length:var(--text-label-size)]',
-            error ? 'text-red-500' : 'text-ink-faint',
+            error ? 'text-danger' : 'text-ink-faint',
           )}
         >
           {description}

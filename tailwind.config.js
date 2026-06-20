@@ -8,20 +8,27 @@ export default {
     extend: {
       colors: {
         surface: {
-          DEFAULT: '#f5f5f7',
+          DEFAULT: 'var(--color-gray-50)',
           card: 'var(--color-bg-card)',
         },
         ink: {
-          DEFAULT: '#1d1d1f',
-          muted: '#86868b',
-          faint: '#aeaeb2',
+          DEFAULT: 'var(--color-text-primary)',
+          muted: 'var(--color-text-secondary)',
+          faint: 'var(--color-text-tertiary)',
         },
-        border: '#d2d2d7',
+        border: 'var(--color-border-subtle)',
         accent: {
           DEFAULT: 'var(--color-accent)',
           hover: 'var(--color-accent-hover)',
           light: 'var(--color-accent-light)',
         },
+        danger: {
+          DEFAULT: 'var(--color-danger)',
+          hover: 'var(--color-danger-hover)',
+          soft: 'var(--color-danger-soft)',
+        },
+        success: 'var(--color-success)',
+        warning: 'var(--color-warning)',
       },
       fontFamily: {
         sans: [
@@ -52,18 +59,18 @@ export default {
         'inline-2xl': 'var(--space-inline-2xl)',
       },
       maxWidth: {
-        read: '680px',
+        read: 'var(--content-read-width)',
         newsroom: 'var(--content-newsroom-width)',
       },
       borderRadius: {
-        card: '18px',
+        card: 'var(--card-radius)',
         btn: '12px',
         newsroom: 'var(--radius-newsroom-card)',
         pill: 'var(--radius-newsroom-pill)',
       },
       boxShadow: {
-        card: 'none',
-        'card-hover': 'none',
+        card: 'var(--card-shadow)',
+        'card-hover': 'var(--card-hover-shadow)',
       },
     },
   },

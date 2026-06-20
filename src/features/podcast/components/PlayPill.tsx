@@ -21,7 +21,7 @@ export default function PlayPill({ duration, isPlaying = false, onClick, classNa
         'backdrop-blur-md transition-all duration-200',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]',
         isPlaying
-          ? 'bg-[var(--color-accent)] text-white shadow-[var(--shadow-soft)]'
+          ? 'bg-accent text-[var(--color-accent-contrast)] shadow-[var(--shadow-soft)]'
           : 'bg-white/90 text-[var(--color-text-primary)] hover:bg-white',
         className,
       )}

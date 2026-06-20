@@ -59,12 +59,13 @@
   --input-padding-right-with-action: 112px;
   --input-action-right: var(--space-3);
   --input-action-min-width: 76px;
-  --input-focus-ring: 0 0 0 4px rgba(0, 113, 227, 0.12);
-  --input-error-ring: 0 0 0 3px rgba(239, 68, 68, 0.15);
+  --input-focus-ring: 0 0 0 4px var(--color-focus-ring);
+  --input-error-ring: 0 0 0 3px color-mix(in srgb, var(--color-danger) 18%, transparent);
   --url-input-shell-radius: var(--radius-newsroom-pill);
   --url-input-shell-padding: 14px;
   --url-input-shell-shadow: 0 28px 70px rgba(15, 23, 42, 0.08);
   --url-input-submit-min-width: 170px;
+  --url-input-submit-shadow: 0 14px 30px color-mix(in srgb, var(--color-accent) 18%, transparent);
   --control-size-sm: var(--space-8);
   --control-size-md: var(--space-10);
   --control-icon-size-sm: 16px;

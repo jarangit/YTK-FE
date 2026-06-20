@@ -58,7 +58,7 @@ export default function HistoryPage() {
                   video={item.video}
                   date={item.createdAt}
                   badge={t(`history.status.${item.status.toLowerCase()}`)}
-                  badgeClassName={item.status === 'FAILED' ? 'bg-red-50 text-red-600' : undefined}
+                  badgeClassName={item.status === 'FAILED' ? 'bg-danger-soft text-danger-hover' : undefined}
                   destination={completed ? `/result?videoId=${encodeURIComponent(item.video.id)}` : undefined}
                   metadata={[{ icon: Clock3, label: t('history.analyzed') }]}
                 />

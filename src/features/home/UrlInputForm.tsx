@@ -123,7 +123,7 @@ export default function UrlInputForm({ onAnalyze, compact }: Props) {
             variant="primary"
             disabled={isLoading}
             loading={isLoading}
-            className="px-7 shadow-[0_14px_30px_rgba(0,113,227,0.18)] sm:min-w-[var(--url-input-submit-min-width)]"
+            className="px-7 shadow-[var(--url-input-submit-shadow)] sm:min-w-[var(--url-input-submit-min-width)]"
           >
             {isLoading ? <span className="hidden sm:inline">{t('home.analyzing')}</span> : t('home.submit')}
           </Button>

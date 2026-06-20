@@ -85,7 +85,7 @@ export default function SignInModal() {
                 text="continue_with"
               />
             ) : (
-              <p className="text-sm text-red-500">
+              <p className="text-sm text-danger">
                 {t("auth.googleNotConfigured")}
               </p>
             )}
@@ -95,7 +95,7 @@ export default function SignInModal() {
             {t("auth.disclaimer")}
           </p>
           {authError && (
-            <p className="mt-inline-md text-[length:var(--text-caption-size)] leading-[var(--modal-disclaimer-line-height)] text-red-500">
+            <p className="mt-inline-md text-[length:var(--text-caption-size)] leading-[var(--modal-disclaimer-line-height)] text-danger">
               {t(authError)}
             </p>
           )}

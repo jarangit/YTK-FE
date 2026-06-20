@@ -54,7 +54,7 @@ export default function ResultPage() {
         <div className="mx-auto max-w-read space-y-stack-md sm:space-y-stack-lg">
           <Card padded as="section" className="bg-white">
             <div className="flex items-start gap-inline-sm">
-              <div className="mt-1 rounded-full bg-red-50 p-2 text-red-500">
+              <div className="mt-1 rounded-full bg-danger-soft p-2 text-danger">
                 <AlertCircle className="h-5 w-5" />
               </div>
               <div className="min-w-0">

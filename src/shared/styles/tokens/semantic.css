@@ -10,9 +10,17 @@
   --color-text-tertiary: var(--color-gray-400);
   --color-text-inverse: var(--color-white);
 
-  --color-accent: var(--color-accent-base);
-  --color-accent-hover: var(--color-accent-hover-base);
-  --color-accent-light: var(--color-accent-light-base);
+  --color-accent: var(--color-brand-primary);
+  --color-accent-hover: var(--color-brand-primary-hover);
+  --color-accent-light: var(--color-brand-primary-soft);
+  --color-accent-contrast: var(--color-brand-primary-contrast);
+
+  --color-success: var(--color-green-500);
+  --color-warning: var(--color-orange-500);
+  --color-danger: var(--color-red-500);
+  --color-danger-hover: var(--color-red-600);
+  --color-danger-soft: var(--color-red-100);
+  --color-focus-ring: color-mix(in srgb, var(--color-accent) 22%, transparent);
 
   --color-border-subtle: rgba(0, 0, 0, 0.08);
   --color-border-medium: rgba(0, 0, 0, 0.16);
@@ -43,4 +51,8 @@
 
   --font-size-editorial-title: 32px;
   --line-height-editorial-title: 44px;
+  --content-read-width: 680px;
+  --card-radius: var(--radius-lg);
+  --card-shadow: var(--shadow-soft);
+  --card-hover-shadow: var(--shadow-elevated);
 }

@@ -24,7 +24,7 @@ const variantStyles = {
   ghost:
     'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-hover)] active:bg-[var(--color-bg-active)]',
   filled:
-    'bg-[var(--color-accent)] text-[var(--color-text-inverse)] hover:bg-[var(--color-accent-hover)] shadow-[var(--shadow-soft)]',
+    'bg-accent text-[var(--color-accent-contrast)] hover:bg-accent-hover shadow-[var(--shadow-soft)]',
 };
 
 export default function IconButton({

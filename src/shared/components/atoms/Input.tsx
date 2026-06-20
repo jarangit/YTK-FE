@@ -19,7 +19,7 @@ export default function Input({ icon: Icon, invalid, action, className, ...props
           Icon ? 'pl-[var(--input-padding-left-with-icon)]' : 'pl-[var(--input-padding-x)]',
           action ? 'pr-[var(--input-padding-right-with-action)]' : 'pr-[var(--input-padding-x)]',
           invalid
-            ? 'border-red-400 focus:border-red-500 focus:shadow-[var(--input-error-ring)]'
+            ? 'border-danger focus:border-danger focus:shadow-[var(--input-error-ring)]'
             : 'border-transparent focus:border-accent focus:bg-white focus:shadow-[var(--input-focus-ring)]',
           className,
         )}

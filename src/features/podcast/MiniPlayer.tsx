@@ -62,7 +62,7 @@ export default function MiniPlayer({
           onClick={onPlayPause}
           className={clsx(
             'flex items-center justify-center w-10 h-10 rounded-full transition-all',
-            'bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-hover)]',
+            'bg-accent text-[var(--color-accent-contrast)] hover:bg-accent-hover',
             'shadow-[var(--shadow-soft)]',
           )}
         >
