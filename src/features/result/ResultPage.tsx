@@ -1,5 +1,5 @@
 import { useSearchParams, Link } from 'react-router-dom';
-import { AlertCircle, ArrowLeft, Loader2 } from 'lucide-react';
+import { AlertCircle, ArrowLeft } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import ResultContent from './ResultContent';
@@ -7,6 +7,7 @@ import { useVideoAnalysisQuery } from './hooks/useVideoAnalysisQuery';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
 import Card from '../../shared/components/atoms/Card';
 import TranscriptSection from './TranscriptSection';
+import ResultContentSkeleton from './ResultContentSkeleton';
 
 export default function ResultPage() {
   const { t } = useTranslation();
@@ -43,11 +44,8 @@ export default function ResultPage() {
     );
   } else if (isWaiting) {
     content = (
-      <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-inset-lg">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 text-accent animate-spin mx-auto mb-stack-md" />
-          <p className="text-sm text-ink-muted">{t('result.loading')}</p>
-        </div>
+      <main className="min-h-[calc(100vh-64px)] px-inset-lg py-stack-md sm:py-10">
+        <ResultContentSkeleton />
       </main>
     );
   } else if (isFailed) {
