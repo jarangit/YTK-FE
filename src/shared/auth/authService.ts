@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '../api/config';
+import { apiRequest } from '../api/httpClient';
 
 export interface AuthUser {
   id: string;
@@ -15,50 +15,94 @@ interface ApiEnvelope<T> {
 
 interface AuthPayload {
   user: AuthUser;
+  accessToken?: string;
+  tokens?: {
+    accessToken?: string;
+  };
 }
 
-function authUrl(path: string) {
-  return `${API_BASE_URL}${path}`;
-}
+const ACCESS_TOKEN_STORAGE_KEY = 'youtive_access_token';
 
 async function authRequest<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(authUrl(path), {
-    ...init,
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...init?.headers,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Authentication request failed: ${response.status}`);
-  }
-
-  if (response.status === 204) return undefined as T;
-
-  const envelope = await response.json() as ApiEnvelope<T>;
+  const envelope = await apiRequest<ApiEnvelope<T>>(path, init);
   return envelope.data;
+}
+
+function readStoredAccessToken() {
+  if (typeof localStorage === 'undefined') return '';
+  return localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY) ?? '';
+}
+
+function writeStoredAccessToken(accessToken: string) {
+  if (typeof localStorage === 'undefined') return;
+  localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
+}
+
+function clearStoredAccessToken() {
+  if (typeof localStorage === 'undefined') return;
+  localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
+}
+
+function extractAccessToken(payload: AuthPayload) {
+  return payload.accessToken ?? payload.tokens?.accessToken ?? '';
 }
 
 export async function signInWithGoogleProvider(idToken: string): Promise<AuthUser> {
   const payload = await authRequest<AuthPayload>('/auth/google', {
     method: 'POST',
     body: JSON.stringify({ idToken }),
+    credentials: 'omit',
   });
+
+  const accessToken = extractAccessToken(payload);
+
+  if (accessToken) {
+    writeStoredAccessToken(accessToken);
+  }
 
   return payload.user;
 }
 
 export async function getAuthSession(): Promise<AuthUser | null> {
   try {
-    const payload = await authRequest<AuthPayload>('/auth/session');
+    const accessToken = readStoredAccessToken();
+
+    if (!accessToken) return null;
+
+    const payload = await authRequest<AuthPayload>('/auth/session', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      credentials: 'omit',
+    });
+
+    const nextAccessToken = extractAccessToken(payload);
+
+    if (nextAccessToken) {
+      writeStoredAccessToken(nextAccessToken);
+    }
+
     return payload.user;
   } catch {
+    clearStoredAccessToken();
     return null;
   }
 }
 
 export async function signOutSession(): Promise<void> {
-  await authRequest<void>('/auth/logout', { method: 'POST' });
+  const accessToken = readStoredAccessToken();
+
+  try {
+    await authRequest<void>('/auth/logout', {
+      method: 'POST',
+      headers: accessToken
+        ? {
+            Authorization: `Bearer ${accessToken}`,
+          }
+        : undefined,
+      credentials: 'omit',
+    });
+  } finally {
+    clearStoredAccessToken();
+  }
 }
