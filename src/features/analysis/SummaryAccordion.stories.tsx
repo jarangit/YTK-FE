@@ -18,7 +18,7 @@ type Story = StoryObj<typeof SummaryAccordion>;
 export const Default: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const trigger = canvas.getByRole('button');
+    const trigger = canvas.getByRole('button', { name: /view all details|ดูรายละเอียดทั้งหมด/i });
     await expect(trigger).toHaveAttribute('aria-expanded', 'false');
     await userEvent.click(trigger);
     await expect(trigger).toHaveAttribute('aria-expanded', 'true');

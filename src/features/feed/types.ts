@@ -1,3 +1,5 @@
+import type { LegacyAnalysisSummary } from '../analysis/types';
+
 export interface FeedItem {
   id: string;
   title: string;
@@ -14,10 +16,5 @@ export interface FeedItem {
   excerpt: string;
   tags: string[];
   outcomes: string[];
-  summary: {
-    bigIdea: string;
-    keyPoints: string[];
-    usefulExamples: string[];
-    thingsToRemember: string[];
-  };
+  summary: LegacyAnalysisSummary;
 }

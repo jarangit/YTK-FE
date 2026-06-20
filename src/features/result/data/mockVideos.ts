@@ -1,4 +1,4 @@
-import type { VideoAnalysis } from '../../analysis/types';
+import { normalizeLegacySummary, type VideoAnalysis } from '../../analysis/types';
 
 export const mockVideos: VideoAnalysis[] = [
   {
@@ -17,7 +17,7 @@ export const mockVideos: VideoAnalysis[] = [
       'Answer basic questions about your day',
       'Speak with less hesitation using ready-made phrases',
     ],
-    summary: {
+    summary: normalizeLegacySummary({
       bigIdea:
         'Speaking English fluently starts with mastering simple daily conversations — not complex grammar. This video teaches you how to talk about your everyday life using natural, repeatable patterns.',
       keyPoints: [
@@ -39,7 +39,7 @@ export const mockVideos: VideoAnalysis[] = [
         'Record yourself answering these questions to track improvement',
         'Focus on 5 phrases per week rather than trying to learn everything at once',
       ],
-    },
+    }),
     transcript: [
       { startSeconds: 0, endSeconds: 18, text: 'Welcome back. Today we are going to practice simple English for talking about your daily routine.' },
       { startSeconds: 18, endSeconds: 42, text: 'You do not need difficult grammar. You need a few useful sentence patterns that you can repeat every day.' },
@@ -67,7 +67,7 @@ export const mockVideos: VideoAnalysis[] = [
       'Avoid building features nobody needs',
       'Turn user pain into product direction',
     ],
-    summary: {
+    summary: normalizeLegacySummary({
       bigIdea:
         'Most product teams fail because they start with solutions instead of problems. This video shows you how to systematically discover what customers actually need — before writing a single line of code.',
       keyPoints: [
@@ -89,7 +89,7 @@ export const mockVideos: VideoAnalysis[] = [
         'Document verbatim quotes — they reveal how users think, not just what they want',
         'A problem well-stated is a problem half-solved',
       ],
-    },
+    }),
     transcript: [
       { startSeconds: 0, endSeconds: 26, text: 'Product discovery starts with a customer problem, not with a feature that your team wants to build.' },
       { startSeconds: 26, endSeconds: 58, text: 'A feature request is useful evidence, but it is not yet a clear description of the underlying need.' },
@@ -115,7 +115,7 @@ export const mockVideos: VideoAnalysis[] = [
       'Avoid unnecessary state complexity',
       'Choose a simple state strategy for small apps',
     ],
-    summary: {
+    summary: normalizeLegacySummary({
       bigIdea:
         'You don\'t need Redux or Zustand for most apps. This video teaches you a mental model for choosing the simplest possible state solution at every level of your React application.',
       keyPoints: [
@@ -137,7 +137,7 @@ export const mockVideos: VideoAnalysis[] = [
         'Not every piece of state needs to be global — keep things close to where they\'re used',
         'Ask: "Would this break if I unmounted this component?" — if no, it can be local',
       ],
-    },
+    }),
     transcript: [
       { startSeconds: 0, endSeconds: 24, text: 'The simplest rule for React state is to keep it close to the component that uses it.' },
       { startSeconds: 24, endSeconds: 55, text: 'Start with useState. Move state upward only when two or more components need the same value.' },

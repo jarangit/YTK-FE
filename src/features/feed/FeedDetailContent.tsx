@@ -1,6 +1,6 @@
 import { ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import type { VideoAnalysis } from '../analysis/types';
+import { normalizeLegacySummary, type VideoAnalysis } from '../analysis/types';
 import type { FeedItem } from './types';
 import KeepAction from '../analysis/KeepAction';
 import OutcomeCard from '../analysis/OutcomeCard';
@@ -27,7 +27,7 @@ export function toVideoAnalysis(item: FeedItem): VideoAnalysis {
     videoUrl: item.videoUrl,
     keywords: item.tags,
     outcomes: item.outcomes,
-    summary: item.summary,
+    summary: normalizeLegacySummary(item.summary),
     transcript: [],
   };
 }

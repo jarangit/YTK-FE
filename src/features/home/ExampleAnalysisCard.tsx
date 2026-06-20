@@ -66,7 +66,7 @@ export default function ExampleAnalysisCard({ video }: ExampleAnalysisCardProps)
                 {t('home.summaryCta')}
               </p>
               <p className="mt-3 text-[15px] leading-6 text-ink-muted">
-                {video.summary.bigIdea}
+                {video.summary.oneLineSummary || video.summary.summary}
               </p>
               <button
                 type="button"

@@ -32,7 +32,7 @@ export default function ResultContent({
         )}
       />
       <OutcomeCard outcomes={video.outcomes} />
-      <SummaryAccordion summary={video.summary} defaultOpen />
+      <SummaryAccordion summary={video.summary} />
       <TranscriptSection transcript={video.transcript} />
     </div>
   );

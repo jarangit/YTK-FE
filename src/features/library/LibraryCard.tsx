@@ -54,7 +54,7 @@ export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
           </Text>
 
           <Text variant="caption" color="secondary" className="mb-stack-md line-clamp-2">
-            {video.outcomes[0] ?? video.summary.bigIdea}
+            {video.outcomes[0] || video.summary.oneLineSummary || video.summary.summary}
           </Text>
 
           <MetadataRow

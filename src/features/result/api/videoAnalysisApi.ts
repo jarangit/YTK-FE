@@ -1,4 +1,10 @@
-import type { VideoAnalysis } from '../../analysis/types';
+import type {
+  AnalysisSummary,
+  KeyInsight,
+  MentalModel,
+  ResearchRoadmap,
+  VideoAnalysis,
+} from '../../analysis/types';
 import type { TranscriptSegment } from '../../analysis/types';
 import { apiRequest } from '../../../shared/api/httpClient';
 import { mockDelay, USE_MOCK_API } from '../../../shared/api/config';
@@ -33,7 +39,12 @@ interface BackendAnalysisPayload {
   id: string;
   language: AnalysisLanguage;
   outcomes?: unknown[];
-  summary?: Record<string, unknown> | null;
+  summary?: unknown;
+  oneLineSummary?: unknown;
+  keyInsights?: unknown;
+  mentalModel?: unknown;
+  practicalTakeaways?: unknown;
+  researchRoadmap?: unknown;
   createdAt: string;
 }
 
@@ -136,18 +147,76 @@ function normalizeSummaryList(value: unknown) {
     .filter((item): item is string => Boolean(item));
 }
 
-function normalizeSummary(summary?: Record<string, unknown> | null): VideoAnalysis['summary'] {
-  const safeSummary = summary ?? {};
+function normalizeText(value: unknown) {
+  return typeof value === 'string' ? value.trim() : '';
+}
+
+function normalizeKeyInsights(value: unknown): KeyInsight[] {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
+    .map((item) => ({
+      insight: normalizeText(item.insight),
+      whyImportant: normalizeText(item.whyImportant),
+      mindsetChange: normalizeText(item.mindsetChange),
+    }))
+    .filter((item) => item.insight || item.whyImportant || item.mindsetChange);
+}
+
+function normalizeMentalModel(value: unknown): MentalModel | null {
+  if (!value || typeof value !== 'object') return null;
+  const model = value as Record<string, unknown>;
+  const normalized = {
+    name: normalizeText(model.name),
+    description: normalizeText(model.description),
+    steps: normalizeSummaryList(model.steps),
+  };
+
+  return normalized.name || normalized.description || normalized.steps.length ? normalized : null;
+}
+
+function normalizeResearchRoadmap(value: unknown): ResearchRoadmap {
+  const roadmap = value && typeof value === 'object'
+    ? value as Record<string, unknown>
+    : {};
 
   return {
-    bigIdea: typeof safeSummary.bigIdea === 'string'
-      ? safeSummary.bigIdea
-      : typeof safeSummary.overview === 'string'
-        ? safeSummary.overview
-        : '',
-    keyPoints: normalizeSummaryList(safeSummary.keyPoints),
-    usefulExamples: normalizeSummaryList(safeSummary.usefulExamples),
-    thingsToRemember: normalizeSummaryList(safeSummary.thingsToRemember),
+    tools: normalizeSummaryList(roadmap.tools),
+    trends: normalizeSummaryList(roadmap.trends),
+    concepts: normalizeSummaryList(roadmap.concepts),
+    deepQuestions: normalizeSummaryList(roadmap.deepQuestions),
+  };
+}
+
+function normalizeSummary(analysis?: BackendAnalysisPayload | null): AnalysisSummary {
+  const rawSummary = analysis?.summary;
+
+  if (rawSummary && typeof rawSummary === 'object') {
+    const legacy = rawSummary as Record<string, unknown>;
+    const summary = normalizeText(legacy.bigIdea) || normalizeText(legacy.overview);
+
+    return {
+      summary,
+      oneLineSummary: summary,
+      keyInsights: normalizeSummaryList(legacy.keyPoints).map((insight, index) => ({
+        insight,
+        whyImportant: normalizeSummaryList(legacy.usefulExamples)[index] ?? '',
+        mindsetChange: '',
+      })),
+      mentalModel: null,
+      practicalTakeaways: normalizeSummaryList(legacy.thingsToRemember),
+      researchRoadmap: normalizeResearchRoadmap(null),
+    };
+  }
+
+  return {
+    summary: normalizeText(rawSummary),
+    oneLineSummary: normalizeText(analysis?.oneLineSummary),
+    keyInsights: normalizeKeyInsights(analysis?.keyInsights),
+    mentalModel: normalizeMentalModel(analysis?.mentalModel),
+    practicalTakeaways: normalizeSummaryList(analysis?.practicalTakeaways),
+    researchRoadmap: normalizeResearchRoadmap(analysis?.researchRoadmap),
   };
 }
 
@@ -170,7 +239,7 @@ export function normalizeVideoResponse(payload: BackendVideoAnalysisResponse): V
     thumbnailUrl: payload.thumbnail ?? '',
     videoUrl: payload.youtubeUrl,
     outcomes: normalizeOutcomes(payload.analysis?.outcomes),
-    summary: normalizeSummary(payload.analysis?.summary),
+    summary: normalizeSummary(payload.analysis),
     keywords: [],
     transcript: Array.isArray(payload.transcript)
       ? payload.transcript.map(normalizeTranscriptSegment).filter((segment) => segment.text.length > 0)

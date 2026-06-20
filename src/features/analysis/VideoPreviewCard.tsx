@@ -12,10 +12,28 @@ interface Props {
 
 export default function VideoPreviewCard({ video, action }: Props) {
   const { t } = useTranslation();
+  const videoId = video.videoId.trim();
+  const embedUrl = videoId
+    ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}`
+    : null;
 
   return (
     <Card className="bg-white">
-      <MediaThumbnail src={video.thumbnailUrl} alt={video.title} duration={video.duration} />
+      {embedUrl ? (
+        <div className="aspect-video overflow-hidden bg-surface">
+          <iframe
+            src={embedUrl}
+            title={video.title}
+            className="h-full w-full border-0"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        </div>
+      ) : (
+        <MediaThumbnail src={video.thumbnailUrl} alt={video.title} duration={video.duration} />
+      )}
       <div className="p-inset-md sm:p-inset-lg">
         <div className="flex flex-col gap-stack-md sm:flex-row sm:items-start sm:justify-between">
           <h2 className="font-display text-lg font-semibold leading-snug text-ink">
