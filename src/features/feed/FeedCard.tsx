@@ -49,7 +49,12 @@ export default function FeedCard({ item, to, onClick, onRemove }: FeedCardProps)
   return (
     <Card interactive>
       <CardLink>
-        <MediaThumbnail src={item.thumbnailUrl} alt={item.title} duration={item.duration} />
+        <MediaThumbnail
+          src={item.thumbnailUrl}
+          alt={item.title}
+          videoId={extractVideoId(item.videoUrl)}
+          duration={item.duration}
+        />
 
         <div className="p-inset-md sm:p-inset-lg">
           <div className="mb-stack-sm flex flex-wrap items-center gap-inline-sm">

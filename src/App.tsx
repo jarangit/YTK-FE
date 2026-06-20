@@ -7,6 +7,7 @@ import FeedPage from './features/feed/FeedPage';
 import FeedDetailPage from './features/feed/FeedDetailPage';
 import ResultPage from './features/result/ResultPage';
 import LibraryPage from './features/library/LibraryPage';
+import HistoryPage from './features/history/HistoryPage';
 import AccountPage from './features/account/AccountPage';
 import StaticPage from './features/static/StaticPage';
 import NotFoundPage from './features/static/NotFoundPage';
@@ -18,7 +19,7 @@ import { useAuth } from './shared/auth/AuthContext';
 function AppLayout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const isLibrary = location.pathname === '/library';
+  const usesCollectionShell = location.pathname === '/library' || location.pathname === '/history';
   const { openSignInModal } = useAuth();
 
   useEffect(() => {
@@ -34,7 +35,7 @@ function AppLayout() {
 
   return (
     <>
-      {!isLibrary && <AppHeader />}
+      {!usesCollectionShell && <AppHeader />}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<StaticPage pageKey="about" />} />
@@ -61,9 +62,17 @@ function AppLayout() {
             </ProtectedRoute>
           )}
         />
+        <Route
+          path="/history"
+          element={(
+            <ProtectedRoute>
+              <HistoryPage />
+            </ProtectedRoute>
+          )}
+        />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-      {!isLibrary && <AppFooter />}
+      {!usesCollectionShell && <AppFooter />}
       <SignInModal />
     </>
   );

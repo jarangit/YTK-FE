@@ -32,7 +32,12 @@ export default function VideoPreviewCard({ video, action }: Props) {
           />
         </div>
       ) : (
-        <MediaThumbnail src={video.thumbnailUrl} alt={video.title} duration={video.duration} />
+        <MediaThumbnail
+          src={video.thumbnailUrl}
+          alt={video.title}
+          videoId={video.videoId}
+          duration={video.duration}
+        />
       )}
       <div className="p-inset-md sm:p-inset-lg">
         <div className="flex flex-col gap-stack-md sm:flex-row sm:items-start sm:justify-between">

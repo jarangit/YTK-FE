@@ -6,6 +6,7 @@ const en = {
     home: 'Home',
     feed: 'Feed',
     library: 'Library',
+    history: 'History',
   },
   footer: {
     about: 'About',
@@ -70,6 +71,21 @@ const en = {
     count: '{{count}} saved',
     savedBadge: 'Saved',
     loading: 'Loading your library',
+  },
+  history: {
+    title: 'Analysis history',
+    subtitle: 'Return to videos you have analyzed before.',
+    count: '{{count}} analyzed',
+    loading: 'Loading your analysis history',
+    emptyTitle: 'No analysis history yet',
+    emptySubtitle: 'Videos you analyze will appear here.',
+    analyzed: 'Analyzed',
+    status: {
+      completed: 'Completed',
+      pending: 'Pending',
+      processing: 'Processing',
+      failed: 'Failed',
+    },
   },
   account: {
     eyebrow: 'Account',

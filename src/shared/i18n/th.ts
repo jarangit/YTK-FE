@@ -6,6 +6,7 @@ const th = {
     home: 'หน้าแรก',
     feed: 'ฟีด',
     library: 'คลังของฉัน',
+    history: 'ประวัติ',
   },
   footer: {
     about: 'เกี่ยวกับเรา',
@@ -69,6 +70,21 @@ const th = {
     count: '{{count}} รายการ',
     savedBadge: 'บันทึกแล้ว',
     loading: 'กำลังโหลดคลังของคุณ',
+  },
+  history: {
+    title: 'ประวัติการวิเคราะห์',
+    subtitle: 'กลับมาดูวิดีโอที่คุณเคยวิเคราะห์ไว้',
+    count: '{{count}} รายการ',
+    loading: 'กำลังโหลดประวัติการวิเคราะห์',
+    emptyTitle: 'ยังไม่มีประวัติการวิเคราะห์',
+    emptySubtitle: 'วิดีโอที่คุณวิเคราะห์จะแสดงอยู่ที่นี่',
+    analyzed: 'วิเคราะห์แล้ว',
+    status: {
+      completed: 'สำเร็จ',
+      pending: 'รอดำเนินการ',
+      processing: 'กำลังวิเคราะห์',
+      failed: 'ไม่สำเร็จ',
+    },
   },
   account: {
     eyebrow: 'บัญชี',
