@@ -6,9 +6,12 @@ import clsx from 'clsx';
 import { Button } from '../../shared/components/atoms/Button';
 import Input from '../../shared/components/atoms/Input';
 import FormField from '../../shared/components/molecules/FormField';
+import i18n from '../../shared/i18n';
+import { ApiRequestError } from '../../shared/api/httpClient';
+import { analyzeVideo } from '../result/api/videoAnalysisApi';
 
 interface Props {
-  onAnalyze?: (url: string) => void;
+  onAnalyze?: (url: string) => void | Promise<void>;
   compact?: boolean;
 }
 
@@ -22,7 +25,7 @@ export default function UrlInputForm({ onAnalyze, compact }: Props) {
   const [isPasting, setIsPasting] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -34,12 +37,33 @@ export default function UrlInputForm({ onAnalyze, compact }: Props) {
       return;
     }
 
-    setIsLoading(true);
-    if (onAnalyze) onAnalyze(trimmed);
+    try {
+      setIsLoading(true);
 
-    setTimeout(() => {
-      navigate(`/result?url=${encodeURIComponent(trimmed)}`);
-    }, 300);
+      if (onAnalyze) {
+        await onAnalyze(trimmed);
+      }
+
+      const response = await analyzeVideo({
+        youtubeUrl: trimmed,
+        language: i18n.language === 'th' ? 'th' : 'en',
+      });
+
+      navigate(`/result?videoId=${encodeURIComponent(response.analysisId)}`);
+    } catch (error) {
+      if (error instanceof ApiRequestError) {
+        const code = (error.data as { data?: { code?: string } } | undefined)?.data?.code;
+
+        if (code === 'INVALID_YOUTUBE_URL') {
+          setError(t('home.invalidUrl'));
+          return;
+        }
+      }
+
+      setError(t('result.error'));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handlePaste = async () => {

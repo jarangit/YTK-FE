@@ -1,18 +1,24 @@
 import { ArrowLeft } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
 import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import Text from '../../shared/components/atoms/Text';
 import FeedDetailContent from './FeedDetailContent';
-import { useFeedItemQuery } from './hooks/useFeedItemQuery';
+import { getVideoById } from '../result/api/videoAnalysisApi';
+import { feedKeys } from './hooks/useFeedQuery';
 
 export default function FeedDetailPage() {
   const { id = '' } = useParams();
   const { t } = useTranslation();
-  const { data: item, isLoading } = useFeedItemQuery(id);
+  const { data: video, isLoading } = useQuery({
+    queryKey: feedKeys.detail(id),
+    queryFn: () => getVideoById(id),
+    enabled: id.length > 0,
+  });
   const { add, remove } = useLibraryQuery();
 
-  if (!isLoading && !item) {
+  if (!isLoading && !video) {
     return (
       <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
         <section className="mx-auto w-full max-w-read px-inset-lg pt-stack-xl pb-stack-2xl">
@@ -48,9 +54,9 @@ export default function FeedDetailPage() {
           {t('feed.backToFeed')}
         </Link>
 
-        {item && (
+        {video && (
           <FeedDetailContent
-            item={item}
+            video={video}
             onKeep={add}
             onRemove={remove}
             initiallyKept={false}

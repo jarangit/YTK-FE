@@ -151,6 +151,9 @@ const en = {
   result: {
     loading: 'Analyzing video...',
     error: 'Could not analyze this video.',
+    failed: 'This analysis could not be completed.',
+    failedDescription: 'We could not generate the full analysis, but any transcript we captured is still available below.',
+    missing: 'This result link is missing or invalid.',
     retry: 'Try another URL',
     openOnYoutube: 'Open on YouTube',
   },

@@ -9,13 +9,13 @@ import VideoPreviewCard from '../analysis/VideoPreviewCard';
 import Card from '../../shared/components/atoms/Card';
 
 interface FeedDetailContentProps {
-  item: FeedItem;
+  video: VideoAnalysis;
   onKeep: (video: VideoAnalysis) => void;
   onRemove: (videoId: string) => void;
   initiallyKept: boolean;
 }
 
-function toVideoAnalysis(item: FeedItem): VideoAnalysis {
+export function toVideoAnalysis(item: FeedItem): VideoAnalysis {
   return {
     id: item.id,
     videoId: item.id,
@@ -33,13 +33,12 @@ function toVideoAnalysis(item: FeedItem): VideoAnalysis {
 }
 
 export default function FeedDetailContent({
-  item,
+  video,
   onKeep,
   onRemove,
   initiallyKept,
 }: FeedDetailContentProps) {
   const { t } = useTranslation();
-  const video = toVideoAnalysis(item);
 
   return (
     <div className="p-inset-md sm:p-inset-lg">
@@ -48,7 +47,7 @@ export default function FeedDetailContent({
           Video Analysis
         </span>
         <a
-          href={`/result?url=${encodeURIComponent(video.videoUrl)}`}
+          href={`/result?videoId=${encodeURIComponent(video.videoId)}`}
           target="_blank"
           rel="noreferrer"
           className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--color-bg-hover)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"

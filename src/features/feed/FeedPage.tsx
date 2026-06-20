@@ -10,6 +10,7 @@ import { useFeedQuery } from './hooks/useFeedQuery';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { clearSelectedFeedItem, selectFeedItem, setFeedQuery } from './state/feedSlice';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
+import { toVideoAnalysis } from './FeedDetailContent';
 
 export default function FeedPage() {
   const { t } = useTranslation();
@@ -65,7 +66,7 @@ export default function FeedPage() {
         {selectedItem && (
           <ContentTransition transitionKey={selectedItem.id}>
             <FeedDetailContent
-              item={selectedItem}
+              video={toVideoAnalysis(selectedItem)}
               onKeep={add}
               onRemove={remove}
               initiallyKept={false}

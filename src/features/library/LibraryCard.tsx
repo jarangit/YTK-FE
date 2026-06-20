@@ -32,7 +32,7 @@ export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
       className={isRemoving ? 'pointer-events-none scale-[0.98] opacity-0' : 'scale-100 opacity-100'}
     >
       <Link
-        to={`/result?url=${encodeURIComponent(video.videoUrl)}`}
+        to={`/result?videoId=${encodeURIComponent(video.videoId)}`}
         className="block text-inherit no-underline"
       >
         <MediaThumbnail src={video.thumbnailUrl} alt={video.title} duration={video.duration} />

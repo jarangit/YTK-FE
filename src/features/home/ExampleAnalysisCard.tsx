@@ -70,7 +70,7 @@ export default function ExampleAnalysisCard({ video }: ExampleAnalysisCardProps)
               </p>
               <button
                 type="button"
-                onClick={() => navigate(`/result?url=${encodeURIComponent(video.videoUrl)}`)}
+                onClick={() => navigate(`/result?videoId=${encodeURIComponent(video.videoId)}`)}
                 className="mt-6 inline-flex items-center gap-2 text-[15px] font-semibold text-accent transition-colors hover:text-accent-hover"
               >
                 {t('home.readPreview')}

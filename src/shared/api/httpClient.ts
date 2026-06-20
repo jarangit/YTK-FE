@@ -4,6 +4,18 @@ interface RequestOptions extends RequestInit {
   query?: Record<string, string | number | boolean | undefined>;
 }
 
+export class ApiRequestError<T = unknown> extends Error {
+  status: number;
+  data?: T;
+
+  constructor(message: string, status: number, data?: T) {
+    super(message);
+    this.name = 'ApiRequestError';
+    this.status = status;
+    this.data = data;
+  }
+}
+
 function buildUrl(path: string, query?: RequestOptions['query']) {
   const normalizedPath = path.startsWith('/') ? path.slice(1) : path;
   const base = API_BASE_URL
@@ -32,7 +44,15 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   });
 
   if (!response.ok) {
-    throw new Error(`API request failed: ${response.status}`);
+    let errorData: unknown;
+
+    try {
+      errorData = await response.json();
+    } catch {
+      errorData = undefined;
+    }
+
+    throw new ApiRequestError(`API request failed: ${response.status}`, response.status, errorData);
   }
 
   if (response.status === 204) {

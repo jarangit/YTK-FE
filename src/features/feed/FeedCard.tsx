@@ -9,6 +9,15 @@ import MediaThumbnail from '../../shared/components/molecules/MediaThumbnail';
 import MetadataRow from '../../shared/components/molecules/MetadataRow';
 import { useTranslation } from 'react-i18next';
 
+function extractVideoId(videoUrl: string) {
+  try {
+    const url = new URL(videoUrl);
+    return url.searchParams.get('v') ?? videoUrl;
+  } catch {
+    return videoUrl;
+  }
+}
+
 interface FeedCardProps {
   item: FeedItem;
   to?: string;
@@ -32,7 +41,7 @@ export default function FeedCard({ item, to, onClick, onRemove }: FeedCardProps)
         </div>
       )
     : ({ children }: { children: React.ReactNode }) => (
-        <Link to={to ?? `/feed/${item.id}`} className="block no-underline text-inherit">
+        <Link to={to ?? `/feed/${extractVideoId(item.videoUrl)}`} className="block no-underline text-inherit">
           {children}
         </Link>
       );
