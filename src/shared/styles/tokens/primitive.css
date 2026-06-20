@@ -35,10 +35,10 @@
   --color-youtube-red-hover: #cc0000;
   --color-youtube-red-soft: #ffe5e5;
 
-  --color-brand-primary: var(--color-blue-500);
+  --color-brand-primary: var(--color-red-600);
   --color-brand-primary-hover: var(--color-blue-600);
   --color-brand-primary-soft: var(--color-blue-100);
-  --color-brand-primary-contrast: var(--color-white);
+  --color-brand-primary-contrast: var(--color-youtube-red-soft);
 
   --space-1: 4px;
   --space-2: 8px;
