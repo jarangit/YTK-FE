@@ -19,7 +19,7 @@ export default function SearchInput({
       className={clsx(
         'relative flex items-center',
         'h-[var(--search-input-height)] rounded-[var(--radius-sm)] bg-[var(--color-gray-100)]',
-        'transition-colors duration-200 focus-within:bg-white focus-within:ring-1 focus-within:ring-[var(--color-border-subtle)]',
+        'transition-colors duration-200 focus-within:bg-[var(--color-bg-card)] focus-within:ring-1 focus-within:ring-[var(--color-border-subtle)]',
         className,
       )}
     >

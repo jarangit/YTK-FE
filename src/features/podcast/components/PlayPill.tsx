@@ -22,7 +22,7 @@ export default function PlayPill({ duration, isPlaying = false, onClick, classNa
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]',
         isPlaying
           ? 'bg-accent text-[var(--color-accent-contrast)] shadow-[var(--shadow-soft)]'
-          : 'bg-white/90 text-[var(--color-text-primary)] hover:bg-white',
+          : 'bg-[color-mix(in_srgb,var(--color-bg-card)_90%,transparent)] text-[var(--color-text-primary)] hover:bg-[var(--color-bg-card)]',
         className,
       )}
     >

@@ -11,7 +11,7 @@ export default function PageLayout({ children, width = 'content', centered, clas
   return (
     <main
       className={clsx(
-        'min-h-[calc(100vh-var(--app-header-height))] bg-white px-inset-lg py-stack-xl sm:px-8 sm:py-stack-2xl',
+        'min-h-[calc(100vh-var(--app-header-height))] bg-[var(--color-bg-app)] px-inset-lg py-stack-xl sm:px-8 sm:py-stack-2xl',
         centered && 'grid place-items-center',
         className,
       )}

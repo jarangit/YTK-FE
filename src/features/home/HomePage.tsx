@@ -17,7 +17,7 @@ export default function HomePage() {
   const exampleTransitionKey = isExamplePending ? 'loading' : isExampleError ? 'error' : 'success';
 
   return (
-    <main className="min-h-[calc(100vh-64px)] bg-white">
+    <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
       <section className="px-inset-lg pb-14 pt-10 sm:px-8 sm:pb-20 sm:pt-14 lg:pt-16">
         <div className="mx-auto max-w-[1120px]">
           <ContentTransition transitionKey="home-hero">

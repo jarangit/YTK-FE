@@ -19,7 +19,7 @@ function ExampleAnalysisSkeleton() {
     <div
       role="status"
       aria-label={t('home.exampleLoading')}
-      className="overflow-hidden rounded-[32px] border border-border/60 bg-white shadow-[0_20px_80px_rgba(15,23,42,0.06)]"
+      className="overflow-hidden rounded-[32px] border border-border/60 bg-[var(--color-bg-card)] shadow-[0_20px_80px_rgba(15,23,42,0.06)]"
     >
       <span className="sr-only">{t('home.exampleLoading')}</span>
       <div className="grid animate-pulse gap-0 motion-reduce:animate-none lg:grid-cols-[var(--example-analysis-media-width)_minmax(0,1fr)]">
@@ -72,7 +72,7 @@ export default function ExampleAnalysisState({
 
   if (isError || !video) {
     return (
-      <div role="alert" className="rounded-[32px] border border-border/60 bg-white">
+      <div role="alert" className="rounded-[32px] border border-border/60 bg-[var(--color-bg-card)]">
         <StateBlock
           icon={CircleAlert}
           title={t('home.exampleErrorTitle')}

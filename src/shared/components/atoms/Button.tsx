@@ -21,7 +21,7 @@ type LinkButtonProps = ButtonBaseProps & LinkProps;
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: 'bg-accent text-[var(--color-accent-contrast)] hover:bg-accent-hover',
-  secondary: 'border border-border bg-white text-ink hover:border-ink-faint hover:bg-surface',
+  secondary: 'border border-border bg-[var(--color-bg-card)] text-ink hover:border-ink-faint hover:bg-surface',
   ghost: 'bg-surface text-ink hover:bg-[var(--color-bg-hover)]',
   destructive: 'bg-danger text-white hover:bg-danger-hover',
   link: 'h-auto rounded-none p-0 text-accent hover:text-accent-hover',

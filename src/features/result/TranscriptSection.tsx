@@ -69,7 +69,7 @@ export default function TranscriptSection({ transcript }: TranscriptSectionProps
 
   return (
     <>
-      <Card as="section" className="bg-white">
+      <Card as="section" className="bg-[var(--color-bg-card)]">
         <div className="flex items-center gap-inline-md p-inset-md sm:p-inset-lg">
           <button
             type="button"

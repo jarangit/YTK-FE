@@ -58,7 +58,7 @@ export default function SummaryAccordion({ summary, defaultOpen = false }: Props
   };
 
   return (
-    <Card as="section" className="bg-white">
+    <Card as="section" className="bg-[var(--color-bg-card)]">
       <div className="p-inset-md sm:p-inset-lg">
         <p className="text-xs font-semibold uppercase tracking-[0.08em] text-accent">
           {t('summary.quickSummary')}

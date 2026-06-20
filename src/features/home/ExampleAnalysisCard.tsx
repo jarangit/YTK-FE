@@ -12,10 +12,10 @@ export default function ExampleAnalysisCard({ video }: ExampleAnalysisCardProps)
   const navigate = useNavigate();
 
   return (
-    <article className="overflow-hidden rounded-[32px] border border-border/60 bg-white shadow-[0_20px_80px_rgba(15,23,42,0.06)]">
+    <article className="overflow-hidden rounded-[32px] border border-border/60 bg-[var(--color-bg-card)] shadow-[0_20px_80px_rgba(15,23,42,0.06)]">
       <div className="grid gap-0 lg:grid-cols-[var(--example-analysis-media-width)_minmax(0,1fr)]">
         <div className="relative bg-surface p-4 sm:p-5 lg:p-6">
-          <div className="overflow-hidden rounded-[24px] bg-white">
+          <div className="overflow-hidden rounded-[24px] bg-[var(--color-bg-card)]">
             <img
               src={video.thumbnailUrl}
               alt={video.title}

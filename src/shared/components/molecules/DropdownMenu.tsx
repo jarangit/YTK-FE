@@ -65,7 +65,7 @@ export default function DropdownMenu({
         <div
           role="menu"
           className={clsx(
-            'absolute top-[calc(100%+var(--space-2))] z-20 min-w-56 overflow-hidden rounded-card border border-border bg-white p-1 shadow-card-hover',
+            'absolute top-[calc(100%+var(--space-2))] z-20 min-w-56 overflow-hidden rounded-card border border-border bg-[var(--color-bg-card)] p-1 shadow-card-hover',
             align === 'end' ? 'right-0' : 'left-0',
           )}
         >

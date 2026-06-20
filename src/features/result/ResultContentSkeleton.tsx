@@ -24,7 +24,7 @@ export default function ResultContentSkeleton() {
 
 function OutcomeSkeleton() {
   return (
-    <Card padded className="bg-white">
+    <Card padded className="bg-[var(--color-bg-card)]">
       <div className={`${skeletonLine} h-6 w-52`} />
       <div className={`${skeletonLine} mt-stack-sm h-4 w-72 max-w-full`} />
       <div className="mt-stack-md space-y-stack-sm">
@@ -41,7 +41,7 @@ function OutcomeSkeleton() {
 
 function SummarySkeleton() {
   return (
-    <Card className="bg-white">
+    <Card className="bg-[var(--color-bg-card)]">
       <div className="p-inset-md sm:p-inset-lg">
         <div className={`${skeletonLine} h-3 w-24`} />
         <div className="mt-stack-sm max-w-[46rem] space-y-stack-sm">
@@ -70,7 +70,7 @@ function SummarySkeleton() {
 
 function TranscriptSkeleton() {
   return (
-    <Card className="bg-white">
+    <Card className="bg-[var(--color-bg-card)]">
       <div className="flex items-center justify-between gap-inline-md p-inset-md sm:p-inset-lg">
         <div className="min-w-0 flex-1">
           <div className={`${skeletonLine} h-6 w-32`} />

@@ -18,7 +18,7 @@ export default function AppHeader() {
     : t('auth.signIn');
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-white/88 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-[color-mix(in_srgb,var(--color-bg-app)_88%,transparent)] backdrop-blur-xl">
       <div className="mx-auto flex h-[var(--app-header-height)] max-w-[var(--app-header-max-width)] items-center justify-between px-inset-lg sm:px-8">
         <Link to="/" className="flex items-center gap-inline-sm text-ink no-underline">
           <Bookmark className="h-5 w-5 text-accent" />
@@ -69,7 +69,7 @@ export default function AppHeader() {
 
               openSignInModal();
             }}
-            className="inline-flex h-[var(--app-header-control-height)] items-center rounded-full border border-border bg-white px-[var(--app-header-control-padding-x)] text-[length:var(--app-header-control-font-size)] font-semibold text-ink shadow-[var(--app-header-auth-shadow)] transition-colors hover:border-ink-faint hover:bg-surface"
+            className="inline-flex h-[var(--app-header-control-height)] items-center rounded-full border border-border bg-[var(--color-bg-card)] px-[var(--app-header-control-padding-x)] text-[length:var(--app-header-control-font-size)] font-semibold text-ink shadow-[var(--app-header-auth-shadow)] transition-colors hover:border-ink-faint hover:bg-surface"
           >
             {authLabel}
           </button>

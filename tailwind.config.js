@@ -8,7 +8,7 @@ export default {
     extend: {
       colors: {
         surface: {
-          DEFAULT: 'var(--color-gray-50)',
+          DEFAULT: 'var(--color-bg-elevated)',
           card: 'var(--color-bg-card)',
         },
         ink: {

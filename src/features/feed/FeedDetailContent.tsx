@@ -60,7 +60,7 @@ export default function FeedDetailContent({
         <VideoPreviewCard video={video} />
         <OutcomeCard outcomes={video.outcomes} />
         <SummaryAccordion summary={video.summary} />
-        <Card padded as="section" className="bg-white">
+        <Card padded as="section" className="bg-[var(--color-bg-card)]">
           <h2 className="font-display text-lg font-semibold text-ink">{t('keep.title')}</h2>
           <p className="mb-stack-md mt-stack-xs text-sm text-ink-muted">
             {t('keep.desc')}

@@ -52,7 +52,7 @@ export default function ResultPage() {
     content = (
       <main className="min-h-[calc(100vh-64px)] px-inset-lg py-stack-md sm:py-10">
         <div className="mx-auto max-w-read space-y-stack-md sm:space-y-stack-lg">
-          <Card padded as="section" className="bg-white">
+          <Card padded as="section" className="bg-[var(--color-bg-card)]">
             <div className="flex items-start gap-inline-sm">
               <div className="mt-1 rounded-full bg-danger-soft p-2 text-danger">
                 <AlertCircle className="h-5 w-5" />

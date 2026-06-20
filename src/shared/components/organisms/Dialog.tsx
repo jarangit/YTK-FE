@@ -29,7 +29,7 @@ export default function Dialog({ open, onClose, closeLabel, children }: DialogPr
         role="dialog"
         aria-modal="true"
         className={clsx(
-          'reduce-motion-transitions relative w-full max-w-[var(--modal-max-width)] rounded-[var(--modal-radius)] border border-border/60 bg-white p-[var(--modal-padding)] shadow-[var(--modal-shadow)] sm:p-[var(--modal-padding-wide)]',
+          'reduce-motion-transitions relative w-full max-w-[var(--modal-max-width)] rounded-[var(--modal-radius)] border border-border/60 bg-[var(--color-bg-card)] p-[var(--modal-padding)] shadow-[var(--modal-shadow)] sm:p-[var(--modal-padding-wide)]',
           'transition-[opacity,transform] duration-[var(--motion-duration-overlay)] ease-[var(--motion-easing-standard)]',
           open ? 'translate-y-0 scale-100 opacity-100' : 'translate-y-2 scale-[0.98] opacity-0',
         )}

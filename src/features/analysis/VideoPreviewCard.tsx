@@ -18,7 +18,7 @@ export default function VideoPreviewCard({ video, action }: Props) {
     : null;
 
   return (
-    <Card className="bg-white">
+    <Card className="bg-[var(--color-bg-card)]">
       {embedUrl ? (
         <div className="aspect-video overflow-hidden bg-surface">
           <iframe

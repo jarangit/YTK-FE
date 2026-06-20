@@ -13,7 +13,7 @@ export default function AppFooter() {
   const { t } = useTranslation();
 
   return (
-    <footer className="border-t border-border/60 bg-white px-inset-lg py-stack-lg sm:px-8">
+    <footer className="border-t border-border/60 bg-[var(--color-bg-card)] px-inset-lg py-stack-lg sm:px-8">
       <nav className="mx-auto flex max-w-[var(--app-header-max-width)] flex-wrap items-center gap-inline-lg">
         <span className="text-[length:var(--text-caption-size)] font-semibold text-ink">
           {t('app.name')}

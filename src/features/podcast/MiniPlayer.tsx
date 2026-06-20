@@ -31,7 +31,7 @@ export default function MiniPlayer({
       className={clsx(
         'fixed bottom-6 left-1/2 -translate-x-1/2 z-[var(--z-player)]',
         'flex items-center gap-inline-lg h-[var(--mini-player-height)] px-5',
-        'rounded-[var(--radius-xl)] bg-white/80 backdrop-blur-xl',
+        'rounded-[var(--radius-xl)] bg-[color-mix(in_srgb,var(--color-bg-card)_88%,transparent)] backdrop-blur-xl',
         'shadow-[var(--shadow-heavy)] border border-[var(--color-border-subtle)]',
         'min-w-[480px] max-w-[600px]',
         'transition-all duration-300',

@@ -20,7 +20,7 @@ export default function Input({ icon: Icon, invalid, action, className, ...props
           action ? 'pr-[var(--input-padding-right-with-action)]' : 'pr-[var(--input-padding-x)]',
           invalid
             ? 'border-danger focus:border-danger focus:shadow-[var(--input-error-ring)]'
-            : 'border-transparent focus:border-accent focus:bg-white focus:shadow-[var(--input-focus-ring)]',
+            : 'border-transparent focus:border-accent focus:bg-[var(--color-bg-card)] focus:shadow-[var(--input-focus-ring)]',
           className,
         )}
         aria-invalid={invalid || undefined}

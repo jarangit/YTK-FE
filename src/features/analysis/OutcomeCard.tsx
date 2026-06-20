@@ -10,7 +10,7 @@ export default function OutcomeCard({ outcomes }: Props) {
   const { t } = useTranslation();
 
   return (
-    <Card padded className="bg-white">
+    <Card padded className="bg-[var(--color-bg-card)]">
       <h2 className="font-display font-semibold text-lg text-ink mb-stack-xs">
         {t('outcome.title')}
       </h2>

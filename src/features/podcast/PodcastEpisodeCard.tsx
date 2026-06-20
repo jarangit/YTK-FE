@@ -36,7 +36,7 @@ export default function PodcastEpisodeCard({
     <article
       className={clsx(
         'group relative flex-shrink-0 w-[var(--podcast-card-width)] rounded-[var(--radius-lg)] overflow-hidden',
-        'bg-white shadow-[var(--shadow-soft)] transition-all duration-300',
+        'bg-[var(--color-bg-card)] shadow-[var(--shadow-soft)] transition-all duration-300',
         'hover:shadow-[var(--shadow-elevated)] hover:-translate-y-0.5',
         'cursor-pointer',
         className,
