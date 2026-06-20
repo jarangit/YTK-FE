@@ -9,13 +9,26 @@ import {
   saveKeptItem,
 } from '../storage/libraryStorage';
 
+interface ApiEnvelope<T> {
+  data: T;
+  timestamp?: string;
+}
+
+function unwrapLibraryItems(response: KeptItem[] | ApiEnvelope<KeptItem[]>): KeptItem[] {
+  const items = Array.isArray(response) ? response : response.data;
+  return Array.isArray(items) ? items : [];
+}
+
 export async function listLibraryItems(userId: string): Promise<KeptItem[]> {
   if (USE_MOCK_API) {
     await mockDelay();
     return getKeptItems(userId);
   }
 
-  return apiRequest<KeptItem[]>('/library', { query: { userId } });
+  const response = await apiRequest<KeptItem[] | ApiEnvelope<KeptItem[]>>('/library', {
+    query: { userId },
+  });
+  return unwrapLibraryItems(response);
 }
 
 export async function keepVideo(userId: string, video: VideoAnalysis): Promise<KeptItem[]> {
@@ -25,10 +38,11 @@ export async function keepVideo(userId: string, video: VideoAnalysis): Promise<K
     return getKeptItems(userId);
   }
 
-  return apiRequest<KeptItem[]>('/library', {
+  const response = await apiRequest<KeptItem[] | ApiEnvelope<KeptItem[]>>('/library', {
     method: 'POST',
     body: JSON.stringify({ userId, video }),
   });
+  return unwrapLibraryItems(response);
 }
 
 export async function unkeepVideo(userId: string, videoId: string): Promise<KeptItem[]> {
@@ -38,10 +52,11 @@ export async function unkeepVideo(userId: string, videoId: string): Promise<Kept
     return getKeptItems(userId);
   }
 
-  return apiRequest<KeptItem[]>(`/library/${videoId}`, {
+  const response = await apiRequest<KeptItem[] | ApiEnvelope<KeptItem[]>>(`/library/${videoId}`, {
     method: 'DELETE',
     query: { userId },
   });
+  return unwrapLibraryItems(response);
 }
 
 export async function checkKeptVideo(userId: string, videoId: string): Promise<boolean> {
@@ -49,7 +64,7 @@ export async function checkKeptVideo(userId: string, videoId: string): Promise<b
     return isKept(videoId, userId);
   }
 
-  return apiRequest<{ kept: boolean }>(`/library/${videoId}/kept`, {
+  return apiRequest<{ kept: boolean } | ApiEnvelope<{ kept: boolean }>>(`/library/${videoId}/kept`, {
     query: { userId },
-  }).then((response) => response.kept);
+  }).then((response) => ('data' in response ? response.data.kept : response.kept));
 }

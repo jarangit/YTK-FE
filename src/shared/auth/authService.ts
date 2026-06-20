@@ -1,4 +1,9 @@
 import { apiRequest } from '../api/httpClient';
+import {
+  clearStoredAccessToken,
+  readStoredAccessToken,
+  writeStoredAccessToken,
+} from './tokenStorage';
 
 export interface AuthUser {
   id: string;
@@ -21,26 +26,9 @@ interface AuthPayload {
   };
 }
 
-const ACCESS_TOKEN_STORAGE_KEY = 'youtive_access_token';
-
 async function authRequest<T>(path: string, init?: RequestInit): Promise<T> {
   const envelope = await apiRequest<ApiEnvelope<T>>(path, init);
   return envelope.data;
-}
-
-function readStoredAccessToken() {
-  if (typeof localStorage === 'undefined') return '';
-  return localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY) ?? '';
-}
-
-function writeStoredAccessToken(accessToken: string) {
-  if (typeof localStorage === 'undefined') return;
-  localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken);
-}
-
-function clearStoredAccessToken() {
-  if (typeof localStorage === 'undefined') return;
-  localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
 }
 
 function extractAccessToken(payload: AuthPayload) {

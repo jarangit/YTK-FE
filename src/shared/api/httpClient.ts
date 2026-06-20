@@ -1,7 +1,9 @@
 import { API_BASE_URL } from './config';
+import { readStoredAccessToken } from '../auth/tokenStorage';
 
 interface RequestOptions extends RequestInit {
   query?: Record<string, string | number | boolean | undefined>;
+  auth?: boolean;
 }
 
 export class ApiRequestError<T = unknown> extends Error {
@@ -33,14 +35,22 @@ function buildUrl(path: string, query?: RequestOptions['query']) {
 }
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { query, headers, ...init } = options;
+  const { query, headers, auth = true, ...init } = options;
+  const requestHeaders = new Headers(headers);
+  const accessToken = auth ? readStoredAccessToken() : '';
+
+  if (!requestHeaders.has('Content-Type')) {
+    requestHeaders.set('Content-Type', 'application/json');
+  }
+
+  if (accessToken && !requestHeaders.has('Authorization')) {
+    requestHeaders.set('Authorization', `Bearer ${accessToken}`);
+  }
+
   const response = await fetch(buildUrl(path, query), {
     ...init,
     credentials: init.credentials ?? 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers,
-    },
+    headers: requestHeaders,
   });
 
   if (!response.ok) {

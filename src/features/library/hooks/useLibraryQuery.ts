@@ -40,7 +40,7 @@ export function useLibraryQuery() {
       libraryKeys.list(userId),
     );
 
-    if (cachedItems) {
+    if (Array.isArray(cachedItems)) {
       return cachedItems.some((item) => item.video.id === videoId);
     }
 
