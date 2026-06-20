@@ -30,6 +30,7 @@ export function formatTranscriptTime(totalSeconds: number): string {
 
 export default function TranscriptSection({ transcript }: TranscriptSectionProps) {
   const { t } = useTranslation();
+  const [sectionOpen, setSectionOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -68,14 +69,27 @@ export default function TranscriptSection({ transcript }: TranscriptSectionProps
 
   return (
     <>
-      <Card padded as="section" className="bg-white">
-        <div className="flex flex-col gap-stack-md sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <h2 className="font-display text-lg font-semibold text-ink">{t('transcript.title')}</h2>
-            <p className="mt-stack-xs text-sm text-ink-muted">{t('transcript.subtitle')}</p>
-          </div>
+      <Card as="section" className="bg-white">
+        <div className="flex items-center gap-inline-md p-inset-md sm:p-inset-lg">
+          <button
+            type="button"
+            onClick={() => setSectionOpen((value) => !value)}
+            className="flex min-w-0 flex-1 items-center justify-between gap-inline-md rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+            aria-expanded={sectionOpen}
+            aria-controls="transcript-content"
+          >
+            <div>
+              <h2 className="font-display text-lg font-semibold text-ink">{t('transcript.title')}</h2>
+              <p className="mt-stack-xs text-sm text-ink-muted">{t('transcript.subtitle')}</p>
+            </div>
+            <ChevronDown
+              className={`h-4 w-4 shrink-0 text-accent transition-transform duration-[var(--motion-duration-standard)] ${
+                sectionOpen ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
 
-          {transcript.length > 0 && (
+          {sectionOpen && transcript.length > 0 && (
             <DropdownMenu
               label={t('transcript.copy')}
               icon={Copy}
@@ -97,38 +111,49 @@ export default function TranscriptSection({ transcript }: TranscriptSectionProps
           )}
         </div>
 
-        {transcript.length === 0 ? (
-          <p className="mt-stack-lg rounded-card bg-surface p-inset-md text-sm text-ink-muted">
-            {t('transcript.empty')}
-          </p>
-        ) : (
-          <>
-            <ol className="mt-stack-lg divide-y divide-border/60">
-              {visibleTranscript.map((segment, index) => (
-                <li key={`${segment.startSeconds}-${index}`} className="grid grid-cols-[72px_1fr] gap-inline-md py-stack-md first:pt-0 last:pb-0">
-                  <span className="inline-flex items-start gap-inline-xs font-mono text-xs font-semibold text-accent">
-                    <Clock className="mt-px h-3.5 w-3.5 shrink-0" />
-                    {formatTranscriptTime(segment.startSeconds)}
-                  </span>
-                  <p className="text-sm leading-6 text-ink">{segment.text}</p>
-                </li>
-              ))}
-            </ol>
+        <div
+          id="transcript-content"
+          className={`grid transition-[grid-template-rows,opacity] duration-[var(--motion-duration-standard)] ${
+            sectionOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+          }`}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <div className="border-t border-border/50 px-inset-md pb-inset-md pt-inset-md sm:px-inset-lg sm:pb-inset-lg">
+              {transcript.length === 0 ? (
+                <p className="rounded-card bg-surface p-inset-md text-sm text-ink-muted">
+                  {t('transcript.empty')}
+                </p>
+              ) : (
+                <>
+                  <ol className="divide-y divide-border/60">
+                    {visibleTranscript.map((segment, index) => (
+                      <li key={`${segment.startSeconds}-${index}`} className="grid grid-cols-[72px_1fr] gap-inline-md py-stack-md first:pt-0 last:pb-0">
+                        <span className="inline-flex items-start gap-inline-xs font-mono text-xs font-semibold text-accent">
+                          <Clock className="mt-px h-3.5 w-3.5 shrink-0" />
+                          {formatTranscriptTime(segment.startSeconds)}
+                        </span>
+                        <p className="text-sm leading-6 text-ink">{segment.text}</p>
+                      </li>
+                    ))}
+                  </ol>
 
-            {transcript.length > PREVIEW_SEGMENT_COUNT && (
-              <Button
-                variant="ghost"
-                size="sm"
-                iconRight={expanded ? ChevronUp : ChevronDown}
-                onClick={() => setExpanded((value) => !value)}
-                className="mt-stack-lg"
-                aria-expanded={expanded}
-              >
-                {expanded ? t('transcript.collapse') : t('transcript.expand', { count: transcript.length })}
-              </Button>
-            )}
-          </>
-        )}
+                  {transcript.length > PREVIEW_SEGMENT_COUNT && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      iconRight={expanded ? ChevronUp : ChevronDown}
+                      onClick={() => setExpanded((value) => !value)}
+                      className="mt-stack-lg"
+                      aria-expanded={expanded}
+                    >
+                      {expanded ? t('transcript.collapse') : t('transcript.expand', { count: transcript.length })}
+                    </Button>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
       </Card>
 
       <Toast visible={copyStatus !== 'idle'}>
