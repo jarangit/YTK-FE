@@ -62,8 +62,8 @@
   --input-focus-ring: 0 0 0 4px rgba(0, 113, 227, 0.12);
   --input-error-ring: 0 0 0 3px rgba(239, 68, 68, 0.15);
   --url-input-shell-radius: var(--radius-newsroom-pill);
-  --url-input-shell-padding: var(--space-2);
-  --url-input-shell-shadow: 0 24px 60px rgba(15, 23, 42, 0.06);
+  --url-input-shell-padding: 14px;
+  --url-input-shell-shadow: 0 28px 70px rgba(15, 23, 42, 0.08);
   --url-input-submit-min-width: 170px;
   --control-size-sm: var(--space-8);
   --control-size-md: var(--space-10);

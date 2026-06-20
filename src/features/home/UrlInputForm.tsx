@@ -57,8 +57,8 @@ export default function UrlInputForm({ onAnalyze, compact }: Props) {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="rounded-[var(--url-input-shell-radius)] border border-border/70 bg-white p-[var(--url-input-shell-padding)] shadow-[var(--url-input-shell-shadow)]">
-        <div className={clsx('flex gap-2', compact ? 'flex-col' : 'flex-col sm:flex-row')}>
+      <div className="rounded-[var(--url-input-shell-radius)] border border-border/80 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,250,252,0.98))] p-[var(--url-input-shell-padding)] shadow-[var(--url-input-shell-shadow)]">
+        <div className={clsx('flex gap-3', compact ? 'flex-col' : 'flex-col sm:flex-row sm:items-stretch')}>
           <FormField id="youtube-url" error={error} className="flex-1">
             <Input
               id="youtube-url"
@@ -75,6 +75,7 @@ export default function UrlInputForm({ onAnalyze, compact }: Props) {
               autoFocus={!compact}
               required
               disabled={isLoading}
+              className="text-[16px] sm:text-[17px]"
               action={!isLoading && (
                 <Button
                   type="button"
@@ -98,7 +99,7 @@ export default function UrlInputForm({ onAnalyze, compact }: Props) {
             variant="primary"
             disabled={isLoading}
             loading={isLoading}
-            className="sm:min-w-[var(--url-input-submit-min-width)]"
+            className="px-7 shadow-[0_14px_30px_rgba(0,113,227,0.18)] sm:min-w-[var(--url-input-submit-min-width)]"
           >
             {isLoading ? <span className="hidden sm:inline">{t('home.analyzing')}</span> : t('home.submit')}
           </Button>
