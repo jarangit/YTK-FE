@@ -211,6 +211,16 @@ const th = {
     concepts: 'แนวคิดที่เกี่ยวข้อง',
     deepQuestions: 'คำถามเชิงลึก',
   },
+  analysisExtras: {
+    title: 'การวิเคราะห์เพิ่มเติม',
+    subtitle: 'ดูคำอธิบายเชิงลึก ตัวอย่าง และข้อจำกัดที่อยู่เบื้องหลังสรุปนี้',
+    detailedExplanation: 'คำอธิบายแบบละเอียด',
+    importantDetails: 'รายละเอียดสำคัญ',
+    examples: 'ตัวอย่าง',
+    limitations: 'ข้อจำกัด',
+    untitledTopic: 'หัวข้อ {{index}}',
+    exampleLabel: 'ตัวอย่าง {{index}}',
+  },
   keep: {
     title: 'เก็บไว้ทีหลัง',
     desc: 'บันทึกไว้ในคลังเพื่อกลับมาทบทวนได้ทุกเมื่อที่ต้องการ',

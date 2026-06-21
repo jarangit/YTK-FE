@@ -1,5 +1,7 @@
 import type {
   AnalysisSummary,
+  DetailedExplanation,
+  ExampleItem,
   KeyInsight,
   MentalModel,
   ResearchRoadmap,
@@ -37,14 +39,36 @@ interface BackendTranscriptSegment {
 
 interface BackendAnalysisPayload {
   id: string;
-  language: AnalysisLanguage;
-  outcomes?: unknown[];
-  summary?: unknown;
-  oneLineSummary?: unknown;
-  keyInsights?: unknown;
-  mentalModel?: unknown;
-  practicalTakeaways?: unknown;
-  researchRoadmap?: unknown;
+  language: string;
+  summary: string;
+  detailedExplanation: Array<{
+    topic: string;
+    explanation: string;
+  }>;
+  importantDetails: string[];
+  examples: Array<{
+    topic: string;
+    example: string;
+  }>;
+  limitations: string[];
+  keyInsights: Array<{
+    insight: string;
+    whyImportant: string;
+    mindsetChange: string;
+  }>;
+  mentalModel: {
+    name: string;
+    steps: string[];
+    description: string;
+  } | null;
+  practicalTakeaways: string[];
+  researchRoadmap: {
+    tools: string[];
+    trends: string[];
+    concepts: string[];
+    deepQuestions: string[];
+  } | null;
+  oneLineSummary: string;
   createdAt: string;
 }
 
@@ -113,23 +137,6 @@ function parseClockTimeToSeconds(value?: string) {
   return parts[0] ?? 0;
 }
 
-function normalizeOutcomes(outcomes?: unknown[]) {
-  if (!Array.isArray(outcomes)) return [];
-
-  return outcomes
-    .map((item) => {
-      if (typeof item === 'string') return item;
-      if (item && typeof item === 'object') {
-        const record = item as Record<string, unknown>;
-        return [record.title, record.outcome, record.text, record.description]
-          .find((value) => typeof value === 'string' && value.trim().length > 0) as string | undefined;
-      }
-
-      return undefined;
-    })
-    .filter((item): item is string => Boolean(item));
-}
-
 function normalizeSummaryList(value: unknown) {
   if (!Array.isArray(value)) return [];
 
@@ -149,6 +156,30 @@ function normalizeSummaryList(value: unknown) {
 
 function normalizeText(value: unknown) {
   return typeof value === 'string' ? value.trim() : '';
+}
+
+function normalizeDetailedExplanation(value: unknown): DetailedExplanation[] {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
+    .map((item) => ({
+      topic: normalizeText(item.topic),
+      explanation: normalizeText(item.explanation),
+    }))
+    .filter((item) => item.topic || item.explanation);
+}
+
+function normalizeExamples(value: unknown): ExampleItem[] {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
+    .map((item) => ({
+      topic: normalizeText(item.topic),
+      example: normalizeText(item.example),
+    }))
+    .filter((item) => item.topic || item.example);
 }
 
 function normalizeKeyInsights(value: unknown): KeyInsight[] {
@@ -199,6 +230,9 @@ function normalizeSummary(analysis?: BackendAnalysisPayload | null): AnalysisSum
     return {
       summary,
       oneLineSummary: summary,
+      detailedExplanation: [],
+      importantDetails: [],
+      examples: [],
       keyInsights: normalizeSummaryList(legacy.keyPoints).map((insight, index) => ({
         insight,
         whyImportant: normalizeSummaryList(legacy.usefulExamples)[index] ?? '',
@@ -207,17 +241,34 @@ function normalizeSummary(analysis?: BackendAnalysisPayload | null): AnalysisSum
       mentalModel: null,
       practicalTakeaways: normalizeSummaryList(legacy.thingsToRemember),
       researchRoadmap: normalizeResearchRoadmap(null),
+      limitations: [],
     };
   }
 
   return {
     summary: normalizeText(rawSummary),
     oneLineSummary: normalizeText(analysis?.oneLineSummary),
+    detailedExplanation: normalizeDetailedExplanation(analysis?.detailedExplanation),
+    importantDetails: normalizeSummaryList(analysis?.importantDetails),
+    examples: normalizeExamples(analysis?.examples),
     keyInsights: normalizeKeyInsights(analysis?.keyInsights),
     mentalModel: normalizeMentalModel(analysis?.mentalModel),
     practicalTakeaways: normalizeSummaryList(analysis?.practicalTakeaways),
     researchRoadmap: normalizeResearchRoadmap(analysis?.researchRoadmap),
+    limitations: normalizeSummaryList(analysis?.limitations),
   };
+}
+
+function normalizeDerivedOutcomes(analysis?: BackendAnalysisPayload | null): string[] {
+  if (!analysis) return [];
+
+  const derived = [
+    ...normalizeSummaryList(analysis.practicalTakeaways),
+    ...normalizeSummaryList(analysis.importantDetails),
+    ...normalizeDetailedExplanation(analysis.detailedExplanation).map((item) => item.topic || item.explanation),
+  ];
+
+  return Array.from(new Set(derived.filter((item) => item.trim().length > 0))).slice(0, 4);
 }
 
 function normalizeTranscriptSegment(segment: BackendTranscriptSegment): TranscriptSegment {
@@ -238,7 +289,7 @@ export function normalizeVideoResponse(payload: BackendVideoAnalysisResponse): V
     duration: formatDuration(payload.duration ?? 0),
     thumbnailUrl: payload.thumbnail ?? '',
     videoUrl: payload.youtubeUrl,
-    outcomes: normalizeOutcomes(payload.analysis?.outcomes),
+    outcomes: normalizeDerivedOutcomes(payload.analysis),
     summary: normalizeSummary(payload.analysis),
     keywords: [],
     transcript: Array.isArray(payload.transcript)

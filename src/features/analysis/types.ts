@@ -10,6 +10,16 @@ export interface KeyInsight {
   mindsetChange: string;
 }
 
+export interface DetailedExplanation {
+  topic: string;
+  explanation: string;
+}
+
+export interface ExampleItem {
+  topic: string;
+  example: string;
+}
+
 export interface MentalModel {
   name: string;
   description: string;
@@ -26,10 +36,14 @@ export interface ResearchRoadmap {
 export interface AnalysisSummary {
   summary: string;
   oneLineSummary: string;
+  detailedExplanation: DetailedExplanation[];
+  importantDetails: string[];
+  examples: ExampleItem[];
   keyInsights: KeyInsight[];
   mentalModel: MentalModel | null;
   practicalTakeaways: string[];
   researchRoadmap: ResearchRoadmap;
+  limitations: string[];
 }
 
 export interface LegacyAnalysisSummary {
@@ -43,6 +57,9 @@ export function normalizeLegacySummary(summary: LegacyAnalysisSummary): Analysis
   return {
     summary: summary.bigIdea,
     oneLineSummary: summary.bigIdea,
+    detailedExplanation: [],
+    importantDetails: [],
+    examples: [],
     keyInsights: summary.keyPoints.map((insight, index) => ({
       insight,
       whyImportant: summary.usefulExamples[index] ?? '',
@@ -56,6 +73,7 @@ export function normalizeLegacySummary(summary: LegacyAnalysisSummary): Analysis
       concepts: [],
       deepQuestions: [],
     },
+    limitations: [],
   };
 }
 

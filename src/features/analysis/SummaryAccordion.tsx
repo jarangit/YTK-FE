@@ -3,7 +3,6 @@ import {
   Check,
   ChevronDown,
   Compass,
-  Lightbulb,
   ListChecks,
   MessageCircleQuestion,
   RefreshCw,
@@ -12,6 +11,7 @@ import {
   TrendingUp,
   Wrench,
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import type { AnalysisSummary, ResearchRoadmap } from './types';
@@ -22,7 +22,7 @@ interface Props {
   defaultOpen?: boolean;
 }
 
-type DetailSection = 'fullSummary' | 'mentalModel' | 'researchRoadmap';
+type DetailSection = 'mentalModel' | 'researchRoadmap';
 type RoadmapKey = keyof ResearchRoadmap;
 
 const roadmapSections: Array<{
@@ -181,19 +181,6 @@ export default function SummaryAccordion({ summary, defaultOpen = false }: Props
             </section>
           )}
 
-          {summary.summary && (
-            <DetailAccordion
-              id={`${detailsId}-full-summary`}
-              label={t('summary.overview')}
-              count={null}
-              open={openSections.has('fullSummary')}
-              onToggle={() => toggleSection('fullSummary')}
-              icon={Lightbulb}
-            >
-              <p className="max-w-[46rem] text-sm leading-7 text-ink-muted">{summary.summary}</p>
-            </DetailAccordion>
-          )}
-
           {summary.mentalModel && (
             <DetailAccordion
               id={`${detailsId}-mental-model`}
@@ -293,7 +280,7 @@ function DetailAccordion({
   count: number | null;
   open: boolean;
   onToggle: () => void;
-  icon: typeof Lightbulb;
+  icon: LucideIcon;
   children: React.ReactNode;
 }) {
   return (

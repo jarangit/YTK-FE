@@ -28,10 +28,14 @@ interface ApiEnvelope<T> {
 const emptySummary: AnalysisSummary = {
   summary: '',
   oneLineSummary: '',
+  detailedExplanation: [],
+  importantDetails: [],
+  examples: [],
   keyInsights: [],
   mentalModel: null,
   practicalTakeaways: [],
   researchRoadmap: { concepts: [], tools: [], deepQuestions: [], trends: [] },
+  limitations: [],
 };
 
 function normalizeHistoryItem(item: RawHistoryItem): HistoryItem {
@@ -57,6 +61,9 @@ function normalizeHistoryItem(item: RawHistoryItem): HistoryItem {
       summary: {
         ...emptySummary,
         ...analysis,
+        detailedExplanation: Array.isArray(analysis.detailedExplanation) ? analysis.detailedExplanation : [],
+        importantDetails: Array.isArray(analysis.importantDetails) ? analysis.importantDetails : [],
+        examples: Array.isArray(analysis.examples) ? analysis.examples : [],
         keyInsights: Array.isArray(analysis.keyInsights) ? analysis.keyInsights : [],
         mentalModel: analysis.mentalModel ?? null,
         practicalTakeaways: Array.isArray(analysis.practicalTakeaways) ? analysis.practicalTakeaways : [],
@@ -64,6 +71,7 @@ function normalizeHistoryItem(item: RawHistoryItem): HistoryItem {
           ...emptySummary.researchRoadmap,
           ...(analysis.researchRoadmap ?? {}),
         },
+        limitations: Array.isArray(analysis.limitations) ? analysis.limitations : [],
       },
     },
   };

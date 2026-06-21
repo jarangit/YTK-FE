@@ -212,6 +212,16 @@ const en = {
     concepts: 'Related Concepts',
     deepQuestions: 'Deep Questions',
   },
+  analysisExtras: {
+    title: 'Expanded Analysis',
+    subtitle: 'Explore the deeper explanation, examples, and caveats behind this summary.',
+    detailedExplanation: 'Detailed Explanation',
+    importantDetails: 'Important Details',
+    examples: 'Examples',
+    limitations: 'Limitations',
+    untitledTopic: 'Topic {{index}}',
+    exampleLabel: 'Example {{index}}',
+  },
   keep: {
     title: 'Keep for later',
     desc: 'Save this to your library so you can revisit it when you need it.',

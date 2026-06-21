@@ -3,6 +3,8 @@ import KeepAction from '../analysis/KeepAction';
 import OutcomeCard from '../analysis/OutcomeCard';
 import SummaryAccordion from '../analysis/SummaryAccordion';
 import VideoPreviewCard from '../analysis/VideoPreviewCard';
+import AnalysisExtrasSection from './AnalysisExtrasSection';
+import OverviewSection from './OverviewSection';
 import TranscriptSection from './TranscriptSection';
 
 interface ResultContentProps {
@@ -31,8 +33,10 @@ export default function ResultContent({
           />
         )}
       />
+      <OverviewSection summary={video.summary} />
       <OutcomeCard outcomes={video.outcomes} />
       <SummaryAccordion summary={video.summary} />
+      <AnalysisExtrasSection summary={video.summary} />
       <TranscriptSection transcript={video.transcript} />
     </div>
   );

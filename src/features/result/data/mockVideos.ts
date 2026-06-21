@@ -1,7 +1,23 @@
 import { normalizeLegacySummary, type VideoAnalysis } from '../../analysis/types';
 
+function withExpandedSummary(
+  video: VideoAnalysis,
+  extras: Pick<
+    VideoAnalysis['summary'],
+    'detailedExplanation' | 'importantDetails' | 'examples' | 'limitations'
+  >,
+): VideoAnalysis {
+  return {
+    ...video,
+    summary: {
+      ...video.summary,
+      ...extras,
+    },
+  };
+}
+
 export const mockVideos: VideoAnalysis[] = [
-  {
+  withExpandedSummary({
     id: 'english-speaking',
     videoId: 'dQw4w9WgXcQ',
     title: 'English Speaking Practice for Beginners',
@@ -50,8 +66,38 @@ export const mockVideos: VideoAnalysis[] = [
       { startSeconds: 176, endSeconds: 214, text: 'If you need more time to think, use a natural filler like well or let me think.' },
       { startSeconds: 214, endSeconds: 252, text: 'Practice each sentence out loud three times. Repetition will help the words feel natural when you speak.' },
     ],
-  },
-  {
+  }, {
+    detailedExplanation: [
+      {
+        topic: 'Start with routines, not advanced grammar',
+        explanation: 'The video argues that confidence grows faster when learners practice repeatable daily sentences before worrying about perfect grammar rules.',
+      },
+      {
+        topic: 'Use sentence patterns as building blocks',
+        explanation: 'Instead of memorizing isolated words, the speaker recommends practicing short reusable patterns such as "I wake up at..." and "I usually..." so speaking feels more automatic.',
+      },
+    ],
+    importantDetails: [
+      'Present simple is used because the examples describe repeated habits.',
+      'Fillers like "Well..." and "Let me think..." help reduce hesitation during real conversation.',
+      'Repeating phrases out loud is presented as the key practice method.',
+    ],
+    examples: [
+      {
+        topic: 'Daily routine',
+        example: '"I wake up at 6am, have breakfast, and go to work by bus."',
+      },
+      {
+        topic: 'Weekend conversation',
+        example: '"It was great. I visited my friends on Saturday and stayed home on Sunday."',
+      },
+    ],
+    limitations: [
+      'The lesson focuses on beginner-friendly routines, so it does not cover more complex conversation topics.',
+      'Learners still need speaking practice with other people to build real-time confidence.',
+    ],
+  }),
+  withExpandedSummary({
     id: 'product-discovery',
     videoId: 'dQw4w9WgXcQ',
     title: 'How to Find Real Customer Problems',
@@ -98,8 +144,29 @@ export const mockVideos: VideoAnalysis[] = [
       { startSeconds: 131, endSeconds: 169, text: 'Use the five whys to move from the visible symptom toward the root cause.' },
       { startSeconds: 169, endSeconds: 207, text: 'Finally, compare problems by frequency, impact, and the number of customers who experience them.' },
     ],
-  },
-  {
+  }, {
+    detailedExplanation: [
+      {
+        topic: 'Separate requests from root problems',
+        explanation: 'The core idea is that customer requests are clues, not answers. Teams need to investigate the situation behind a request before deciding what to build.',
+      },
+    ],
+    importantDetails: [
+      'Recent real experiences are more trustworthy than hypothetical answers.',
+      'Workarounds are strong evidence that a problem is painful enough to solve manually.',
+      'Frequency, impact, and reach are the main prioritization filters.',
+    ],
+    examples: [
+      {
+        topic: 'Feature request translation',
+        example: '"Better search" may really mean "I cannot find my old orders quickly."',
+      },
+    ],
+    limitations: [
+      'Interview-driven discovery can miss silent user segments if recruitment is narrow.',
+    ],
+  }),
+  withExpandedSummary({
     id: 'react-state',
     videoId: 'dQw4w9WgXcQ',
     title: 'React State Management Explained',
@@ -147,7 +214,31 @@ export const mockVideos: VideoAnalysis[] = [
       { startSeconds: 166, endSeconds: 205, text: 'Choose a global state library only after the application has a real coordination problem that local state cannot solve cleanly.' },
       { startSeconds: 3661, endSeconds: 3694, text: 'For long recordings, timestamps continue to include the hour so copied transcripts remain easy to navigate.' },
     ],
-  },
+  }, {
+    detailedExplanation: [
+      {
+        topic: 'Choose the lightest state tool first',
+        explanation: 'The video frames state management as a ladder: start local, move upward only when coordination demands it, and avoid introducing global tools before the problem is real.',
+      },
+    ],
+    importantDetails: [
+      'Props drilling across a few levels is not automatically a design failure.',
+      'Server state has different concerns than local UI state and should be handled separately.',
+    ],
+    examples: [
+      {
+        topic: 'Local state',
+        example: 'A single form field or modal toggle usually belongs in `useState`.',
+      },
+      {
+        topic: 'Shared state',
+        example: 'Auth and theme are good examples of simple app-wide state for Context.',
+      },
+    ],
+    limitations: [
+      'The guidance is intentionally simplified and may not cover edge cases in large multi-team applications.',
+    ],
+  }),
 ];
 
 export function findVideoAnalysis(url: string): VideoAnalysis | undefined {
