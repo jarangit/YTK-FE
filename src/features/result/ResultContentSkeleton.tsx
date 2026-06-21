@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import Card from '../../shared/components/atoms/Card';
 
-const skeletonLine = 'rounded-full bg-border/70';
+const skeletonLine = 'rounded-full bg-[var(--color-border-medium)]';
 
 export default function ResultContentSkeleton() {
   const { t } = useTranslation();
@@ -30,7 +30,7 @@ function OutcomeSkeleton() {
       <div className="mt-stack-md space-y-stack-sm">
         {[88, 72, 80, 64].map((width) => (
           <div key={width} className="flex items-center gap-inline-sm">
-            <div className="h-4 w-4 shrink-0 rounded-full bg-border/70" />
+            <div className="h-4 w-4 shrink-0 rounded-full bg-[var(--color-border-medium)]" />
             <div className={`${skeletonLine} h-4`} style={{ width: `${width}%` }} />
           </div>
         ))}
@@ -53,7 +53,7 @@ function SummarySkeleton() {
           <div className="mt-stack-sm space-y-stack-sm">
             {[84, 70, 78].map((width) => (
               <div key={width} className="flex items-center gap-inline-sm">
-                <div className="h-5 w-5 shrink-0 rounded-full bg-border/70" />
+                <div className="h-5 w-5 shrink-0 rounded-full bg-[var(--color-border-medium)]" />
                 <div className={`${skeletonLine} h-4`} style={{ width: `${width}%` }} />
               </div>
             ))}
@@ -76,7 +76,7 @@ function TranscriptSkeleton() {
           <div className={`${skeletonLine} h-6 w-32`} />
           <div className={`${skeletonLine} mt-stack-xs h-4 w-80 max-w-full`} />
         </div>
-        <div className="h-4 w-4 shrink-0 rounded bg-border/70" />
+        <div className="h-4 w-4 shrink-0 rounded bg-[var(--color-border-medium)]" />
       </div>
     </Card>
   );
