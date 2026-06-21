@@ -41,7 +41,7 @@ export default function VideoPreviewCard({ video, action }: Props) {
       )}
       <div className="p-inset-md sm:p-inset-lg">
         <div className="flex flex-col gap-stack-md sm:flex-row sm:items-start sm:justify-between">
-          <h2 className="font-display text-lg font-semibold leading-snug text-ink">
+          <h2 className="font-display text-xl font-semibold leading-snug tracking-[-0.02em] text-ink sm:text-2xl">
             {video.title}
           </h2>
           {action && <div className="shrink-0">{action}</div>}

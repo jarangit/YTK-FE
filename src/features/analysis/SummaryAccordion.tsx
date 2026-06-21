@@ -63,8 +63,8 @@ export default function SummaryAccordion({ summary, defaultOpen = false }: Props
         <p className="text-xs font-semibold uppercase tracking-[0.08em] text-accent">
           {t('summary.quickSummary')}
         </p>
-        <h2 className="mt-stack-xs max-w-[46rem] font-display text-xl font-semibold leading-[1.55] text-ink sm:text-2xl">
-          {summary.oneLineSummary || summary.summary}
+        <h2 className="mt-stack-xs max-w-[42rem] font-display text-lg font-semibold leading-[1.45] text-ink sm:text-xl">
+          {t('summary.takeawaysLead')}
         </h2>
 
         {summary.practicalTakeaways.length > 0 && (

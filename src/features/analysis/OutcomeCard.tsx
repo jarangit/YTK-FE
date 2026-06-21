@@ -9,9 +9,11 @@ interface Props {
 export default function OutcomeCard({ outcomes }: Props) {
   const { t } = useTranslation();
 
+  if (outcomes.length === 0) return null;
+
   return (
-    <Card padded className="bg-[var(--color-bg-card)]">
-      <h2 className="font-display font-semibold text-lg text-ink mb-stack-xs">
+    <Card padded className="border-border/70 bg-surface">
+      <h2 className="font-display font-semibold text-base text-ink mb-stack-xs">
         {t('outcome.title')}
       </h2>
       <p className="text-sm text-ink-muted mb-stack-md">
