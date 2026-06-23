@@ -79,6 +79,8 @@ export function normalizeLegacySummary(summary: LegacyAnalysisSummary): Analysis
 
 export interface VideoAnalysis {
   id: string;
+  analysisId: string;
+  language?: 'en' | 'th';
   videoId: string;
   title: string;
   channelName: string;

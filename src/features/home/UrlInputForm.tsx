@@ -49,7 +49,7 @@ export default function UrlInputForm({ onAnalyze, compact }: Props) {
         language: i18n.language === 'th' ? 'th' : 'en',
       });
 
-      navigate(`/result?videoId=${encodeURIComponent(response.analysisId)}`);
+      navigate(`/result?analysisId=${encodeURIComponent(response.analysisId)}`);
     } catch (error) {
       if (error instanceof ApiRequestError) {
         const code = (error.data as { data?: { code?: string } } | undefined)?.data?.code;

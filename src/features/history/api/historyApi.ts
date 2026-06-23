@@ -7,8 +7,9 @@ import type { HistoryItem } from '../types';
 
 interface RawHistoryItem {
   id: string;
-  videoId: string;
+  analysisId: string;
   createdAt: string;
+  analysis?: RawHistoryAnalysis | null;
   video: {
     id: string;
     youtubeVideoId: string;
@@ -16,9 +17,23 @@ interface RawHistoryItem {
     title?: string;
     thumbnail?: string;
     channelName?: string;
-    status?: BackendAnalysisStatus;
-    analysis?: Partial<AnalysisSummary> | null;
   };
+}
+
+interface RawHistoryAnalysis {
+  id?: string;
+  language?: 'en' | 'th';
+  status?: BackendAnalysisStatus;
+  detailedExplanation?: AnalysisSummary['detailedExplanation'];
+  importantDetails?: AnalysisSummary['importantDetails'];
+  examples?: AnalysisSummary['examples'];
+  keyInsights?: AnalysisSummary['keyInsights'];
+  mentalModel?: AnalysisSummary['mentalModel'];
+  practicalTakeaways?: AnalysisSummary['practicalTakeaways'];
+  researchRoadmap?: AnalysisSummary['researchRoadmap'];
+  limitations?: AnalysisSummary['limitations'];
+  oneLineSummary?: string;
+  summary?: string;
 }
 
 interface ApiEnvelope<T> {
@@ -39,15 +54,18 @@ const emptySummary: AnalysisSummary = {
 };
 
 function normalizeHistoryItem(item: RawHistoryItem): HistoryItem {
-  const analysis = item.video.analysis ?? {};
+  const analysis: RawHistoryAnalysis = item.analysis ?? {};
 
   return {
     id: item.id,
-    videoId: item.videoId,
+    analysisId: item.analysisId,
     createdAt: item.createdAt,
-    status: item.video.status ?? 'COMPLETED',
+    status: analysis.status ?? 'COMPLETED',
+    language: analysis.language,
     video: {
       id: item.video.id,
+      analysisId: item.analysisId,
+      language: analysis.language,
       videoId: item.video.youtubeVideoId,
       videoUrl: item.video.youtubeUrl,
       title: item.video.title ?? item.video.youtubeUrl,
@@ -82,9 +100,10 @@ export async function listVideoHistory(): Promise<HistoryItem[]> {
     await mockDelay();
     return mockVideos.map((video, index) => ({
       id: `history-${video.id}`,
-      videoId: video.id,
+      analysisId: video.analysisId,
       createdAt: new Date(Date.now() - index * 86_400_000).toISOString(),
       status: 'COMPLETED',
+      language: video.language,
       video,
     }));
   }

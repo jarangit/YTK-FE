@@ -20,6 +20,10 @@ export function useLibraryQuery() {
     enabled: isAuthenticated && userId.length > 0,
   });
 
+  const getCachedItems = useCallback(() => (
+    queryClient.getQueryData<Awaited<ReturnType<typeof listLibraryItems>>>(libraryKeys.list(userId)) ?? []
+  ), [queryClient, userId]);
+
   const keepMutation = useMutation({
     mutationFn: (video: VideoAnalysis) => keepVideo(userId, video),
     onSuccess: (items) => {
@@ -28,32 +32,34 @@ export function useLibraryQuery() {
   });
 
   const unkeepMutation = useMutation({
-    mutationFn: (videoId: string) => unkeepVideo(userId, videoId),
+    mutationFn: (identifier: string) => {
+      const cachedItems = getCachedItems();
+      const matchedItem = cachedItems.find((item) => item.id === identifier || item.analysisId === identifier);
+      return unkeepVideo(userId, matchedItem?.id ?? identifier);
+    },
     onSuccess: (items) => {
       queryClient.setQueryData(libraryKeys.list(userId), items);
     },
   });
 
-  const check = useCallback((videoId: string) => {
+  const check = useCallback((analysisId: string) => {
     if (!userId) return false;
-    const cachedItems = queryClient.getQueryData<Awaited<ReturnType<typeof listLibraryItems>>>(
-      libraryKeys.list(userId),
-    );
+    const cachedItems = getCachedItems();
 
     if (Array.isArray(cachedItems)) {
-      return cachedItems.some((item) => item.video.id === videoId);
+      return cachedItems.some((item) => item.analysisId === analysisId);
     }
 
-    void checkKeptVideo(userId, videoId);
+    void checkKeptVideo(userId, analysisId);
     return false;
-  }, [queryClient, userId]);
+  }, [getCachedItems, userId]);
 
   return {
     items: query.data ?? [],
     hydrated: !isAuthenticated || query.isFetched || query.isSuccess,
     isLoading: query.isLoading,
     add: (video: VideoAnalysis) => keepMutation.mutate(video),
-    remove: (videoId: string) => unkeepMutation.mutate(videoId),
+    remove: (libraryItemId: string) => unkeepMutation.mutate(libraryItemId),
     check,
   };
 }

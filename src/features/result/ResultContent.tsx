@@ -10,7 +10,7 @@ import TranscriptSection from './TranscriptSection';
 interface ResultContentProps {
   video: VideoAnalysis;
   onKeep: (video: VideoAnalysis) => void;
-  onRemove: (videoId: string) => void;
+  onRemove: (analysisId: string) => void;
   initiallyKept: boolean;
 }
 

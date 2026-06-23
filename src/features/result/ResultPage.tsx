@@ -12,8 +12,8 @@ import ResultContentSkeleton from './ResultContentSkeleton';
 export default function ResultPage() {
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-  const videoId = searchParams.get('videoId') ?? searchParams.get('analysisId') ?? '';
-  const { data, isLoading, isError } = useVideoAnalysisQuery(videoId);
+  const analysisId = searchParams.get('analysisId') ?? searchParams.get('videoId') ?? '';
+  const { data, isLoading, isError } = useVideoAnalysisQuery(analysisId);
   const { add, remove, check } = useLibraryQuery();
   const video = data?.video ?? null;
   const status = data?.status;
@@ -23,12 +23,12 @@ export default function ResultPage() {
 
   const isWaiting = isLoading || status === 'PENDING' || status === 'PROCESSING';
   const isFailed = status === 'FAILED';
-  const isMissingVideoId = videoId.trim().length === 0;
+  const isMissingAnalysisId = analysisId.trim().length === 0;
   const resultState = isWaiting ? 'loading' : video ? 'success' : 'error';
 
   let content: React.ReactNode;
 
-  if (isMissingVideoId) {
+  if (isMissingAnalysisId) {
     content = (
       <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-inset-lg">
         <div className="text-center">
@@ -114,7 +114,7 @@ export default function ResultPage() {
           video={video}
           onKeep={add}
           onRemove={remove}
-          initiallyKept={check(video.id)}
+          initiallyKept={check(video.analysisId)}
         />
       </main>
     );

@@ -19,6 +19,8 @@ function withExpandedSummary(
 export const mockVideos: VideoAnalysis[] = [
   withExpandedSummary({
     id: 'english-speaking',
+    analysisId: 'analysis_en_english-speaking',
+    language: 'en',
     videoId: 'dQw4w9WgXcQ',
     title: 'English Speaking Practice for Beginners',
     channelName: 'English Fluency Hub',
@@ -99,6 +101,8 @@ export const mockVideos: VideoAnalysis[] = [
   }),
   withExpandedSummary({
     id: 'product-discovery',
+    analysisId: 'analysis_en_product-discovery',
+    language: 'en',
     videoId: 'dQw4w9WgXcQ',
     title: 'How to Find Real Customer Problems',
     channelName: 'Product Wisdom',
@@ -168,6 +172,8 @@ export const mockVideos: VideoAnalysis[] = [
   }),
   withExpandedSummary({
     id: 'react-state',
+    analysisId: 'analysis_en_react-state',
+    language: 'en',
     videoId: 'dQw4w9WgXcQ',
     title: 'React State Management Explained',
     channelName: 'Build with React',

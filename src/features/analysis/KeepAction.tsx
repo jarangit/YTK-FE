@@ -9,7 +9,7 @@ import Toast from '../../shared/components/molecules/Toast';
 interface KeepActionProps {
   video: VideoAnalysis;
   onKeep: (video: VideoAnalysis) => void;
-  onRemove: (videoId: string) => void;
+  onRemove: (analysisId: string) => void;
   initiallyKept?: boolean;
   className?: string;
 }
@@ -45,7 +45,7 @@ export default function KeepAction({
     }
 
     if (kept) {
-      onRemove(video.id);
+      onRemove(video.analysisId);
       setKept(false);
       return;
     }

@@ -40,6 +40,7 @@ interface BackendTranscriptSegment {
 interface BackendAnalysisPayload {
   id: string;
   language: string;
+  status?: BackendAnalysisStatus;
   summary: string;
   detailedExplanation: Array<{
     topic: string;
@@ -69,11 +70,14 @@ interface BackendAnalysisPayload {
     deepQuestions: string[];
   } | null;
   oneLineSummary: string;
+  failureCode?: string | null;
+  failureMessage?: string | null;
   createdAt: string;
 }
 
 export interface BackendVideoAnalysisResponse {
   id: string;
+  analysisId?: string;
   youtubeVideoId: string;
   youtubeUrl: string;
   title?: string;
@@ -89,12 +93,14 @@ export interface BackendVideoAnalysisResponse {
 }
 
 export interface VideoAnalysisResult {
+  analysisId: string;
   status: BackendAnalysisStatus;
   video: VideoAnalysis | null;
   transcript: TranscriptSegment[];
   failureCode?: string;
   failureMessage?: string;
   youtubeUrl?: string;
+  language?: AnalysisLanguage;
 }
 
 function hasRenderableVideoData(payload: BackendVideoAnalysisResponse) {
@@ -280,8 +286,13 @@ function normalizeTranscriptSegment(segment: BackendTranscriptSegment): Transcri
 }
 
 export function normalizeVideoResponse(payload: BackendVideoAnalysisResponse): VideoAnalysis {
+  const analysisId = payload.analysis?.id ?? payload.analysisId ?? payload.id;
+  const language = payload.analysis?.language === 'th' ? 'th' : payload.analysis?.language === 'en' ? 'en' : undefined;
+
   return {
     id: payload.id,
+    analysisId,
+    language,
     videoId: payload.youtubeVideoId,
     title: payload.title ?? payload.youtubeUrl,
     channelName: payload.channelName ?? '',
@@ -319,7 +330,7 @@ export async function analyzeVideo({ youtubeUrl, language }: AnalyzeVideoRequest
   if (USE_MOCK_API) {
     await mockDelay(800);
     return {
-      analysisId: findVideoAnalysis(youtubeUrl)?.id ?? mockVideos[0].id,
+      analysisId: findVideoAnalysis(youtubeUrl)?.analysisId ?? mockVideos[0].analysisId,
       status: 'COMPLETED',
     };
   }
@@ -335,29 +346,39 @@ export async function analyzeVideo({ youtubeUrl, language }: AnalyzeVideoRequest
 export async function getVideoAnalysisResult(analysisId: string): Promise<VideoAnalysisResult> {
   if (USE_MOCK_API) {
     await mockDelay();
-    const mockVideo = mockVideos.find((video) => video.id === analysisId) ?? mockVideos[0];
+    const mockVideo = mockVideos.find((video) => video.analysisId === analysisId || video.id === analysisId) ?? mockVideos[0];
     return {
+      analysisId: mockVideo.analysisId,
       status: 'COMPLETED',
       video: mockVideo,
       transcript: mockVideo.transcript,
+      language: mockVideo.language,
     };
   }
 
-  const response = await apiRequest<ApiEnvelope<BackendVideoAnalysisResponse>>(`/videos/${analysisId}`);
+  const response = await apiRequest<ApiEnvelope<BackendVideoAnalysisResponse>>(`/videos/analyses/${analysisId}`);
   const payload = response.data;
   const transcript = Array.isArray(payload.transcript)
     ? payload.transcript.map(normalizeTranscriptSegment).filter((segment) => segment.text.length > 0)
     : [];
+  const normalizedVideo = hasRenderableVideoData(payload) || payload.status === 'COMPLETED'
+    ? normalizeVideoResponse(payload)
+    : null;
+  const resolvedAnalysisId = payload.analysis?.id ?? payload.analysisId ?? analysisId;
+  const analysisStatus = payload.analysis?.status ?? payload.status;
+  const failureCode = payload.analysis?.failureCode ?? payload.failureCode ?? undefined;
+  const failureMessage = payload.analysis?.failureMessage ?? payload.failureMessage ?? undefined;
+  const language = normalizedVideo?.language;
 
   return {
-    status: payload.status,
-    video: hasRenderableVideoData(payload) || payload.status === 'COMPLETED'
-      ? normalizeVideoResponse(payload)
-      : null,
+    analysisId: resolvedAnalysisId,
+    status: analysisStatus,
+    video: normalizedVideo,
     transcript,
-    failureCode: payload.failureCode,
-    failureMessage: payload.failureMessage,
+    failureCode,
+    failureMessage,
     youtubeUrl: payload.youtubeUrl,
+    language,
   };
 }
 

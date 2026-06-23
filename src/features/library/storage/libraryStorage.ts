@@ -19,18 +19,24 @@ export function getKeptItems(userId?: string): KeptItem[] {
 
 export function saveKeptItem(video: VideoAnalysis, userId?: string): void {
   const items = getKeptItems(userId);
-  const exists = items.some((item) => item.video.id === video.id);
+  const exists = items.some((item) => item.analysisId === video.analysisId);
   if (!exists) {
-    items.unshift({ video, keptAt: new Date().toISOString() });
+    items.unshift({
+      id: `local-${video.analysisId}`,
+      analysisId: video.analysisId,
+      createdAt: new Date().toISOString(),
+      language: video.language,
+      video,
+    });
     localStorage.setItem(getStorageKey(userId), JSON.stringify(items));
   }
 }
 
-export function removeKeptItem(videoId: string, userId?: string): void {
-  const items = getKeptItems(userId).filter((item) => item.video.id !== videoId);
+export function removeKeptItem(libraryItemId: string, userId?: string): void {
+  const items = getKeptItems(userId).filter((item) => item.id !== libraryItemId);
   localStorage.setItem(getStorageKey(userId), JSON.stringify(items));
 }
 
-export function isKept(videoId: string, userId?: string): boolean {
-  return getKeptItems(userId).some((item) => item.video.id === videoId);
+export function isKept(analysisId: string, userId?: string): boolean {
+  return getKeptItems(userId).some((item) => item.analysisId === analysisId);
 }

@@ -52,7 +52,7 @@ export default function LibraryPage() {
             <div className="grid grid-cols-1 gap-inline-lg sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {items.map((item) => (
                 <LibraryCard
-                  key={item.video.id + item.keptAt}
+                  key={item.id}
                   item={item}
                   onRemove={remove}
                 />

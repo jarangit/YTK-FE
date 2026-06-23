@@ -57,9 +57,9 @@ export default function HistoryPage() {
                   key={item.id}
                   video={item.video}
                   date={item.createdAt}
-                  badge={t(`history.status.${item.status.toLowerCase()}`)}
+                  badge={[item.language?.toUpperCase(), t(`history.status.${item.status.toLowerCase()}`)].filter(Boolean).join(' • ')}
                   badgeClassName={item.status === 'FAILED' ? 'bg-danger-soft text-danger-hover' : undefined}
-                  destination={completed ? `/result?videoId=${encodeURIComponent(item.video.id)}` : undefined}
+                  destination={completed ? `/result?analysisId=${encodeURIComponent(item.analysisId)}` : undefined}
                   metadata={[{ icon: Clock3, label: t('history.analyzed') }]}
                 />
               );

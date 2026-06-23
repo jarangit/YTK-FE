@@ -3,8 +3,9 @@ import type { BackendAnalysisStatus } from '../result/api/videoAnalysisApi';
 
 export interface HistoryItem {
   id: string;
-  videoId: string;
+  analysisId: string;
   createdAt: string;
   status: BackendAnalysisStatus;
+  language?: 'en' | 'th';
   video: VideoAnalysis;
 }

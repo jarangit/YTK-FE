@@ -7,7 +7,7 @@ import VideoCollectionCard from './VideoCollectionCard';
 
 interface LibraryCardProps {
   item: KeptItem;
-  onRemove: (videoId: string) => void;
+  onRemove: (libraryItemId: string) => void;
 }
 
 export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
@@ -17,7 +17,7 @@ export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
 
   const handleRemove = () => {
     setIsRemoving(true);
-    window.setTimeout(() => onRemove(video.id), 160);
+    window.setTimeout(() => onRemove(item.id), 160);
   };
 
   return (
@@ -27,9 +27,9 @@ export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
     >
       <VideoCollectionCard
         video={video}
-        date={item.keptAt}
-        badge={t('library.savedBadge')}
-        destination={`/result?videoId=${encodeURIComponent(video.videoId)}`}
+        date={item.createdAt}
+        badge={[item.language?.toUpperCase(), t('library.savedBadge')].filter(Boolean).join(' • ')}
+        destination={`/result?analysisId=${encodeURIComponent(item.analysisId)}`}
         metadata={[
           { icon: FileText, label: video.outcomes.length },
           { icon: Bookmark, label: t('keep.kept') },

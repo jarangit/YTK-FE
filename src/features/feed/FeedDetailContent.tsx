@@ -11,13 +11,15 @@ import Card from '../../shared/components/atoms/Card';
 interface FeedDetailContentProps {
   video: VideoAnalysis;
   onKeep: (video: VideoAnalysis) => void;
-  onRemove: (videoId: string) => void;
+  onRemove: (analysisId: string) => void;
   initiallyKept: boolean;
 }
 
 export function toVideoAnalysis(item: FeedItem): VideoAnalysis {
   return {
     id: item.id,
+    analysisId: item.id,
+    language: 'en',
     videoId: item.id,
     title: item.title,
     channelName: item.channelName,
@@ -47,7 +49,7 @@ export default function FeedDetailContent({
           Video Analysis
         </span>
         <a
-          href={`/result?videoId=${encodeURIComponent(video.videoId)}`}
+          href={`/result?analysisId=${encodeURIComponent(video.analysisId)}`}
           target="_blank"
           rel="noreferrer"
           className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--color-bg-hover)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
