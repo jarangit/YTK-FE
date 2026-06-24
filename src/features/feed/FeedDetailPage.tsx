@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import Text from '../../shared/components/atoms/Text';
 import FeedDetailContent from './FeedDetailContent';
+import ResultContentSkeleton from '../result/ResultContentSkeleton';
 import { getVideoById } from '../result/api/videoAnalysisApi';
 import { feedKeys } from './hooks/useFeedQuery';
 
@@ -18,7 +19,24 @@ export default function FeedDetailPage() {
   });
   const { add, remove } = useLibraryQuery();
 
-  if (!isLoading && !video) {
+  if (isLoading) {
+    return (
+      <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
+        <section className="mx-auto w-full max-w-read px-inset-lg pt-stack-xl pb-stack-2xl">
+          <Link
+            to="/feed"
+            className="inline-flex items-center gap-inline-xs text-sm font-medium text-accent no-underline transition-colors hover:text-accent-hover mb-stack-lg"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            {t('feed.backToFeed')}
+          </Link>
+          <ResultContentSkeleton />
+        </section>
+      </main>
+    );
+  }
+
+  if (!video) {
     return (
       <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
         <section className="mx-auto w-full max-w-read px-inset-lg pt-stack-xl pb-stack-2xl">
@@ -54,14 +72,12 @@ export default function FeedDetailPage() {
           {t('feed.backToFeed')}
         </Link>
 
-        {video && (
-          <FeedDetailContent
-            video={video}
-            onKeep={add}
-            onRemove={remove}
-            initiallyKept={false}
-          />
-        )}
+        <FeedDetailContent
+          video={video}
+          onKeep={add}
+          onRemove={remove}
+          initiallyKept={false}
+        />
       </section>
     </main>
   );

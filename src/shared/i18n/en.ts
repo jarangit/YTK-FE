@@ -163,6 +163,9 @@ const en = {
     detailNote: 'Open the original video to watch the full context and compare it with this community snapshot.',
     notFoundTitle: 'This summary could not be found.',
     notFoundSubtitle: 'The item may have been removed, or the link may be incorrect.',
+    emptyTitle: 'No summaries found',
+    emptySubtitle: 'There are no summaries in the feed yet.',
+    emptySearchSubtitle: 'No summaries match your search. Try a different keyword.',
   },
   result: {
     loading: 'Analyzing video...',
@@ -256,6 +259,13 @@ const en = {
   },
   sidebar: {
     library: 'Library',
+  },
+  podcast: {
+    eyebrow: 'Podcasts',
+    title: 'English learning podcasts',
+    subtitle: 'Listen and learn English through curated podcast episodes.',
+    showsTitle: 'Shows',
+    episodesTitle: 'Episodes',
   },
 };
 

@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import ErrorBoundary from './shared/components/atoms/ErrorBoundary';
 import { useEffect } from 'react';
 import AppHeader from './app/components/AppHeader';
 import AppFooter from './app/components/AppFooter';
@@ -9,6 +10,7 @@ import ResultPage from './features/result/ResultPage';
 import LibraryPage from './features/library/LibraryPage';
 import HistoryPage from './features/history/HistoryPage';
 import AccountPage from './features/account/AccountPage';
+import PodcastPage from './features/podcast/PodcastPage';
 import StaticPage from './features/static/StaticPage';
 import NotFoundPage from './features/static/NotFoundPage';
 import { AuthProvider } from './shared/auth/AuthContext';
@@ -36,6 +38,7 @@ function AppLayout() {
   return (
     <>
       {!usesCollectionShell && <AppHeader />}
+      <ErrorBoundary>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<StaticPage pageKey="about" />} />
@@ -45,6 +48,7 @@ function AppLayout() {
         <Route path="/terms" element={<StaticPage pageKey="terms" />} />
         <Route path="/feed" element={<FeedPage />} />
         <Route path="/feed/:id" element={<FeedDetailPage />} />
+        <Route path="/podcast" element={<PodcastPage />} />
         <Route path="/result" element={<ResultPage />} />
         <Route
           path="/account"
@@ -72,6 +76,7 @@ function AppLayout() {
         />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      </ErrorBoundary>
       {!usesCollectionShell && <AppFooter />}
       <SignInModal />
     </>

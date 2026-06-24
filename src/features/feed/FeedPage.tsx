@@ -1,9 +1,11 @@
+import { Search } from 'lucide-react';
 import { useCallback } from 'react';
 import FeedCard from './FeedCard';
 import FeedDetailContent from './FeedDetailContent';
 import Drawer from '../../shared/components/organisms/Drawer';
 import Text from '../../shared/components/atoms/Text';
 import SearchInput from '../../shared/components/molecules/SearchInput';
+import StateBlock from '../../shared/components/molecules/StateBlock';
 import { useTranslation } from 'react-i18next';
 import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import { useFeedQuery } from './hooks/useFeedQuery';
@@ -53,12 +55,20 @@ export default function FeedPage() {
           />
         </div>
 
-        <ContentTransition transitionKey={`${query.trim().toLowerCase()}:${filteredItems.map((item) => item.id).join(',')}`}>
-          <div className="grid grid-cols-1 gap-inline-xl sm:grid-cols-2 lg:grid-cols-3">
-            {filteredItems.map((item) => (
-              <FeedCard key={item.id} item={item} onClick={handleCardClick} />
-            ))}
-          </div>
+        <ContentTransition transitionKey={`${query.trim().toLowerCase()}:${filteredItems.length}`}>
+          {filteredItems.length === 0 ? (
+            <StateBlock
+              icon={Search}
+              title={t('feed.emptyTitle')}
+              description={t(query ? 'feed.emptySearchSubtitle' : 'feed.emptySubtitle')}
+            />
+          ) : (
+            <div className="grid grid-cols-1 gap-inline-xl sm:grid-cols-2 lg:grid-cols-3">
+              {filteredItems.map((item) => (
+                <FeedCard key={item.id} item={item} onClick={handleCardClick} />
+              ))}
+            </div>
+          )}
         </ContentTransition>
       </section>
 
