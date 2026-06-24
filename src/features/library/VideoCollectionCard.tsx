@@ -49,7 +49,7 @@ export default function VideoCollectionCard({
           {video.title}
         </Text>
         <Text variant="caption" color="secondary" className="mb-stack-md line-clamp-2">
-          {video.outcomes[0] || video.summary.oneLineSummary || video.summary.summary}
+          {video.outcomes?.[0] || video.summary?.oneLineSummary || video.summary?.summary}
         </Text>
         {metadata.length > 0 && (
           <MetadataRow

@@ -31,7 +31,7 @@ export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
         badge={[item.language?.toUpperCase(), t('library.savedBadge')].filter(Boolean).join(' • ')}
         destination={`/result?analysisId=${encodeURIComponent(item.analysisId)}`}
         metadata={[
-          { icon: FileText, label: video.outcomes.length },
+          { icon: FileText, label: video.outcomes?.length ?? 0 },
           { icon: Bookmark, label: t('keep.kept') },
         ]}
         footerAction={(
