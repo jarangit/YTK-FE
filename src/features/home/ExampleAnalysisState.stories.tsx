@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, within } from 'storybook/test';
-import { mockVideos } from '../result/data/mockVideos';
 import ExampleAnalysisState from './ExampleAnalysisState';
+import { analyticsMock } from './data/analytics.mock';
+import { toHomeFeaturedAnalysis } from './homeFeaturedAnalysis';
 
 const meta: Meta<typeof ExampleAnalysisState> = {
   title: 'Features/Home/ExampleAnalysisState',
@@ -11,7 +12,7 @@ const meta: Meta<typeof ExampleAnalysisState> = {
     layout: 'padded',
   },
   args: {
-    video: mockVideos[0],
+    item: toHomeFeaturedAnalysis(analyticsMock[0]),
     isPending: false,
     isError: false,
     onRetry: fn(),
@@ -25,14 +26,14 @@ export const Success: Story = {};
 
 export const Loading: Story = {
   args: {
-    video: undefined,
+    item: undefined,
     isPending: true,
   },
 };
 
 export const Error: Story = {
   args: {
-    video: undefined,
+    item: undefined,
     isError: true,
   },
   play: async ({ canvasElement, args }) => {
@@ -44,7 +45,7 @@ export const Error: Story = {
 
 export const LoadingMobile: Story = {
   args: {
-    video: undefined,
+    item: undefined,
     isPending: true,
   },
   parameters: {
@@ -54,10 +55,29 @@ export const LoadingMobile: Story = {
 
 export const ErrorMobile: Story = {
   args: {
-    video: undefined,
+    item: undefined,
     isError: true,
   },
   parameters: {
     viewport: { defaultViewport: 'mobile1' },
+  },
+};
+
+export const SuccessWithNullableFields: Story = {
+  args: {
+    item: toHomeFeaturedAnalysis({
+      ...analyticsMock[0],
+      video: {
+        ...analyticsMock[0].video!,
+        title: null,
+        thumbnail: null,
+        channelName: null,
+        duration: null,
+      },
+      analysis: {
+        ...analyticsMock[0].analysis!,
+        summary: null,
+      },
+    }),
   },
 };

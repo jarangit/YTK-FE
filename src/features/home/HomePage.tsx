@@ -4,16 +4,16 @@ import { Link } from 'react-router-dom';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
 import UrlInputForm from './UrlInputForm';
 import ExampleAnalysisState from './ExampleAnalysisState';
-import { useExampleAnalysisQuery } from './hooks/useExampleAnalysisQuery';
+import { useHomeFeaturedAnalysisQuery } from './hooks/useHomeFeaturedAnalysisQuery';
 
 export default function HomePage() {
   const { t } = useTranslation();
   const {
-    data: exampleVideo,
+    data: featuredItem,
     isPending: isExamplePending,
     isError: isExampleError,
     refetch: refetchExample,
-  } = useExampleAnalysisQuery();
+  } = useHomeFeaturedAnalysisQuery();
   const exampleTransitionKey = isExamplePending ? 'loading' : isExampleError ? 'error' : 'success';
 
   return (
@@ -67,7 +67,7 @@ export default function HomePage() {
             <div aria-live="polite">
               <ContentTransition transitionKey={exampleTransitionKey}>
                 <ExampleAnalysisState
-                  video={exampleVideo}
+                  item={featuredItem}
                   isPending={isExamplePending}
                   isError={isExampleError}
                   onRetry={() => void refetchExample()}
