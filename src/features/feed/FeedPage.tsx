@@ -4,7 +4,6 @@ import FeedDetailContent from './FeedDetailContent';
 import Drawer from '../../shared/components/organisms/Drawer';
 import Text from '../../shared/components/atoms/Text';
 import SearchInput from '../../shared/components/molecules/SearchInput';
-import StateBlock from '../../shared/components/molecules/StateBlock';
 import { useTranslation } from 'react-i18next';
 import { useFeedQuery } from './hooks/useFeedQuery';
 import { useSaveFeedItemMutation } from './hooks/useSaveFeedItemMutation';
