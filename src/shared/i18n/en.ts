@@ -15,6 +15,13 @@ const en = {
     privacy: 'Privacy',
     terms: 'Terms',
   },
+  cookie: {
+    title: 'Allow analytics cookies?',
+    description: 'We use cookies and session analytics to understand how people use Youtive and improve the product experience.',
+    learnMore: 'Read the privacy page',
+    accept: 'Allow cookies',
+    decline: 'Decline',
+  },
   language: {
     en: 'English',
     th: 'ไทย',

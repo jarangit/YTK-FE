@@ -17,6 +17,7 @@ import { AuthProvider } from './shared/auth/AuthContext';
 import ErrorBoundary from './shared/components/atoms/ErrorBoundary';
 import SignInModal from './app/components/SignInModal';
 import ProtectedRoute from './app/components/ProtectedRoute';
+import CookieConsentBanner from './app/components/CookieConsentBanner';
 import { useAuth } from './shared/auth/AuthContext';
 
 function AppLayout() {
@@ -83,6 +84,7 @@ function AppLayout() {
       </Routes>
       </ErrorBoundary>
       {!usesCollectionShell && <AppFooter />}
+      <CookieConsentBanner />
       <SignInModal />
     </>
   );
