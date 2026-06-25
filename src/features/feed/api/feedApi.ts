@@ -1,4 +1,4 @@
-import type { FeedItem, FeedItemType, SaveFeedItemResponse } from '../types';
+import type { FeedItem, FeedItemType, FeedPagePayload, SaveFeedItemResponse } from '../types';
 import { apiRequest } from '../../../shared/api/httpClient';
 import { mockDelay, USE_MOCK_API } from '../../../shared/api/config';
 import { feedMock } from '../data/feed.mock';
@@ -11,6 +11,8 @@ interface ApiEnvelope<T> {
 export interface ListFeedParams {
   type?: FeedItemType;
   keyword?: string;
+  limit?: number;
+  cursor?: string;
 }
 
 function unwrapData<T>(response: T | ApiEnvelope<T>): T {
@@ -30,7 +32,7 @@ function metadataText(metadata: FeedItem['metadata']) {
 }
 
 function filterFeed(items: FeedItem[], params: ListFeedParams = {}) {
-  const normalizedKeyword = params.keyword?.trim().toLowerCase() ?? '';
+  const normalizedKeyword = params.keyword?.trim() ?? '';
   const typeFilteredItems = params.type
     ? items.filter((item) => item.type === params.type)
     : items;
@@ -40,27 +42,45 @@ function filterFeed(items: FeedItem[], params: ListFeedParams = {}) {
   }
 
   return typeFilteredItems.filter((item) =>
-    item.title.toLowerCase().includes(normalizedKeyword) ||
-    item.body.toLowerCase().includes(normalizedKeyword) ||
-    (item.analysis.summary ?? '').toLowerCase().includes(normalizedKeyword) ||
-    metadataText(item.metadata).toLowerCase().includes(normalizedKeyword) ||
-    (item.video.title ?? '').toLowerCase().includes(normalizedKeyword) ||
-    (item.video.channelName ?? '').toLowerCase().includes(normalizedKeyword) ||
-    item.keywords.some((keyword) => keyword.toLowerCase().includes(normalizedKeyword)),
+    item.keywords.includes(normalizedKeyword) ||
+    item.title.includes(normalizedKeyword) ||
+    item.body.includes(normalizedKeyword) ||
+    (item.analysis.summary ?? '').includes(normalizedKeyword) ||
+    metadataText(item.metadata).includes(normalizedKeyword) ||
+    (item.video.title ?? '').includes(normalizedKeyword) ||
+    (item.video.channelName ?? '').includes(normalizedKeyword),
   );
 }
 
-export async function listFeed(params: ListFeedParams = {}): Promise<FeedItem[]> {
+export async function listFeed(params: ListFeedParams = {}): Promise<FeedPagePayload> {
+  const limit = Math.min(params.limit ?? 10, 50);
+
   if (USE_MOCK_API) {
     await mockDelay();
-    return filterFeed(feedMock, params);
+    const filteredItems = filterFeed(feedMock, params);
+    const startIndex = params.cursor
+      ? filteredItems.findIndex((item) => item.id === params.cursor) + 1
+      : 0;
+    const pageItems = filteredItems.slice(Math.max(0, startIndex), Math.max(0, startIndex) + limit);
+    const lastItem = pageItems.at(-1) ?? null;
+    const nextCursor = lastItem && (startIndex + pageItems.length) < filteredItems.length
+      ? lastItem.id
+      : null;
+
+    return {
+      items: pageItems,
+      nextCursor,
+      hasMore: nextCursor !== null,
+    };
   }
 
-  const response = await apiRequest<FeedItem[] | ApiEnvelope<FeedItem[]>>('/feed', {
+  const response = await apiRequest<FeedPagePayload | ApiEnvelope<FeedPagePayload>>('/feed', {
     auth: false,
     query: {
       type: params.type,
       keyword: params.keyword?.trim() || undefined,
+      limit,
+      cursor: params.cursor,
     },
   });
 

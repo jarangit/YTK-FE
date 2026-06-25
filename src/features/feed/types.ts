@@ -31,6 +31,12 @@ export interface FeedItem {
   };
 }
 
+export interface FeedPagePayload {
+  items: FeedItem[];
+  nextCursor: string | null;
+  hasMore: boolean;
+}
+
 export interface SaveFeedItemResponse {
   id: string;
 }

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import FeedCard from './FeedCard';
 import FeedDetailContent from './FeedDetailContent';
 import Drawer from '../../shared/components/organisms/Drawer';
@@ -17,18 +17,62 @@ export default function FeedPage() {
   const dispatch = useAppDispatch();
   const query = useAppSelector((state) => state.feed.query);
   const selectedItemId = useAppSelector((state) => state.feed.selectedItemId);
-  const { data: filteredItems = [] } = useFeedQuery(query);
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useFeedQuery(debouncedQuery, undefined, 10);
   const saveFeedItem = useSaveFeedItemMutation();
+  const filteredItems = useMemo(
+    () => data?.pages.flatMap((page) => page.items) ?? [],
+    [data],
+  );
 
   const selectedItem = filteredItems.find((item) => item.id === selectedItemId) ?? null;
 
-  const handleCardClick = useCallback((id: string) => {
-    dispatch(selectFeedItem(id));
-  }, [dispatch]);
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedQuery(query.trim());
+    }, 400);
 
-  const closeDrawer = useCallback(() => {
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [query]);
+
+  useEffect(() => {
+    const node = sentinelRef.current;
+
+    if (!node || !hasNextPage) {
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+
+      if (entry?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        void fetchNextPage();
+      }
+    }, { rootMargin: '240px 0px' });
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const handleCardClick = (id: string) => {
+    dispatch(selectFeedItem(id));
+  };
+
+  const closeDrawer = () => {
     dispatch(clearSelectedFeedItem());
-  }, [dispatch]);
+  };
 
   return (
     <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
@@ -53,7 +97,7 @@ export default function FeedPage() {
           />
         </div>
 
-        <ContentTransition transitionKey={`${query.trim().toLowerCase()}:${filteredItems.map((item) => item.id).join(',')}`}>
+        <ContentTransition transitionKey={`${debouncedQuery.toLowerCase()}:${filteredItems.map((item) => item.id).join(',')}`}>
           <div className="grid grid-cols-1 gap-inline-xl">
             {filteredItems.map((item) => (
               <FeedCard
@@ -64,6 +108,33 @@ export default function FeedPage() {
                 saving={saveFeedItem.isPending && saveFeedItem.variables === item.id}
               />
             ))}
+
+            {isLoading && (
+              <div className="rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] px-inset-lg py-stack-lg text-sm text-[var(--color-text-secondary)]">
+                Loading feed...
+              </div>
+            )}
+
+            {!isLoading && filteredItems.length === 0 && (
+              <div className="rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] px-inset-lg py-stack-lg text-sm text-[var(--color-text-secondary)]">
+                No matching feed items.
+              </div>
+            )}
+
+            {!isLoading && filteredItems.length > 0 && (
+              <div ref={sentinelRef} className="flex justify-center py-stack-md">
+                {isFetchingNextPage && (
+                  <div className="text-sm text-[var(--color-text-secondary)]">
+                    Loading more...
+                  </div>
+                )}
+                {!hasNextPage && (
+                  <div className="text-sm text-[var(--color-text-tertiary)]">
+                    คุณอ่านครบแล้ววันนี้
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </ContentTransition>
       </section>

@@ -61,37 +61,64 @@ describe('feedApi', () => {
   it('unwraps the GET /feed response envelope', async () => {
     const item = createFeedItem();
     apiRequest.mockResolvedValue({
-      data: [item],
+      data: {
+        items: [item],
+        nextCursor: 'feed-1',
+        hasMore: true,
+      },
       timestamp: '2026-06-25T14:40:00.000Z',
     });
     const { listFeed } = await importFeedApi(false);
 
-    await expect(listFeed()).resolves.toEqual([item]);
+    await expect(listFeed()).resolves.toEqual({
+      items: [item],
+      nextCursor: 'feed-1',
+      hasMore: true,
+    });
   });
 
-  it('sends type and keyword query params to GET /feed', async () => {
-    apiRequest.mockResolvedValue({ data: [], timestamp: '2026-06-25T14:40:00.000Z' });
+  it('sends type, keyword, limit, and cursor query params to GET /feed', async () => {
+    apiRequest.mockResolvedValue({
+      data: {
+        items: [],
+        nextCursor: null,
+        hasMore: false,
+      },
+      timestamp: '2026-06-25T14:40:00.000Z',
+    });
     const { listFeed } = await importFeedApi(false);
 
-    await listFeed({ type: 'INSIGHT', keyword: 'psychology' });
+    await listFeed({ type: 'INSIGHT', keyword: 'psychology', limit: 10, cursor: 'feed-10' });
 
     expect(apiRequest).toHaveBeenCalledWith('/feed', {
       auth: false,
       query: {
         type: 'INSIGHT',
         keyword: 'psychology',
+        limit: 10,
+        cursor: 'feed-10',
       },
     });
   });
 
-  it('filters mock feed items by type and keyword', async () => {
+  it('filters and paginates mock feed items by type and keyword', async () => {
     const { listFeed } = await importFeedApi(true);
 
-    const result = await listFeed({ type: 'OUTCOME', keyword: 'NAS' });
+    const firstPage = await listFeed({ type: 'OUTCOME', keyword: 'NAS', limit: 2 });
 
-    expect(result.length).toBeGreaterThan(0);
-    expect(result.every((item) => item.type === 'OUTCOME')).toBe(true);
-    expect(result.some((item) => item.keywords.includes('NAS'))).toBe(true);
+    expect(firstPage.items.length).toBeGreaterThan(0);
+    expect(firstPage.items.every((item) => item.type === 'OUTCOME')).toBe(true);
+    expect(firstPage.items.some((item) => item.keywords.includes('NAS'))).toBe(true);
+    expect(firstPage.hasMore).toBe(true);
+
+    const secondPage = await listFeed({
+      type: 'OUTCOME',
+      keyword: 'NAS',
+      limit: 2,
+      cursor: firstPage.nextCursor ?? undefined,
+    });
+
+    expect(secondPage.items.every((item) => item.id !== firstPage.items[0]?.id)).toBe(true);
   });
 
   it('calls POST /feed/:id/save and unwraps the response envelope', async () => {

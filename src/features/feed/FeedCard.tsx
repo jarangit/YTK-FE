@@ -106,7 +106,7 @@ export default function FeedCard({ item, to, onClick, onRemove, onSave, saving =
               {description}
             </p>
 
-            {/* <div className="mt-stack-lg flex flex-wrap items-center gap-inline-lg text-sm text-[var(--color-text-tertiary)]">
+            <div className="mt-stack-lg flex flex-wrap items-center gap-inline-lg text-sm text-[var(--color-text-tertiary)]">
               <span className="max-w-[18rem] truncate font-medium text-[var(--color-text-secondary)]">
                 {videoTitle}
               </span>
@@ -115,7 +115,7 @@ export default function FeedCard({ item, to, onClick, onRemove, onSave, saving =
                 <Clock className="h-4 w-4" />
                 {readTime}
               </span>
-            </div> */}
+            </div>
           </div>
 
           <div className="min-w-0">
@@ -126,30 +126,30 @@ export default function FeedCard({ item, to, onClick, onRemove, onSave, saving =
         </div>
       </CardLink>
 
-      {/* <div className="absolute bottom-inset-md right-inset-md z-10 flex items-center gap-inline-xs sm:bottom-inset-lg sm:right-inset-lg">
-          {onRemove && (
-            <IconButton
-              icon={Trash2}
-              ariaLabel={t('card.remove')}
-              variant="ghost"
-              size="sm"
-              onClick={() => onRemove(item.id)}
-            />
-          )}
-          {onSave && (
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              iconLeft={Bookmark}
-              loading={saving}
-              onClick={() => onSave(item.id)}
-              aria-label={t('keep.button')}
-            >
-              <span className="sr-only">{t('keep.button')}</span>
-            </Button>
-          )}
-      </div> */}
+      <div className="absolute bottom-inset-md right-inset-md z-10 flex items-center gap-inline-xs sm:bottom-inset-lg sm:right-inset-lg">
+        {onRemove && (
+          <IconButton
+            icon={Trash2}
+            ariaLabel={t('card.remove')}
+            variant="ghost"
+            size="sm"
+            onClick={() => onRemove(item.id)}
+          />
+        )}
+        {onSave && (
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            iconLeft={Bookmark}
+            loading={saving}
+            onClick={() => onSave(item.id)}
+            aria-label={t('keep.button')}
+          >
+            <span className="sr-only">{t('keep.button')}</span>
+          </Button>
+        )}
+      </div>
     </Card>
   );
 }
