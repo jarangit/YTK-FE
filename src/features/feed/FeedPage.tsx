@@ -1,5 +1,4 @@
-import { Search } from 'lucide-react';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import FeedCard from './FeedCard';
 import FeedDetailContent from './FeedDetailContent';
 import Drawer from '../../shared/components/organisms/Drawer';
@@ -7,22 +6,67 @@ import Text from '../../shared/components/atoms/Text';
 import SearchInput from '../../shared/components/molecules/SearchInput';
 import StateBlock from '../../shared/components/molecules/StateBlock';
 import { useTranslation } from 'react-i18next';
-import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import { useFeedQuery } from './hooks/useFeedQuery';
+import { useSaveFeedItemMutation } from './hooks/useSaveFeedItemMutation';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { clearSelectedFeedItem, selectFeedItem, setFeedQuery } from './state/feedSlice';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
-import { toVideoAnalysis } from './FeedDetailContent';
 
 export default function FeedPage() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const query = useAppSelector((state) => state.feed.query);
   const selectedItemId = useAppSelector((state) => state.feed.selectedItemId);
-  const { data: filteredItems = [] } = useFeedQuery(query);
-  const { add, remove } = useLibraryQuery();
+  const [debouncedQuery, setDebouncedQuery] = useState(query);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const {
+    data,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useFeedQuery(debouncedQuery, undefined, 10);
+  const saveFeedItem = useSaveFeedItemMutation();
+  const filteredItems = useMemo(
+    () => data?.pages.flatMap((page) => page.items) ?? [],
+    [data],
+  );
+  const selectedItem = useMemo(
+    () => filteredItems.find((item) => item.id === selectedItemId) ?? null,
+    [filteredItems, selectedItemId],
+  );
 
-  const selectedItem = filteredItems.find((item) => item.id === selectedItemId) ?? null;
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedQuery(query.trim());
+    }, 400);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [query]);
+
+  useEffect(() => {
+    const node = sentinelRef.current;
+
+    if (!node || !hasNextPage) {
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+
+      if (entry?.isIntersecting && hasNextPage && !isFetchingNextPage) {
+        void fetchNextPage();
+      }
+    }, { rootMargin: '240px 0px' });
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const handleCardClick = useCallback((id: string) => {
     dispatch(selectFeedItem(id));
@@ -30,6 +74,10 @@ export default function FeedPage() {
 
   const closeDrawer = useCallback(() => {
     dispatch(clearSelectedFeedItem());
+  }, [dispatch]);
+
+  const handleSearchChange = useCallback((value: string) => {
+    dispatch(setFeedQuery(value));
   }, [dispatch]);
 
   return (
@@ -47,28 +95,53 @@ export default function FeedPage() {
           </Text>
         </div>
 
-        <div className="mb-stack-lg max-w-[420px]">
+        <div className="mb-stack-lg w-full">
           <SearchInput
             placeholder={t('search.placeholder')}
             value={query}
-            onChange={(value) => dispatch(setFeedQuery(value))}
+            onChange={handleSearchChange}
           />
         </div>
 
-        <ContentTransition transitionKey={`${query.trim().toLowerCase()}:${filteredItems.length}`}>
-          {filteredItems.length === 0 ? (
-            <StateBlock
-              icon={Search}
-              title={t('feed.emptyTitle')}
-              description={t(query ? 'feed.emptySearchSubtitle' : 'feed.emptySubtitle')}
-            />
-          ) : (
-            <div className="grid grid-cols-1 gap-inline-xl sm:grid-cols-2 lg:grid-cols-3">
-              {filteredItems.map((item) => (
-                <FeedCard key={item.id} item={item} onClick={handleCardClick} />
-              ))}
-            </div>
-          )}
+        <ContentTransition transitionKey={`${debouncedQuery.toLowerCase()}:${filteredItems.map((item) => item.id).join(',')}`}>
+          <div className="grid grid-cols-1 gap-inline-xl">
+            {filteredItems.map((item) => (
+              <FeedCard
+                key={item.id}
+                item={item}
+                onClick={handleCardClick}
+                onSave={saveFeedItem.save}
+                saving={saveFeedItem.isPending && saveFeedItem.variables === item.id}
+              />
+            ))}
+
+            {isLoading && (
+              <div className="rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] px-inset-lg py-stack-lg text-sm text-[var(--color-text-secondary)]">
+                Loading feed...
+              </div>
+            )}
+
+            {!isLoading && filteredItems.length === 0 && (
+              <div className="rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] px-inset-lg py-stack-lg text-sm text-[var(--color-text-secondary)]">
+                No matching feed items.
+              </div>
+            )}
+
+            {!isLoading && filteredItems.length > 0 && (
+              <div ref={sentinelRef} className="flex justify-center py-stack-md">
+                {isFetchingNextPage && (
+                  <div className="text-sm text-[var(--color-text-secondary)]">
+                    Loading more...
+                  </div>
+                )}
+                {!hasNextPage && (
+                  <div className="text-sm text-[var(--color-text-tertiary)]">
+                    คุณอ่านครบแล้ววันนี้
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </ContentTransition>
       </section>
 
@@ -76,10 +149,9 @@ export default function FeedPage() {
         {selectedItem && (
           <ContentTransition transitionKey={selectedItem.id}>
             <FeedDetailContent
-              video={toVideoAnalysis(selectedItem)}
-              onKeep={add}
-              onRemove={remove}
-              initiallyKept={false}
+              item={selectedItem}
+              onSaveFeedItem={() => saveFeedItem.save(selectedItem.id)}
+              saving={saveFeedItem.isPending && saveFeedItem.variables === selectedItem.id}
             />
           </ContentTransition>
         )}

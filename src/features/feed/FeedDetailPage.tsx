@@ -2,41 +2,26 @@ import { ArrowLeft } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import Text from '../../shared/components/atoms/Text';
 import FeedDetailContent from './FeedDetailContent';
-import ResultContentSkeleton from '../result/ResultContentSkeleton';
-import { getVideoById } from '../result/api/videoAnalysisApi';
+import { listFeed } from './api/feedApi';
 import { feedKeys } from './hooks/useFeedQuery';
+import { useSaveFeedItemMutation } from './hooks/useSaveFeedItemMutation';
 
 export default function FeedDetailPage() {
   const { id = '' } = useParams();
   const { t } = useTranslation();
-  const { data: video, isLoading } = useQuery({
+  const { data: item, isLoading } = useQuery({
     queryKey: feedKeys.detail(id),
-    queryFn: () => getVideoById(id),
+    queryFn: async () => {
+      const page = await listFeed({ limit: 100 });
+      return page.items.find((entry) => entry.id === id) ?? null;
+    },
     enabled: id.length > 0,
   });
-  const { add, remove } = useLibraryQuery();
+  const saveFeedItem = useSaveFeedItemMutation();
 
-  if (isLoading) {
-    return (
-      <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
-        <section className="mx-auto w-full max-w-read px-inset-lg pt-stack-xl pb-stack-2xl">
-          <Link
-            to="/feed"
-            className="inline-flex items-center gap-inline-xs text-sm font-medium text-accent no-underline transition-colors hover:text-accent-hover mb-stack-lg"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            {t('feed.backToFeed')}
-          </Link>
-          <ResultContentSkeleton />
-        </section>
-      </main>
-    );
-  }
-
-  if (!video) {
+  if (!isLoading && !item) {
     return (
       <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
         <section className="mx-auto w-full max-w-read px-inset-lg pt-stack-xl pb-stack-2xl">
@@ -72,12 +57,13 @@ export default function FeedDetailPage() {
           {t('feed.backToFeed')}
         </Link>
 
-        <FeedDetailContent
-          video={video}
-          onKeep={add}
-          onRemove={remove}
-          initiallyKept={false}
-        />
+        {item && (
+          <FeedDetailContent
+            item={item}
+            onSaveFeedItem={() => saveFeedItem.save(id)}
+            saving={saveFeedItem.isPending && saveFeedItem.variables === id}
+          />
+        )}
       </section>
     </main>
   );

@@ -1,12 +1,12 @@
 import { CircleAlert } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import type { VideoAnalysis } from '../analysis/types';
 import { Button } from '../../shared/components/atoms/Button';
 import StateBlock from '../../shared/components/molecules/StateBlock';
 import ExampleAnalysisCard from './ExampleAnalysisCard';
+import type { HomeFeaturedAnalysis } from './types';
 
 interface ExampleAnalysisStateProps {
-  video?: VideoAnalysis;
+  item?: HomeFeaturedAnalysis | null;
   isPending: boolean;
   isError: boolean;
   onRetry: () => void;
@@ -59,7 +59,7 @@ function ExampleAnalysisSkeleton() {
 }
 
 export default function ExampleAnalysisState({
-  video,
+  item,
   isPending,
   isError,
   onRetry,
@@ -70,7 +70,7 @@ export default function ExampleAnalysisState({
     return <ExampleAnalysisSkeleton />;
   }
 
-  if (isError || !video) {
+  if (isError || !item) {
     return (
       <div role="alert" className="rounded-[32px] border border-border/60 bg-[var(--color-bg-card)]">
         <StateBlock
@@ -83,5 +83,5 @@ export default function ExampleAnalysisState({
     );
   }
 
-  return <ExampleAnalysisCard video={video} />;
+  return <ExampleAnalysisCard item={item} />;
 }

@@ -1,13 +1,13 @@
 :root {
-  --color-bg-app: var(--color-white);
-  --color-bg-sidebar: rgba(255, 255, 255, 0.96);
+  --color-bg-app: #fbfcff;
+  --color-bg-sidebar: #fbfcff;
   --color-bg-card: var(--color-white);
-  --color-bg-elevated: var(--color-gray-50);
-  --color-bg-hover: var(--color-gray-50);
-  --color-bg-active: var(--color-gray-100);
+  --color-bg-elevated: #f6f8fc;
+  --color-bg-hover: #f4f6fa;
+  --color-bg-active: #edf1f7;
 
   --color-text-primary: var(--color-gray-900);
-  --color-text-secondary: var(--color-gray-500);
+  --color-text-secondary: var(--color-gray-600);
   --color-text-tertiary: var(--color-gray-400);
   --color-text-inverse: var(--color-white);
 
@@ -21,10 +21,10 @@
   --color-danger: var(--color-red-500);
   --color-danger-hover: var(--color-red-600);
   --color-danger-soft: var(--color-red-100);
-  --color-focus-ring: color-mix(in srgb, var(--color-accent) 22%, transparent);
+  --color-focus-ring: color-mix(in srgb, var(--color-accent) 26%, transparent);
 
-  --color-border-subtle: var(--color-gray-100);
-  --color-border-medium: var(--color-gray-200);
+  --color-border-subtle: #e4e9f1;
+  --color-border-medium: #d5dde8;
 
   --font-family-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text',
     'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -50,8 +50,8 @@
   --space-inline-xl: var(--space-6);
   --space-inline-2xl: var(--space-8);
 
-  --font-size-editorial-title: 32px;
-  --line-height-editorial-title: 44px;
+  --font-size-editorial-title: 30px;
+  --line-height-editorial-title: 42px;
   --content-read-width: 720px;
   --card-radius: var(--radius-lg);
   --card-shadow: var(--shadow-soft);

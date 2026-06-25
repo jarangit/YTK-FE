@@ -6,7 +6,7 @@ import Card from '../../shared/components/atoms/Card';
 import MediaThumbnail from '../../shared/components/molecules/MediaThumbnail';
 import MetadataRow from '../../shared/components/molecules/MetadataRow';
 
-type VideoPreviewCardSize = 's' | 'm' | 'l';
+type VideoPreviewCardSize = 'xs' | 's' | 'm' | 'l';
 
 interface Props {
   video: VideoAnalysis;
@@ -24,9 +24,25 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
     { icon: User, label: video.channelName.trim() },
     { icon: Clock, label: video.duration.trim() },
   ].filter((item) => item.label.length > 0);
+  const isExtraSmall = size === 'xs';
   const isSmall = size === 's';
   const isMedium = size === 'm';
   const isLarge = size === 'l';
+
+  if (isExtraSmall) {
+    return (
+      <Card className="bg-[var(--color-bg-card)]">
+        <PreviewMedia
+          embedUrl={embedUrl}
+          title={video.title}
+          thumbnailUrl={video.thumbnailUrl}
+          videoId={video.videoId}
+          duration={video.duration}
+          className="aspect-video"
+        />
+      </Card>
+    );
+  }
 
   return (
     <Card className="bg-[var(--color-bg-card)]">
@@ -34,6 +50,7 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
         className={clsx(
           isLarge && 'block',
           isMedium && 'md:grid md:grid-cols-[minmax(260px,340px)_1fr] md:items-stretch',
+          isExtraSmall && 'grid grid-cols-[112px_1fr] items-stretch gap-0',
           isSmall && 'grid grid-cols-[148px_1fr] items-stretch gap-0',
         )}
       >
@@ -41,60 +58,46 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
           className={clsx(
             isLarge && '',
             isMedium && '',
+            isExtraSmall && 'h-full',
             isSmall && 'h-full',
           )}
         >
-          {embedUrl ? (
-            <div
-              className={clsx(
-                'overflow-hidden bg-surface',
-                isLarge && 'aspect-video',
-                isMedium && 'aspect-video md:h-full md:aspect-auto',
-                isSmall && 'h-full min-h-[148px] w-full',
-              )}
-            >
-              <iframe
-                src={embedUrl}
-                title={video.title}
-                className="h-full w-full border-0"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerPolicy="strict-origin-when-cross-origin"
-                allowFullScreen
-              />
-            </div>
-          ) : (
-            <div className={clsx(isSmall && 'h-full')}>
-              <MediaThumbnail
-                src={video.thumbnailUrl}
-                alt={video.title}
-                videoId={video.videoId}
-                duration={video.duration}
-              />
-            </div>
-          )}
+          <PreviewMedia
+            embedUrl={embedUrl}
+            title={video.title}
+            thumbnailUrl={video.thumbnailUrl}
+            videoId={video.videoId}
+            duration={video.duration}
+            className={clsx(
+              isLarge && 'aspect-video',
+              isMedium && 'aspect-video md:h-full md:aspect-auto',
+              isSmall && 'h-full min-h-[148px] w-full',
+            )}
+          />
         </div>
 
         <div
           className={clsx(
             isLarge && 'p-inset-md sm:p-inset-lg',
             isMedium && 'p-inset-md sm:p-inset-lg',
+            isExtraSmall && 'flex min-w-0 flex-col justify-between p-3',
             isSmall && 'flex min-w-0 flex-col justify-between p-3 sm:p-4',
           )}
         >
-          <div className={clsx(!isSmall && 'flex flex-col gap-stack-md sm:flex-row sm:items-start sm:justify-between')}>
+          <div className={clsx(!(isExtraSmall || isSmall) && 'flex flex-col gap-stack-md sm:flex-row sm:items-start sm:justify-between')}>
             <h2
               className={clsx(
                 'font-display font-semibold leading-snug tracking-[-0.02em] text-ink',
                 isLarge && 'text-xl sm:text-2xl',
                 isMedium && 'text-lg sm:text-xl',
+                isExtraSmall && 'line-clamp-2 text-sm',
                 isSmall && 'line-clamp-2 text-base',
               )}
             >
               {video.title}
             </h2>
             {action && (
-              <div className={clsx('shrink-0', isSmall && 'mt-3')}>
+              <div className={clsx('shrink-0', (isExtraSmall || isSmall) && 'mt-3')}>
                 {action}
               </div>
             )}
@@ -106,6 +109,7 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
                 'flex flex-wrap items-center text-ink-muted',
                 isLarge && 'mt-stack-sm gap-inline-lg text-xs',
                 isMedium && 'mt-stack-sm gap-inline-md text-xs',
+                isExtraSmall && 'mt-2 gap-2 text-[10px]',
                 isSmall && 'mt-3 gap-2 text-[11px]',
               )}
               items={metadataItems}
@@ -120,14 +124,60 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
               'inline-flex items-center gap-inline-xs font-medium text-accent transition-colors hover:text-accent-hover no-underline',
               isLarge && 'mt-stack-sm text-xs',
               isMedium && 'mt-stack-sm text-xs',
+              isExtraSmall && 'mt-2 text-[10px]',
               isSmall && 'mt-3 text-[11px]',
             )}
           >
-            <ExternalLink className={clsx(isSmall ? 'h-3 w-3' : 'w-3.5 h-3.5')} />
+            <ExternalLink className={clsx(isExtraSmall || isSmall ? 'h-3 w-3' : 'w-3.5 h-3.5')} />
             {t('result.openOnYoutube')}
           </a>
         </div>
       </div>
     </Card>
+  );
+}
+
+interface PreviewMediaProps {
+  embedUrl: string | null;
+  title: string;
+  thumbnailUrl: string;
+  videoId: string;
+  duration: string;
+  className?: string;
+}
+
+function PreviewMedia({
+  embedUrl,
+  title,
+  thumbnailUrl,
+  videoId,
+  duration,
+  className,
+}: PreviewMediaProps) {
+  if (embedUrl) {
+    return (
+      <div className={clsx('overflow-hidden bg-surface', className)}>
+        <iframe
+          src={embedUrl}
+          title={title}
+          className="h-full w-full border-0"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      </div>
+    );
+  }
+
+  return (
+    <div className={className}>
+      <MediaThumbnail
+        src={thumbnailUrl}
+        alt={title}
+        videoId={videoId}
+        duration={duration}
+      />
+    </div>
   );
 }
