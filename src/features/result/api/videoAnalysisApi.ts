@@ -6,6 +6,7 @@ import type {
   MentalModel,
   ResearchRoadmap,
   VideoAnalysis,
+  WorthItSummary,
 } from '../../analysis/types';
 import type { TranscriptSegment } from '../../analysis/types';
 import { apiRequest } from '../../../shared/api/httpClient';
@@ -42,6 +43,13 @@ interface BackendAnalysisPayload {
   language: string;
   status?: BackendAnalysisStatus;
   summary: string;
+  worthIt?: {
+    skipIf?: string[];
+    bestFor?: string[];
+    difficulty?: string;
+    estimatedValue?: string;
+  } | null;
+  learningOutcomes?: string[];
   detailedExplanation: Array<{
     topic: string;
     explanation: string;
@@ -56,12 +64,14 @@ interface BackendAnalysisPayload {
     insight: string;
     whyImportant: string;
     mindsetChange: string;
+    howToApply?: string;
   }>;
   mentalModel: {
     name: string;
     steps: string[];
     description: string;
   } | null;
+  actionItems?: string[];
   practicalTakeaways: string[];
   researchRoadmap: {
     tools: string[];
@@ -70,6 +80,9 @@ interface BackendAnalysisPayload {
     deepQuestions: string[];
   } | null;
   oneLineSummary: string;
+  originalContext?: {
+    keywords?: string[];
+  } | null;
   failureCode?: string | null;
   failureMessage?: string | null;
   createdAt: string;
@@ -160,8 +173,31 @@ function normalizeSummaryList(value: unknown) {
     .filter((item): item is string => Boolean(item));
 }
 
+function normalizeStringList(value: unknown) {
+  return normalizeSummaryList(value);
+}
+
 function normalizeText(value: unknown) {
   return typeof value === 'string' ? value.trim() : '';
+}
+
+function normalizeWorthIt(value: unknown): WorthItSummary | null {
+  if (!value || typeof value !== 'object') return null;
+
+  const worthIt = value as Record<string, unknown>;
+  const normalized = {
+    difficulty: normalizeText(worthIt.difficulty),
+    estimatedValue: normalizeText(worthIt.estimatedValue),
+    bestFor: normalizeStringList(worthIt.bestFor),
+    skipIf: normalizeStringList(worthIt.skipIf),
+  };
+
+  return normalized.difficulty
+    || normalized.estimatedValue
+    || normalized.bestFor.length > 0
+    || normalized.skipIf.length > 0
+    ? normalized
+    : null;
 }
 
 function normalizeDetailedExplanation(value: unknown): DetailedExplanation[] {
@@ -196,7 +232,7 @@ function normalizeKeyInsights(value: unknown): KeyInsight[] {
     .map((item) => ({
       insight: normalizeText(item.insight),
       whyImportant: normalizeText(item.whyImportant),
-      mindsetChange: normalizeText(item.mindsetChange),
+      mindsetChange: normalizeText(item.howToApply) || normalizeText(item.mindsetChange),
     }))
     .filter((item) => item.insight || item.whyImportant || item.mindsetChange);
 }
@@ -248,8 +284,12 @@ function normalizeSummary(analysis?: BackendAnalysisPayload | null): AnalysisSum
       practicalTakeaways: normalizeSummaryList(legacy.thingsToRemember),
       researchRoadmap: normalizeResearchRoadmap(null),
       limitations: [],
+      worthIt: null,
     };
   }
+
+  const actionItems = normalizeStringList(analysis?.actionItems);
+  const practicalTakeaways = normalizeSummaryList(analysis?.practicalTakeaways);
 
   return {
     summary: normalizeText(rawSummary),
@@ -259,9 +299,10 @@ function normalizeSummary(analysis?: BackendAnalysisPayload | null): AnalysisSum
     examples: normalizeExamples(analysis?.examples),
     keyInsights: normalizeKeyInsights(analysis?.keyInsights),
     mentalModel: normalizeMentalModel(analysis?.mentalModel),
-    practicalTakeaways: normalizeSummaryList(analysis?.practicalTakeaways),
+    practicalTakeaways: actionItems.length > 0 ? actionItems : practicalTakeaways,
     researchRoadmap: normalizeResearchRoadmap(analysis?.researchRoadmap),
     limitations: normalizeSummaryList(analysis?.limitations),
+    worthIt: normalizeWorthIt(analysis?.worthIt),
   };
 }
 
@@ -269,6 +310,8 @@ function normalizeDerivedOutcomes(analysis?: BackendAnalysisPayload | null): str
   if (!analysis) return [];
 
   const derived = [
+    ...normalizeStringList(analysis.learningOutcomes),
+    ...normalizeStringList(analysis.actionItems),
     ...normalizeSummaryList(analysis.practicalTakeaways),
     ...normalizeSummaryList(analysis.importantDetails),
     ...normalizeDetailedExplanation(analysis.detailedExplanation).map((item) => item.topic || item.explanation),
@@ -288,21 +331,24 @@ function normalizeTranscriptSegment(segment: BackendTranscriptSegment): Transcri
 export function normalizeVideoResponse(payload: BackendVideoAnalysisResponse): VideoAnalysis {
   const analysisId = payload.analysis?.id ?? payload.analysisId ?? payload.id;
   const language = payload.analysis?.language === 'th' ? 'th' : payload.analysis?.language === 'en' ? 'en' : undefined;
+  const normalizedSummary = normalizeSummary(payload.analysis);
+  const title = payload.title?.trim() || payload.youtubeUrl.trim() || 'Untitled video';
+  const outcomes = normalizeStringList(payload.analysis?.learningOutcomes);
 
   return {
     id: payload.id,
     analysisId,
     language,
     videoId: payload.youtubeVideoId,
-    title: payload.title ?? payload.youtubeUrl,
+    title,
     channelName: payload.channelName ?? '',
     channelUrl: '',
     duration: formatDuration(payload.duration ?? 0),
     thumbnailUrl: payload.thumbnail ?? '',
     videoUrl: payload.youtubeUrl,
-    outcomes: normalizeDerivedOutcomes(payload.analysis),
-    summary: normalizeSummary(payload.analysis),
-    keywords: [],
+    outcomes: outcomes.length > 0 ? outcomes : normalizeDerivedOutcomes(payload.analysis),
+    summary: normalizedSummary,
+    keywords: normalizeStringList(payload.analysis?.originalContext?.keywords),
     transcript: Array.isArray(payload.transcript)
       ? payload.transcript.map(normalizeTranscriptSegment).filter((segment) => segment.text.length > 0)
       : [],

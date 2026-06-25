@@ -33,6 +33,13 @@ export interface ResearchRoadmap {
   deepQuestions: string[];
 }
 
+export interface WorthItSummary {
+  difficulty: string;
+  estimatedValue: string;
+  bestFor: string[];
+  skipIf: string[];
+}
+
 export interface AnalysisSummary {
   summary: string;
   oneLineSummary: string;
@@ -44,6 +51,7 @@ export interface AnalysisSummary {
   practicalTakeaways: string[];
   researchRoadmap: ResearchRoadmap;
   limitations: string[];
+  worthIt?: WorthItSummary | null;
 }
 
 export interface LegacyAnalysisSummary {
@@ -74,6 +82,7 @@ export function normalizeLegacySummary(summary: LegacyAnalysisSummary): Analysis
       deepQuestions: [],
     },
     limitations: [],
+    worthIt: null,
   };
 }
 
