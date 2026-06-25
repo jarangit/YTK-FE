@@ -40,6 +40,13 @@ export function useLibraryQuery() {
     onSuccess: (items) => {
       queryClient.setQueryData(libraryKeys.list(userId), items);
     },
+    onError: (error) => {
+      if (!userId) {
+        console.error('Failed to unkeep video:', error);
+        return;
+      }
+      queryClient.invalidateQueries({ queryKey: libraryKeys.list(userId) });
+    },
   });
 
   const check = useCallback((analysisId: string) => {
@@ -56,7 +63,7 @@ export function useLibraryQuery() {
 
   return {
     items: query.data ?? [],
-    hydrated: !isAuthenticated || query.isFetched || query.isSuccess,
+    hydrated: isAuthenticated && query.isFetched,
     isLoading: query.isLoading,
     add: (video: VideoAnalysis) => keepMutation.mutate(video),
     remove: (libraryItemId: string) => unkeepMutation.mutate(libraryItemId),

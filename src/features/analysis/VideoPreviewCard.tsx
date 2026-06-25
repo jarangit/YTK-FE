@@ -20,6 +20,10 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
   const embedUrl = videoId
     ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}`
     : null;
+  const metadataItems = [
+    { icon: User, label: video.channelName.trim() },
+    { icon: Clock, label: video.duration.trim() },
+  ].filter((item) => item.label.length > 0);
   const isSmall = size === 's';
   const isMedium = size === 'm';
   const isLarge = size === 'l';
@@ -96,18 +100,17 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
             )}
           </div>
 
-          <MetadataRow
-            className={clsx(
-              'flex flex-wrap items-center text-ink-muted',
-              isLarge && 'mt-stack-sm gap-inline-lg text-xs',
-              isMedium && 'mt-stack-sm gap-inline-md text-xs',
-              isSmall && 'mt-3 gap-2 text-[11px]',
-            )}
-            items={[
-              { icon: User, label: video.channelName },
-              { icon: Clock, label: video.duration },
-            ]}
-          />
+          {metadataItems.length > 0 && (
+            <MetadataRow
+              className={clsx(
+                'flex flex-wrap items-center text-ink-muted',
+                isLarge && 'mt-stack-sm gap-inline-lg text-xs',
+                isMedium && 'mt-stack-sm gap-inline-md text-xs',
+                isSmall && 'mt-3 gap-2 text-[11px]',
+              )}
+              items={metadataItems}
+            />
+          )}
 
           <a
             href={video.videoUrl}

@@ -51,6 +51,7 @@ const emptySummary: AnalysisSummary = {
   practicalTakeaways: [],
   researchRoadmap: { concepts: [], tools: [], deepQuestions: [], trends: [] },
   limitations: [],
+  worthIt: null,
 };
 
 function normalizeHistoryItem(item: RawHistoryItem): HistoryItem {

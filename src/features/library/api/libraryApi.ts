@@ -103,22 +103,53 @@ export async function listLibraryItems(userId: string): Promise<KeptItem[]> {
 }
 
 export async function keepVideo(userId: string, video: VideoAnalysis): Promise<KeptItem[]> {
-  const response = await apiRequest<RawLibraryItem | ApiEnvelope<RawLibraryItem>>('/library/keep', {
-    method: 'POST',
-    body: JSON.stringify({ analysisId: video.analysisId }),
-  });
-  const keptItem = normalizeLibraryItem('data' in response ? response.data : response);
-  return [keptItem, ...await listLibraryItems(userId).then((items) => items.filter((item) => item.id !== keptItem.id))];
+  if (USE_MOCK_API) {
+    await mockDelay();
+    saveKeptItem(video, userId);
+    return getKeptItems(userId);
+  }
+
+  try {
+    const response = await apiRequest<RawLibraryItem | ApiEnvelope<RawLibraryItem>>('/library/keep', {
+      method: 'POST',
+      body: JSON.stringify({ analysisId: video.analysisId }),
+    });
+    const keptItem = normalizeLibraryItem('data' in response ? response.data : response);
+    return [keptItem, ...await listLibraryItems(userId).then((items) => items.filter((item) => item.id !== keptItem.id))];
+  } catch (error) {
+    console.error('Failed to keep video:', error);
+    return getKeptItems(userId);
+  }
 }
 
 export async function unkeepVideo(userId: string, libraryItemId: string): Promise<KeptItem[]> {
-  await apiRequest(`/library/${libraryItemId}`, {
-    method: 'DELETE',
-    query: { userId },
-  });
-  return listLibraryItems(userId);
+  try {
+    if (USE_MOCK_API) {
+      await mockDelay();
+      removeKeptItem(libraryItemId, userId);
+      return getKeptItems(userId);
+    }
+
+    await apiRequest(`/library/${libraryItemId}`, {
+      method: 'DELETE',
+      query: { userId },
+    });
+    return listLibraryItems(userId);
+  } catch (error) {
+    console.error('Failed to unkeep video:', error);
+    throw error;
+  }
 }
 
 export async function checkKeptVideo(userId: string, analysisId: string): Promise<boolean> {
-  return listLibraryItems(userId).then((items) => items.some((item) => item.analysisId === analysisId));
+  try {
+    if (USE_MOCK_API) {
+      return isKept(analysisId, userId);
+    }
+
+    return listLibraryItems(userId).then((items) => items.some((item) => item.analysisId === analysisId));
+  } catch (error) {
+    console.error('Failed to check kept video:', error);
+    return false;
+  }
 }

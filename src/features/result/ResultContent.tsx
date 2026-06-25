@@ -1,11 +1,13 @@
 import type { VideoAnalysis } from '../analysis/types';
 import KeepAction from '../analysis/KeepAction';
 import OutcomeCard from '../analysis/OutcomeCard';
-import SummaryAccordion from '../analysis/SummaryAccordion';
 import VideoPreviewCard from '../analysis/VideoPreviewCard';
-import AnalysisExtrasSection from './AnalysisExtrasSection';
+import ActionItemsSection from './ActionItemsSection';
+import KeyInsightsSection from './KeyInsightsSection';
+import KeywordsSection from './KeywordsSection';
 import OverviewSection from './OverviewSection';
 import TranscriptSection from './TranscriptSection';
+import WorthItSection from './WorthItSection';
 
 interface ResultContentProps {
   video: VideoAnalysis;
@@ -34,9 +36,11 @@ export default function ResultContent({
         )}
       />
       <OverviewSection summary={video.summary} />
+      <WorthItSection worthIt={video.summary.worthIt} />
       <OutcomeCard outcomes={video.outcomes} />
-      <SummaryAccordion summary={video.summary} />
-      <AnalysisExtrasSection summary={video.summary} />
+      <KeyInsightsSection insights={video.summary.keyInsights} />
+      <ActionItemsSection items={video.summary.practicalTakeaways} />
+      <KeywordsSection keywords={video.keywords} />
       <TranscriptSection transcript={video.transcript} />
     </div>
   );

@@ -227,6 +227,26 @@ const en = {
     untitledTopic: 'Topic {{index}}',
     exampleLabel: 'Example {{index}}',
   },
+  worthIt: {
+    title: 'Worth your time?',
+    subtitle: 'A quick fit check before you commit to the full video.',
+    difficulty: 'Difficulty',
+    estimatedValue: 'Why this may be worth watching',
+    bestFor: 'Best for',
+    skipIf: 'Skip if',
+  },
+  resultInsights: {
+    subtitle: 'The main ideas from the analysis, plus why they matter and how to use them.',
+    howToApply: 'How to apply it',
+  },
+  resultActions: {
+    title: 'Action items',
+    subtitle: 'Specific next steps you can carry forward after this video.',
+  },
+  resultKeywords: {
+    title: 'Context keywords',
+    subtitle: 'Names, concepts, and topics that define the video context.',
+  },
   keep: {
     title: 'Keep for later',
     desc: 'Save this to your library so you can revisit it when you need it.',
@@ -259,6 +279,7 @@ const en = {
   },
   sidebar: {
     library: 'Library',
+    history: 'History',
   },
   podcast: {
     eyebrow: 'Podcasts',
