@@ -1,7 +1,8 @@
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import AppHeader from './app/components/AppHeader';
 import AppFooter from './app/components/AppFooter';
+import { LIBRARY_ENABLED } from './features/library/CollectionSidebar';
 import HomePage from './features/home/HomePage';
 import FeedPage from './features/feed/FeedPage';
 import FeedDetailPage from './features/feed/FeedDetailPage';
@@ -56,11 +57,15 @@ function AppLayout() {
         />
         <Route
           path="/library"
-          element={(
-            <ProtectedRoute>
-              <LibraryPage />
-            </ProtectedRoute>
-          )}
+          element={
+            LIBRARY_ENABLED ? (
+              <ProtectedRoute>
+                <LibraryPage />
+              </ProtectedRoute>
+            ) : (
+              <Navigate to="/history" replace />
+            )
+          }
         />
         <Route
           path="/history"

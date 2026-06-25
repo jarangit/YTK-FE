@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Bookmark, FileText, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import IconButton from '../../shared/components/atoms/IconButton';
@@ -14,11 +14,24 @@ export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
   const { t } = useTranslation();
   const { video } = item;
   const [isRemoving, setIsRemoving] = useState(false);
+  const timeoutRef = useRef<number | null>(null);
 
   const handleRemove = () => {
     setIsRemoving(true);
-    window.setTimeout(() => onRemove(item.id), 160);
+    timeoutRef.current = window.setTimeout(() => {
+      onRemove(item.id);
+      timeoutRef.current = null;
+    }, 160);
   };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <div
@@ -31,7 +44,7 @@ export default function LibraryCard({ item, onRemove }: LibraryCardProps) {
         badge={[item.language?.toUpperCase(), t('library.savedBadge')].filter(Boolean).join(' • ')}
         destination={`/result?analysisId=${encodeURIComponent(item.analysisId)}`}
         metadata={[
-          { icon: FileText, label: video.outcomes.length },
+          { icon: FileText, label: video.outcomes?.length ?? 0 },
           { icon: Bookmark, label: t('keep.kept') },
         ]}
         footerAction={(

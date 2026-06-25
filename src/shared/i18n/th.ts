@@ -255,6 +255,7 @@ const th = {
   },
   sidebar: {
     library: 'คลัง',
+    history: 'ประวัติ',
   },
 };
 

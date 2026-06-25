@@ -256,6 +256,7 @@ const en = {
   },
   sidebar: {
     library: 'Library',
+    history: 'History',
   },
 };
 

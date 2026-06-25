@@ -4,7 +4,10 @@ import type { VideoAnalysis } from '../../analysis/types';
 const STORAGE_KEY = 'youtive_kept';
 
 function getStorageKey(userId?: string) {
-  return userId ? `${STORAGE_KEY}_${userId}` : STORAGE_KEY;
+  if (!userId || userId.trim() === '') {
+    return STORAGE_KEY;
+  }
+  return `${STORAGE_KEY}_${userId}`;
 }
 
 export function getKeptItems(userId?: string): KeptItem[] {
@@ -18,6 +21,10 @@ export function getKeptItems(userId?: string): KeptItem[] {
 }
 
 export function saveKeptItem(video: VideoAnalysis, userId?: string): void {
+  if (!userId || userId.trim() === '') {
+    console.warn('Cannot save video without valid userId');
+    return;
+  }
   const items = getKeptItems(userId);
   const exists = items.some((item) => item.analysisId === video.analysisId);
   if (!exists) {
@@ -33,6 +40,10 @@ export function saveKeptItem(video: VideoAnalysis, userId?: string): void {
 }
 
 export function removeKeptItem(libraryItemId: string, userId?: string): void {
+  if (!userId || userId.trim() === '') {
+    console.warn('Cannot remove video without valid userId');
+    return;
+  }
   const items = getKeptItems(userId).filter((item) => item.id !== libraryItemId);
   localStorage.setItem(getStorageKey(userId), JSON.stringify(items));
 }
