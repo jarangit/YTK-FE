@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { saveFeedItem } from '../api/feedApi';
 import { feedKeys } from './useFeedQuery';
@@ -19,15 +20,17 @@ export function useSaveFeedItemMutation() {
     },
   });
 
+  const save = useCallback((id: string) => {
+    if (!isAuthenticated) {
+      openSignInModal();
+      return;
+    }
+
+    mutation.mutate(id);
+  }, [isAuthenticated, mutation, openSignInModal]);
+
   return {
     ...mutation,
-    save: (id: string) => {
-      if (!isAuthenticated) {
-        openSignInModal();
-        return;
-      }
-
-      mutation.mutate(id);
-    },
+    save,
   };
 }

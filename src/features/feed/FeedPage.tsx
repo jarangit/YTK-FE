@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import FeedCard from './FeedCard';
 import FeedDetailContent from './FeedDetailContent';
 import Drawer from '../../shared/components/organisms/Drawer';
@@ -31,8 +31,10 @@ export default function FeedPage() {
     () => data?.pages.flatMap((page) => page.items) ?? [],
     [data],
   );
-
-  const selectedItem = filteredItems.find((item) => item.id === selectedItemId) ?? null;
+  const selectedItem = useMemo(
+    () => filteredItems.find((item) => item.id === selectedItemId) ?? null,
+    [filteredItems, selectedItemId],
+  );
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -66,13 +68,17 @@ export default function FeedPage() {
     };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const handleCardClick = (id: string) => {
+  const handleCardClick = useCallback((id: string) => {
     dispatch(selectFeedItem(id));
-  };
+  }, [dispatch]);
 
-  const closeDrawer = () => {
+  const closeDrawer = useCallback(() => {
     dispatch(clearSelectedFeedItem());
-  };
+  }, [dispatch]);
+
+  const handleSearchChange = useCallback((value: string) => {
+    dispatch(setFeedQuery(value));
+  }, [dispatch]);
 
   return (
     <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
@@ -93,7 +99,7 @@ export default function FeedPage() {
           <SearchInput
             placeholder={t('search.placeholder')}
             value={query}
-            onChange={(value) => dispatch(setFeedQuery(value))}
+            onChange={handleSearchChange}
           />
         </div>
 
