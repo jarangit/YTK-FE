@@ -10,7 +10,6 @@ import { useSaveFeedItemMutation } from './hooks/useSaveFeedItemMutation';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { clearSelectedFeedItem, selectFeedItem, setFeedQuery } from './state/feedSlice';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
-import { toVideoAnalysis } from './FeedDetailContent';
 
 export default function FeedPage() {
   const { t } = useTranslation();
@@ -149,7 +148,7 @@ export default function FeedPage() {
         {selectedItem && (
           <ContentTransition transitionKey={selectedItem.id}>
             <FeedDetailContent
-              video={toVideoAnalysis(selectedItem)}
+              item={selectedItem}
               onSaveFeedItem={() => saveFeedItem.save(selectedItem.id)}
               saving={saveFeedItem.isPending && saveFeedItem.variables === selectedItem.id}
             />

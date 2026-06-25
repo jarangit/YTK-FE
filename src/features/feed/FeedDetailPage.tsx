@@ -4,21 +4,24 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import Text from '../../shared/components/atoms/Text';
 import FeedDetailContent from './FeedDetailContent';
-import { getVideoById } from '../result/api/videoAnalysisApi';
+import { listFeed } from './api/feedApi';
 import { feedKeys } from './hooks/useFeedQuery';
 import { useSaveFeedItemMutation } from './hooks/useSaveFeedItemMutation';
 
 export default function FeedDetailPage() {
   const { id = '' } = useParams();
   const { t } = useTranslation();
-  const { data: video, isLoading } = useQuery({
+  const { data: item, isLoading } = useQuery({
     queryKey: feedKeys.detail(id),
-    queryFn: () => getVideoById(id),
+    queryFn: async () => {
+      const page = await listFeed({ limit: 100 });
+      return page.items.find((entry) => entry.id === id) ?? null;
+    },
     enabled: id.length > 0,
   });
   const saveFeedItem = useSaveFeedItemMutation();
 
-  if (!isLoading && !video) {
+  if (!isLoading && !item) {
     return (
       <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
         <section className="mx-auto w-full max-w-read px-inset-lg pt-stack-xl pb-stack-2xl">
@@ -54,9 +57,9 @@ export default function FeedDetailPage() {
           {t('feed.backToFeed')}
         </Link>
 
-        {video && (
+        {item && (
           <FeedDetailContent
-            video={video}
+            item={item}
             onSaveFeedItem={() => saveFeedItem.save(id)}
             saving={saveFeedItem.isPending && saveFeedItem.variables === id}
           />

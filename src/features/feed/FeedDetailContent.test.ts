@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { toVideoAnalysis } from './FeedDetailContent';
+import { toVideoAnalysis } from './feedVideoAnalysis';
 import type { FeedItem } from './types';
 
 function createFeedItem(overrides: Partial<FeedItem> = {}): FeedItem {

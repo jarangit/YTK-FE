@@ -1,92 +1,54 @@
-import { Bookmark, ExternalLink } from 'lucide-react';
+import { AlertCircle, Bookmark, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import type { AnalysisSummary, VideoAnalysis } from '../analysis/types';
 import type { FeedItem } from './types';
-import OutcomeCard from '../analysis/OutcomeCard';
-import SummaryAccordion from '../analysis/SummaryAccordion';
-import VideoPreviewCard from '../analysis/VideoPreviewCard';
+import { useVideoAnalysisQuery } from '../result/hooks/useVideoAnalysisQuery';
+import ResultContentSkeleton from '../result/ResultContentSkeleton';
+import AnalysisDetailBody from '../result/AnalysisDetailBody';
+import TranscriptSection from '../result/TranscriptSection';
 import Card from '../../shared/components/atoms/Card';
 import { Button } from '../../shared/components/atoms/Button';
 
 interface FeedDetailContentProps {
-  video: VideoAnalysis;
+  item: FeedItem;
   onSaveFeedItem: () => void;
   saving?: boolean;
 }
 
-function metadataString(item: FeedItem, key: string) {
-  const value = item.metadata?.[key];
-  return typeof value === 'string' ? value : '';
-}
+function FeedSaveAction({
+  onSaveFeedItem,
+  saving,
+}: {
+  onSaveFeedItem: () => void;
+  saving: boolean;
+}) {
+  const { t } = useTranslation();
 
-function formatDuration(totalSeconds: number | null) {
-  if (totalSeconds === null) return '';
-
-  const safeSeconds = Math.max(0, Math.floor(totalSeconds));
-  const hours = Math.floor(safeSeconds / 3600);
-  const minutes = Math.floor((safeSeconds % 3600) / 60);
-  const seconds = safeSeconds % 60;
-
-  if (hours > 0) {
-    return [hours, minutes, seconds].map((value) => String(value).padStart(2, '0')).join(':');
-  }
-
-  return `${minutes}:${String(seconds).padStart(2, '0')}`;
-}
-
-export function toVideoAnalysis(item: FeedItem): VideoAnalysis {
-  const insight = metadataString(item, 'insight') || item.body;
-  const howToApply = metadataString(item, 'howToApply');
-  const whyImportant = metadataString(item, 'whyImportant');
-  const summary: AnalysisSummary = {
-    summary: item.analysis.summary ?? item.body,
-    oneLineSummary: item.body,
-    detailedExplanation: [],
-    importantDetails: whyImportant ? [whyImportant] : [],
-    examples: [],
-    keyInsights: [
-      {
-        insight,
-        whyImportant,
-        mindsetChange: '',
-      },
-    ],
-    mentalModel: null,
-    practicalTakeaways: howToApply ? [howToApply] : [],
-    researchRoadmap: {
-      tools: [],
-      trends: [],
-      concepts: item.keywords,
-      deepQuestions: [],
-    },
-    limitations: [],
-    worthIt: null,
-  };
-
-  return {
-    id: item.video.id,
-    analysisId: item.analysis.id,
-    language: item.analysis.language === 'th' ? 'th' : 'en',
-    videoId: item.video.youtubeVideoId,
-    title: item.video.title ?? item.title,
-    channelName: item.video.channelName ?? '',
-    channelUrl: '',
-    duration: formatDuration(item.video.duration),
-    thumbnailUrl: item.video.thumbnail ?? '',
-    videoUrl: item.video.youtubeUrl,
-    keywords: item.keywords,
-    outcomes: [item.body, howToApply, whyImportant].filter(Boolean),
-    summary,
-    transcript: [],
-  };
+  return (
+    <Button
+      type="button"
+      iconLeft={Bookmark}
+      loading={saving}
+      onClick={onSaveFeedItem}
+    >
+      {t('keep.button')}
+    </Button>
+  );
 }
 
 export default function FeedDetailContent({
-  video,
+  item,
   onSaveFeedItem,
   saving = false,
 }: FeedDetailContentProps) {
   const { t } = useTranslation();
+  const { data, isLoading, isError } = useVideoAnalysisQuery(item.analysis.id);
+  const video = data?.video ?? null;
+  const status = data?.status;
+  const transcript = data?.transcript ?? [];
+  const failureMessage = data?.failureMessage;
+  const youtubeUrl = data?.youtubeUrl ?? item.video.youtubeUrl;
+  const isWaiting = isLoading || status === 'PENDING' || status === 'PROCESSING';
+  const isFailed = status === 'FAILED';
 
   return (
     <div className="p-inset-md sm:p-inset-lg">
@@ -95,7 +57,7 @@ export default function FeedDetailContent({
           Video Analysis
         </span>
         <a
-          href={`/result?analysisId=${encodeURIComponent(video.analysisId)}`}
+          href={`/result?analysisId=${encodeURIComponent(item.analysis.id)}`}
           target="_blank"
           rel="noreferrer"
           className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--color-bg-hover)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
@@ -104,25 +66,69 @@ export default function FeedDetailContent({
           <ExternalLink className="w-4 h-4" />
         </a>
       </div>
-      <div className="space-y-stack-md sm:space-y-stack-lg">
-        <VideoPreviewCard video={video} />
-        <OutcomeCard outcomes={video.outcomes} />
-        <SummaryAccordion summary={video.summary} />
-        <Card padded as="section" className="bg-[var(--color-bg-card)]">
-          <h2 className="font-display text-lg font-semibold text-ink">{t('keep.title')}</h2>
-          <p className="mb-stack-md mt-stack-xs text-sm text-ink-muted">
-            {t('keep.desc')}
+
+      {isWaiting && <ResultContentSkeleton />}
+
+      {!isWaiting && video && (
+        <AnalysisDetailBody
+          video={video}
+          hideEmptySections
+          action={(
+            <FeedSaveAction
+              onSaveFeedItem={onSaveFeedItem}
+              saving={saving}
+            />
+          )}
+        />
+      )}
+
+      {!isWaiting && isFailed && (
+        <div className="mx-auto max-w-read space-y-stack-md sm:space-y-stack-lg">
+          <Card padded as="section" className="bg-[var(--color-bg-card)]">
+            <div className="flex items-start gap-inline-sm">
+              <div className="mt-1 rounded-full bg-danger-soft p-2 text-danger">
+                <AlertCircle className="h-5 w-5" />
+              </div>
+              <div className="min-w-0">
+                <h1 className="font-display text-lg font-semibold text-ink">
+                  {t('result.failed')}
+                </h1>
+                <p className="mt-stack-xs text-sm text-ink-muted">
+                  {failureMessage || t('result.failedDescription')}
+                </p>
+
+                {youtubeUrl && (
+                  <div className="mt-stack-md">
+                    <a
+                      href={youtubeUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-inline-xs text-sm font-medium text-accent hover:text-accent-hover no-underline"
+                    >
+                      {t('result.openOnYoutube')}
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Card>
+
+          {transcript.length > 0 && (
+            <TranscriptSection transcript={transcript} />
+          )}
+        </div>
+      )}
+
+      {!isWaiting && !isFailed && (isError || !video) && (
+        <Card padded as="section" className="mx-auto max-w-read bg-[var(--color-bg-card)]">
+          <h1 className="font-display text-lg font-semibold text-ink">
+            {t('feed.notFoundTitle')}
+          </h1>
+          <p className="mt-stack-xs text-sm text-ink-muted">
+            {t('feed.notFoundSubtitle')}
           </p>
-          <Button
-            type="button"
-            iconLeft={Bookmark}
-            loading={saving}
-            onClick={onSaveFeedItem}
-          >
-            {t('keep.button')}
-          </Button>
         </Card>
-      </div>
+      )}
     </div>
   );
 }

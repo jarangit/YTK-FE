@@ -8,7 +8,7 @@ import IconButton from '../../shared/components/atoms/IconButton';
 import Card from '../../shared/components/atoms/Card';
 import { Button } from '../../shared/components/atoms/Button';
 import VideoPreviewCard from '../analysis/VideoPreviewCard';
-import { toVideoAnalysis } from './FeedDetailContent';
+import { toVideoAnalysis } from './feedVideoAnalysis';
 
 function extractVideoId(videoUrl: string) {
   try {
