@@ -2,11 +2,11 @@ import { ArrowLeft } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import Text from '../../shared/components/atoms/Text';
 import FeedDetailContent from './FeedDetailContent';
 import { getVideoById } from '../result/api/videoAnalysisApi';
 import { feedKeys } from './hooks/useFeedQuery';
+import { useSaveFeedItemMutation } from './hooks/useSaveFeedItemMutation';
 
 export default function FeedDetailPage() {
   const { id = '' } = useParams();
@@ -16,7 +16,7 @@ export default function FeedDetailPage() {
     queryFn: () => getVideoById(id),
     enabled: id.length > 0,
   });
-  const { add, remove } = useLibraryQuery();
+  const saveFeedItem = useSaveFeedItemMutation();
 
   if (!isLoading && !video) {
     return (
@@ -57,9 +57,8 @@ export default function FeedDetailPage() {
         {video && (
           <FeedDetailContent
             video={video}
-            onKeep={add}
-            onRemove={remove}
-            initiallyKept={false}
+            onSaveFeedItem={() => saveFeedItem.save(id)}
+            saving={saveFeedItem.isPending && saveFeedItem.variables === id}
           />
         )}
       </section>

@@ -5,8 +5,8 @@ import Drawer from '../../shared/components/organisms/Drawer';
 import Text from '../../shared/components/atoms/Text';
 import SearchInput from '../../shared/components/molecules/SearchInput';
 import { useTranslation } from 'react-i18next';
-import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
 import { useFeedQuery } from './hooks/useFeedQuery';
+import { useSaveFeedItemMutation } from './hooks/useSaveFeedItemMutation';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { clearSelectedFeedItem, selectFeedItem, setFeedQuery } from './state/feedSlice';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
@@ -18,7 +18,7 @@ export default function FeedPage() {
   const query = useAppSelector((state) => state.feed.query);
   const selectedItemId = useAppSelector((state) => state.feed.selectedItemId);
   const { data: filteredItems = [] } = useFeedQuery(query);
-  const { add, remove } = useLibraryQuery();
+  const saveFeedItem = useSaveFeedItemMutation();
 
   const selectedItem = filteredItems.find((item) => item.id === selectedItemId) ?? null;
 
@@ -45,7 +45,7 @@ export default function FeedPage() {
           </Text>
         </div>
 
-        <div className="mb-stack-lg max-w-[420px]">
+        <div className="mb-stack-lg w-full">
           <SearchInput
             placeholder={t('search.placeholder')}
             value={query}
@@ -54,9 +54,15 @@ export default function FeedPage() {
         </div>
 
         <ContentTransition transitionKey={`${query.trim().toLowerCase()}:${filteredItems.map((item) => item.id).join(',')}`}>
-          <div className="grid grid-cols-1 gap-inline-xl sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-inline-xl">
             {filteredItems.map((item) => (
-              <FeedCard key={item.id} item={item} onClick={handleCardClick} />
+              <FeedCard
+                key={item.id}
+                item={item}
+                onClick={handleCardClick}
+                onSave={saveFeedItem.save}
+                saving={saveFeedItem.isPending && saveFeedItem.variables === item.id}
+              />
             ))}
           </div>
         </ContentTransition>
@@ -67,9 +73,8 @@ export default function FeedPage() {
           <ContentTransition transitionKey={selectedItem.id}>
             <FeedDetailContent
               video={toVideoAnalysis(selectedItem)}
-              onKeep={add}
-              onRemove={remove}
-              initiallyKept={false}
+              onSaveFeedItem={() => saveFeedItem.save(selectedItem.id)}
+              saving={saveFeedItem.isPending && saveFeedItem.variables === selectedItem.id}
             />
           </ContentTransition>
         )}
