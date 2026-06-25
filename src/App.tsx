@@ -14,6 +14,7 @@ import PodcastPage from './features/podcast/PodcastPage';
 import StaticPage from './features/static/StaticPage';
 import NotFoundPage from './features/static/NotFoundPage';
 import { AuthProvider } from './shared/auth/AuthContext';
+import ErrorBoundary from './shared/components/atoms/ErrorBoundary';
 import SignInModal from './app/components/SignInModal';
 import ProtectedRoute from './app/components/ProtectedRoute';
 import { useAuth } from './shared/auth/AuthContext';
