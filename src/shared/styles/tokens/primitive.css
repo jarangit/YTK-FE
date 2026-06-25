@@ -1,44 +1,44 @@
 :root {
   --color-white: #ffffff;
-  --color-gray-50: #f2f2f2;
-  --color-gray-100: #e5e5e5;
-  --color-gray-200: #d3d3d3;
-  --color-gray-300: #c6c6c6;
-  --color-gray-400: #909090;
-  --color-gray-500: #606060;
-  --color-gray-600: #4a4a4a;
-  --color-gray-700: #303030;
-  --color-gray-800: #212121;
-  --color-gray-900: #0f0f0f;
-  --color-dark-50: #f1f1f1;
-  --color-dark-100: #aaaaaa;
-  --color-dark-200: #717171;
-  --color-dark-700: #272727;
-  --color-dark-800: #212121;
-  --color-dark-900: #0f0f0f;
-  --color-purple-100: #f2ebfd;
-  --color-purple-200: #d9c4fc;
-  --color-purple-400: #a974f8;
-  --color-purple-500: #7b2ff7;
-  --color-purple-600: #5c1fc9;
+  --color-gray-50: #f7f8fc;
+  --color-gray-100: #edf0f6;
+  --color-gray-200: #d9e0eb;
+  --color-gray-300: #c3cedd;
+  --color-gray-400: #8a97ab;
+  --color-gray-500: #5f6c80;
+  --color-gray-600: #495569;
+  --color-gray-700: #344054;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #172033;
+  --color-dark-50: #eff3f8;
+  --color-dark-100: #a5b0c0;
+  --color-dark-200: #728096;
+  --color-dark-700: #243042;
+  --color-dark-800: #1b2534;
+  --color-dark-900: #121927;
+  --color-purple-100: #f1ecff;
+  --color-purple-200: #ddd0ff;
+  --color-purple-400: #9d7cf4;
+  --color-purple-500: #7c5ce6;
+  --color-purple-600: #6145c4;
 
-  --color-blue-100: #e8f0fe;
-  --color-blue-500: #0071e3;
-  --color-blue-600: #0060c0;
-  --color-green-500: #34c759;
-  --color-red-500: #ff3b30;
-  --color-red-600: #d92d20;
-  --color-red-100: #feeceb;
-  --color-orange-500: #ff9500;
+  --color-blue-100: #e8f2ff;
+  --color-blue-500: #4a7dff;
+  --color-blue-600: #3568ec;
+  --color-green-500: #35b979;
+  --color-red-500: #ef6b6b;
+  --color-red-600: #de5454;
+  --color-red-100: #ffefef;
+  --color-orange-500: #f5a524;
 
   --color-youtube-red: #ff0000;
   --color-youtube-red-hover: #cc0000;
   --color-youtube-red-soft: #ffe5e5;
 
-  --color-brand-primary: var(--color-red-600);
-  --color-brand-primary-hover: var(--color-blue-600);
-  --color-brand-primary-soft: var(--color-blue-100);
-  --color-brand-primary-contrast: var(--color-youtube-red-soft);
+  --color-brand-primary: var(--color-youtube-red);
+  --color-brand-primary-hover: var(--color-youtube-red-hover);
+  --color-brand-primary-soft: var(--color-youtube-red-soft);
+  --color-brand-primary-contrast: #fff4f4;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -53,14 +53,14 @@
   --space-20: 80px;
 
   --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 24px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
   --radius-full: 9999px;
 
   --shadow-soft: none;
   --shadow-medium: none;
-  --shadow-heavy: 0 8px 28px rgba(0, 0, 0, 0.14);
+  --shadow-heavy: none;
   --shadow-elevated: none;
 
   --font-size-xs: 11px;
