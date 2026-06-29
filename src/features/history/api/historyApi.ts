@@ -2,6 +2,7 @@ import type { AnalysisSummary } from '../../analysis/types';
 import type { BackendAnalysisStatus } from '../../result/api/videoAnalysisApi';
 import { mockDelay, USE_MOCK_API } from '../../../shared/api/config';
 import { apiRequest } from '../../../shared/api/httpClient';
+import { formatDuration } from '../../result/api/videoAnalysisApi';
 import { mockVideos } from '../../result/data/mockVideos';
 import type { HistoryItem } from '../types';
 
@@ -17,6 +18,8 @@ interface RawHistoryItem {
     title?: string;
     thumbnail?: string;
     channelName?: string;
+    duration?: number;
+    publishedAt?: string;
   };
 }
 
@@ -69,11 +72,12 @@ function normalizeHistoryItem(item: RawHistoryItem): HistoryItem {
       language: analysis.language,
       videoId: item.video.youtubeVideoId,
       videoUrl: item.video.youtubeUrl,
-      title: item.video.title ?? item.video.youtubeUrl,
+      title: item.video.title ?? 'Untitled video',
       thumbnailUrl: item.video.thumbnail ?? '',
       channelName: item.video.channelName ?? '',
       channelUrl: '',
-      duration: '',
+      duration: item.video.duration != null ? formatDuration(item.video.duration) : '',
+      publishedAt: item.video.publishedAt ?? undefined,
       outcomes: [],
       keywords: [],
       transcript: [],

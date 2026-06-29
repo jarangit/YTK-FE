@@ -14,6 +14,7 @@ export interface AnalyticsItem {
     thumbnail: string | null;
     channelName: string | null;
     duration: number | null;
+    publishedAt: string | null;
   } | null;
   analysis: {
     id: string;

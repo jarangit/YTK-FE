@@ -81,6 +81,7 @@ export const feedMock: FeedItem[] = Array.from({ length: 24 }, (_, index) => {
       thumbnail: null,
       channelName: index % 4 === 0 ? null : 'Youtive Demo',
       duration: index % 2 === 0 ? null : 420 + index * 31,
+      publishedAt: index % 5 === 0 ? null : '2026-06-01T08:00:00.000Z',
     },
   };
 });

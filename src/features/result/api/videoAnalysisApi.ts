@@ -97,6 +97,7 @@ export interface BackendVideoAnalysisResponse {
   thumbnail?: string;
   channelName?: string;
   duration?: number;
+  publishedAt?: string;
   status: BackendAnalysisStatus;
   createdAt: string;
   failureCode?: string;
@@ -124,7 +125,7 @@ function hasRenderableVideoData(payload: BackendVideoAnalysisResponse) {
   );
 }
 
-function formatDuration(totalSeconds: number) {
+export function formatDuration(totalSeconds: number) {
   const safeSeconds = Math.max(0, Math.floor(totalSeconds));
   const hours = Math.floor(safeSeconds / 3600);
   const minutes = Math.floor((safeSeconds % 3600) / 60);
@@ -332,7 +333,7 @@ export function normalizeVideoResponse(payload: BackendVideoAnalysisResponse): V
   const analysisId = payload.analysis?.id ?? payload.analysisId ?? payload.id;
   const language = payload.analysis?.language === 'th' ? 'th' : payload.analysis?.language === 'en' ? 'en' : undefined;
   const normalizedSummary = normalizeSummary(payload.analysis);
-  const title = payload.title?.trim() || payload.youtubeUrl.trim() || 'Untitled video';
+  const title = payload.title?.trim() || 'Untitled video';
   const outcomes = normalizeStringList(payload.analysis?.learningOutcomes);
 
   return {
@@ -346,6 +347,7 @@ export function normalizeVideoResponse(payload: BackendVideoAnalysisResponse): V
     duration: formatDuration(payload.duration ?? 0),
     thumbnailUrl: payload.thumbnail ?? '',
     videoUrl: payload.youtubeUrl,
+    publishedAt: payload.publishedAt ?? undefined,
     outcomes: outcomes.length > 0 ? outcomes : normalizeDerivedOutcomes(payload.analysis),
     summary: normalizedSummary,
     keywords: normalizeStringList(payload.analysis?.originalContext?.keywords),

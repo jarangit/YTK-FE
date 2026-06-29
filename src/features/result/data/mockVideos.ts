@@ -28,6 +28,7 @@ export const mockVideos: VideoAnalysis[] = [
     duration: '18:24',
     thumbnailUrl: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
     videoUrl: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
+    publishedAt: '2024-01-15T10:00:00.000Z',
     keywords: ['english', 'speaking', 'beginner', 'practice', 'language'],
     outcomes: [
       'Introduce your daily routine in simple English',
@@ -110,6 +111,7 @@ export const mockVideos: VideoAnalysis[] = [
     duration: '24:10',
     thumbnailUrl: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
     videoUrl: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
+    publishedAt: '2024-03-20T08:30:00.000Z',
     keywords: ['product', 'customer', 'discovery', 'problem', 'pm'],
     outcomes: [
       'Separate customer problems from feature ideas',
@@ -181,6 +183,7 @@ export const mockVideos: VideoAnalysis[] = [
     duration: '22:35',
     thumbnailUrl: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
     videoUrl: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
+    publishedAt: '2024-06-10T14:00:00.000Z',
     keywords: ['react', 'state', 'management', 'frontend', 'javascript'],
     outcomes: [
       'Explain when local state is enough',
