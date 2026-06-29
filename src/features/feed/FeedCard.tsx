@@ -7,8 +7,7 @@ import Badge from '../../shared/components/atoms/Badge';
 import IconButton from '../../shared/components/atoms/IconButton';
 import Card from '../../shared/components/atoms/Card';
 import { Button } from '../../shared/components/atoms/Button';
-import VideoPreviewCard from '../analysis/VideoPreviewCard';
-import { toVideoAnalysis } from './feedVideoAnalysis';
+import MediaThumbnail from '../../shared/components/molecules/MediaThumbnail';
 
 function extractVideoId(videoUrl: string) {
   try {
@@ -42,7 +41,13 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
     : item.body;
   const videoTitle = item.video.title ?? 'YouTube analysis';
   const channelName = item.video.channelName ?? 'Unknown channel';
-  const video = toVideoAnalysis(item);
+  function formatDuration(totalSeconds: number | null) {
+    if (totalSeconds == null) return '';
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${m}:${String(s).padStart(2, '0')}`;
+  }
+
   const readTime = item.video.duration
     ? `${Math.max(1, Math.ceil(item.video.duration / 60))} min read`
     : `${Math.max(1, Math.ceil(insight.length / 520))} min read`;
@@ -77,8 +82,12 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
       </div>
 
       <div className="min-w-0">
-        <div className="overflow-hidden rounded-card border border-[var(--color-border-subtle)] [&>article]:rounded-none [&>article]:border-0 [&>article]:shadow-none">
-          <MemoizedVideoPreviewCard video={video} size="xs" />
+        <div className="overflow-hidden rounded-card border border-[var(--color-border-subtle)]">
+          <MediaThumbnail
+            src={item.video.thumbnail ?? ''}
+            alt={item.video.title ?? ''}
+            duration={formatDuration(item.video.duration)}
+          />
         </div>
       </div>
     </div>
@@ -146,8 +155,6 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
     </Card>
   );
 }
-
-const MemoizedVideoPreviewCard = memo(VideoPreviewCard);
 
 const FeedCard = memo(FeedCardComponent);
 

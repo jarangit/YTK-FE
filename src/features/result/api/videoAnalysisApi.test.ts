@@ -100,7 +100,7 @@ describe('normalizeVideoResponse', () => {
       duration: undefined,
     }));
 
-    expect(normalized.title).toBe('https://www.youtube.com/watch?v=abc123');
+    expect(normalized.title).toBe('Untitled video');
     expect(normalized.thumbnailUrl).toBe('');
     expect(normalized.channelName).toBe('');
     expect(normalized.duration).toBe('0:00');

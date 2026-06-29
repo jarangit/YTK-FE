@@ -13,6 +13,7 @@ export const analyticsMock: AnalyticsItem[] = mockVideos.slice(0, 3).map((video,
     thumbnail: video.thumbnailUrl,
     channelName: video.channelName,
     duration: durationToSeconds(video.duration),
+    publishedAt: '2026-06-25T11:00:00.000Z',
   },
   analysis: {
     id: video.analysisId,

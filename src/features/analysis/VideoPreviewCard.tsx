@@ -1,4 +1,4 @@
-import { ExternalLink, Clock, User } from 'lucide-react';
+import { ExternalLink, Clock, User, Calendar } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import type { VideoAnalysis } from './types';
@@ -14,6 +14,15 @@ interface Props {
   size?: VideoPreviewCardSize;
 }
 
+function formatPublishDate(iso: string) {
+  try {
+    const date = new Date(iso);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  } catch {
+    return '';
+  }
+}
+
 export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
   const { t } = useTranslation();
   const videoId = video.videoId.trim();
@@ -23,6 +32,7 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
   const metadataItems = [
     { icon: User, label: video.channelName.trim() },
     { icon: Clock, label: video.duration.trim() },
+    ...(video.publishedAt ? [{ icon: Calendar, label: formatPublishDate(video.publishedAt) }] : []),
   ].filter((item) => item.label.length > 0);
   const isExtraSmall = size === 'xs';
   const isSmall = size === 's';

@@ -97,6 +97,7 @@ export interface VideoAnalysis {
   duration: string;
   thumbnailUrl: string;
   videoUrl: string;
+  publishedAt?: string;
   outcomes: string[];
   summary: AnalysisSummary;
   keywords: string[];

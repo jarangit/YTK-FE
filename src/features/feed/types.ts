@@ -28,6 +28,7 @@ export interface FeedItem {
     thumbnail: string | null;
     channelName: string | null;
     duration: number | null;
+    publishedAt: string | null;
   };
 }
 

@@ -61,6 +61,7 @@ export function toVideoAnalysis(item: FeedItem): VideoAnalysis {
     duration: formatDuration(item.video.duration),
     thumbnailUrl: item.video.thumbnail ?? '',
     videoUrl: item.video.youtubeUrl,
+    publishedAt: item.video.publishedAt ?? undefined,
     keywords: item.keywords,
     outcomes: [item.body, howToApply, whyImportant].filter(Boolean),
     summary,
