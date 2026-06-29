@@ -1,19 +1,24 @@
+type MediaThumbnailVariant = 'auto' | 'thumbnail' | 'embed';
+
 interface MediaThumbnailProps {
   src: string;
   alt: string;
   videoId?: string;
   duration?: string;
+  variant?: MediaThumbnailVariant;
 }
 
-export default function MediaThumbnail({ src, alt, videoId, duration }: MediaThumbnailProps) {
+export default function MediaThumbnail({ src, alt, videoId, duration, variant = 'auto' }: MediaThumbnailProps) {
   const normalizedVideoId = videoId?.trim();
   const embedUrl = normalizedVideoId
     ? `https://www.youtube-nocookie.com/embed/${encodeURIComponent(normalizedVideoId)}?controls=0&disablekb=1&modestbranding=1`
     : null;
 
+  const showEmbed = variant === 'embed' || (variant === 'auto' && embedUrl);
+
   return (
     <div className="relative aspect-video overflow-hidden bg-surface">
-      {embedUrl ? (
+      {showEmbed && embedUrl ? (
         <iframe
           src={embedUrl}
           title={alt}

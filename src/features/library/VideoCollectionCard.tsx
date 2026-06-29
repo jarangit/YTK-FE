@@ -33,6 +33,7 @@ export default function VideoCollectionCard({
         alt={video.title}
         videoId={video.videoId}
         duration={video.duration || undefined}
+        variant="thumbnail"
       />
       <div className="p-inset-md sm:p-inset-lg">
         <div className="mb-stack-sm flex flex-wrap items-center gap-inline-sm">
