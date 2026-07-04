@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { Button } from '../../shared/components/atoms/Button';
 import Input from '../../shared/components/atoms/Input';
 import FormField from '../../shared/components/molecules/FormField';
-import i18n from '../../shared/i18n';
 import { ApiRequestError } from '../../shared/api/httpClient';
 import { analyzeVideo } from '../result/api/videoAnalysisApi';
 
@@ -46,7 +45,7 @@ export default function UrlInputForm({ onAnalyze, compact }: Props) {
 
       const response = await analyzeVideo({
         youtubeUrl: trimmed,
-        language: i18n.language === 'th' ? 'th' : 'en',
+        language: 'th',
       });
 
       navigate(`/result?analysisId=${encodeURIComponent(response.analysisId)}`);

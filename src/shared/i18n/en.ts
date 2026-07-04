@@ -7,6 +7,8 @@ const en = {
     feed: 'Feed',
     library: 'Library',
     history: 'History',
+    menu: 'Menu',
+    close: 'Close menu',
   },
   footer: {
     about: 'About',
@@ -25,6 +27,7 @@ const en = {
   language: {
     en: 'English',
     th: 'ไทย',
+    label: 'Language',
   },
   home: {
     title: 'Paste a YouTube link and see the key points before you watch.',

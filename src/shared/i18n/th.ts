@@ -7,6 +7,8 @@ const th = {
     feed: 'ฟีด',
     library: 'คลังของฉัน',
     history: 'ประวัติ',
+    menu: 'เมนู',
+    close: 'ปิดเมนู',
   },
   footer: {
     about: 'เกี่ยวกับเรา',
@@ -25,6 +27,7 @@ const th = {
   language: {
     en: 'English',
     th: 'ไทย',
+    label: 'ภาษา',
   },
   home: {
     title: 'วางลิงก์ YouTube แล้วดูประเด็นสำคัญก่อนเริ่มดูวิดีโอ',
