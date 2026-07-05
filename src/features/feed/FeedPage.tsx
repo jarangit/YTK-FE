@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { RefreshCw } from 'lucide-react';
 import FeedCard from './FeedCard';
 import FeedDetailContent from './FeedDetailContent';
 import Drawer from '../../shared/components/organisms/Drawer';
@@ -24,6 +25,7 @@ export default function FeedPage() {
     isFetchingNextPage,
     fetchNextPage,
     hasNextPage,
+    refetch,
   } = useFeedQuery(debouncedQuery, undefined, 10);
   const saveFeedItem = useSaveFeedItemMutation();
   const filteredItems = useMemo(
@@ -134,8 +136,21 @@ export default function FeedPage() {
                   </div>
                 )}
                 {!hasNextPage && (
-                  <div className="text-sm text-[var(--color-text-tertiary)]">
-                    คุณอ่านครบแล้ววันนี้
+                  <div className="flex flex-col items-center gap-stack-md">
+                    <div className="text-sm text-[var(--color-text-tertiary)]">
+                      ไม่มีรายการเพิ่มแล้ว
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        window.scrollTo(0, 0);
+                        void refetch();
+                      }}
+                      className="inline-flex items-center gap-inline-xs rounded-full border border-border bg-[var(--color-bg-card)] px-inset-md py-stack-xs text-sm font-medium text-ink-muted transition-colors hover:bg-[var(--color-bg-hover)] hover:text-ink"
+                    >
+                      <RefreshCw className="h-4 w-4" />
+                      ตรวจสอบรายการใหม่
+                    </button>
                   </div>
                 )}
               </div>
