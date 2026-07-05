@@ -1,6 +1,7 @@
 import { Lightbulb } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { AnalysisSummary } from '../analysis/types';
+import ReactMarkdown from 'react-markdown';
 import Card from '../../shared/components/atoms/Card';
 
 interface OverviewSectionProps {
@@ -27,7 +28,9 @@ export default function OverviewSection({ summary }: OverviewSectionProps) {
         <h2 className="mt-stack-sm max-w-[40rem] font-display text-[1.5rem] font-semibold leading-[1.25] tracking-[-0.02em] text-ink sm:text-[1.85rem]">
           {kicker || t('summary.overview')}
         </h2>
-        <p className="mt-stack-md max-w-[46rem] text-base leading-8 text-ink-muted">{overview}</p>
+        <div className="mt-stack-md max-w-[46rem] text-base leading-8 text-ink-muted [&>p]:mb-stack-md">
+          <ReactMarkdown>{overview}</ReactMarkdown>
+        </div>
       </div>
     </Card>
   );
