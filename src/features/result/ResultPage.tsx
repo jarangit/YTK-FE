@@ -1,18 +1,24 @@
-import { useSearchParams, Link } from 'react-router-dom';
-import { AlertCircle, ArrowLeft } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { useLibraryQuery } from '../library/hooks/useLibraryQuery';
-import ResultContent from './ResultContent';
-import { useVideoAnalysisQuery } from './hooks/useVideoAnalysisQuery';
-import ContentTransition from '../../shared/components/atoms/ContentTransition';
-import Card from '../../shared/components/atoms/Card';
-import TranscriptSection from './TranscriptSection';
-import ResultContentSkeleton from './ResultContentSkeleton';
+import { useEffect } from 'react';
+import { useSearchParams, Link } from "react-router-dom";
+import { AlertCircle, ArrowLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useLibraryQuery } from "../library/hooks/useLibraryQuery";
+import ResultContent from "./ResultContent";
+import { useVideoAnalysisQuery } from "./hooks/useVideoAnalysisQuery";
+import ContentTransition from "../../shared/components/atoms/ContentTransition";
+import Card from "../../shared/components/atoms/Card";
+import TranscriptSection from "./TranscriptSection";
+import ResultLoadingSpinner from "./ResultLoadingSpinner";
 
 export default function ResultPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
-  const analysisId = searchParams.get('analysisId') ?? searchParams.get('videoId') ?? '';
+  const analysisId =
+    searchParams.get("analysisId") ?? searchParams.get("videoId") ?? "";
   const { data, isLoading, isError } = useVideoAnalysisQuery(analysisId);
   const { add, remove, check } = useLibraryQuery();
   const video = data?.video ?? null;
@@ -21,10 +27,11 @@ export default function ResultPage() {
   const failureMessage = data?.failureMessage;
   const youtubeUrl = data?.youtubeUrl;
 
-  const isWaiting = isLoading || status === 'PENDING' || status === 'PROCESSING';
-  const isFailed = status === 'FAILED';
+  const isWaiting =
+    isLoading || status === "PENDING" || status === "PROCESSING";
+  const isFailed = status === "FAILED";
   const isMissingAnalysisId = analysisId.trim().length === 0;
-  const resultState = isWaiting ? 'loading' : video ? 'success' : 'error';
+  const resultState = isWaiting ? "loading" : video ? "success" : "error";
 
   let content: React.ReactNode;
 
@@ -32,20 +39,22 @@ export default function ResultPage() {
     content = (
       <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-inset-lg">
         <div className="text-center">
-          <p className="text-sm text-ink-muted mb-stack-md">{t('result.missing')}</p>
+          <p className="text-sm text-ink-muted mb-stack-md">
+            {t("result.missing")}
+          </p>
           <Link
             to="/"
             className="inline-flex items-center gap-inline-xs text-sm font-medium text-accent hover:text-accent-hover no-underline"
           >
-            <ArrowLeft className="w-4 h-4" /> {t('result.retry')}
+            <ArrowLeft className="w-4 h-4" /> {t("result.retry")}
           </Link>
         </div>
       </main>
     );
   } else if (isWaiting) {
     content = (
-      <main className="min-h-[calc(100vh-64px)] px-inset-lg py-stack-md sm:py-10">
-        <ResultContentSkeleton />
+      <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-inset-lg">
+        <ResultLoadingSpinner />
       </main>
     );
   } else if (isFailed) {
@@ -59,10 +68,10 @@ export default function ResultPage() {
               </div>
               <div className="min-w-0">
                 <h1 className="font-display text-lg font-semibold text-ink">
-                  {t('result.failed')}
+                  {t("result.failed")}
                 </h1>
                 <p className="mt-stack-xs text-sm text-ink-muted">
-                  {failureMessage || t('result.failedDescription')}
+                  {failureMessage || t("result.failedDescription")}
                 </p>
 
                 <div className="mt-stack-md flex flex-wrap items-center gap-inline-md">
@@ -70,7 +79,7 @@ export default function ResultPage() {
                     to="/"
                     className="inline-flex items-center gap-inline-xs text-sm font-medium text-accent hover:text-accent-hover no-underline"
                   >
-                    <ArrowLeft className="w-4 h-4" /> {t('result.retry')}
+                    <ArrowLeft className="w-4 h-4" /> {t("result.retry")}
                   </Link>
                   {youtubeUrl && (
                     <a
@@ -79,7 +88,7 @@ export default function ResultPage() {
                       rel="noreferrer"
                       className="inline-flex items-center gap-inline-xs text-sm font-medium text-accent hover:text-accent-hover no-underline"
                     >
-                      {t('result.openOnYoutube')}
+                      {t("result.openOnYoutube")}
                     </a>
                   )}
                 </div>
@@ -97,12 +106,14 @@ export default function ResultPage() {
     content = (
       <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-inset-lg">
         <div className="text-center">
-          <p className="text-sm text-ink-muted mb-stack-md">{t('result.error')}</p>
+          <p className="text-sm text-ink-muted mb-stack-md">
+            {t("result.error")}
+          </p>
           <Link
             to="/"
             className="inline-flex items-center gap-inline-xs text-sm font-medium text-accent hover:text-accent-hover no-underline"
           >
-            <ArrowLeft className="w-4 h-4" /> {t('result.retry')}
+            <ArrowLeft className="w-4 h-4" /> {t("result.retry")}
           </Link>
         </div>
       </main>
@@ -121,8 +132,6 @@ export default function ResultPage() {
   }
 
   return (
-    <ContentTransition transitionKey={resultState}>
-      {content}
-    </ContentTransition>
+    <ContentTransition transitionKey={resultState}>{content}</ContentTransition>
   );
 }

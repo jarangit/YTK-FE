@@ -2,7 +2,7 @@ import { AlertCircle, Bookmark, ExternalLink } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { FeedItem } from './types';
 import { useVideoAnalysisQuery } from '../result/hooks/useVideoAnalysisQuery';
-import ResultContentSkeleton from '../result/ResultContentSkeleton';
+import ResultLoadingSpinner from '../result/ResultLoadingSpinner';
 import AnalysisDetailBody from '../result/AnalysisDetailBody';
 import TranscriptSection from '../result/TranscriptSection';
 import Card from '../../shared/components/atoms/Card';
@@ -67,7 +67,7 @@ export default function FeedDetailContent({
         </a>
       </div>
 
-      {isWaiting && <ResultContentSkeleton />}
+      {isWaiting && <ResultLoadingSpinner />}
 
       {!isWaiting && video && (
         <AnalysisDetailBody

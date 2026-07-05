@@ -181,8 +181,8 @@ const en = {
     emptySearchSubtitle: 'No summaries match your search. Try a different keyword.',
   },
   result: {
-    loading: 'Analyzing video...',
-    loadingAnalysis: 'Loading analysis results',
+    loading: 'Analyzing your video',
+    loadingAnalysis: 'This should only take a moment',
     error: 'Could not analyze this video.',
     failed: 'This analysis could not be completed.',
     failedDescription: 'We could not generate the full analysis, but any transcript we captured is still available below.',
