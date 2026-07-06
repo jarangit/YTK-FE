@@ -97,7 +97,7 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
   const content = (
     <div
       className={clsx(
-        'relative flex h-full flex-col overflow-hidden rounded-card bg-[var(--color-bg-card)]',
+        'relative flex h-full flex-col overflow-hidden rounded-card bg-black',
         isStacked && 'min-h-[100%]',
         !isStacked && 'sm:min-h-[320px] lg:min-h-[300px]',
       )}
@@ -122,8 +122,8 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
         )}
         <div
           className={clsx(
-            'absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(255,255,255,0.58)_100%)]',
-            !isStacked && 'sm:bg-[linear-gradient(90deg,rgba(255,255,255,1.9)_0%,rgba(255,255,255,0.48)_34%,rgba(255,255,255,0.02)_68%)]',
+            'absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.58)_100%)]',
+            !isStacked && 'sm:bg-[linear-gradient(90deg,rgba(0,0,0,0.9)_0%,rgba(0,0,0,0.48)_34%,rgba(0,0,0,0.02)_68%)]',
           )}
         />
       </div>
@@ -136,14 +136,14 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
       >
         <div>
           <div className="mb-stack-sm flex items-center gap-inline-md">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface text-base font-semibold text-ink shadow-[0_14px_32px_rgba(15,23,42,0.14)] ring-4 ring-white/80">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/10 text-base font-semibold text-white shadow-[0_14px_32px_rgba(0,0,0,0.28)] ring-4 ring-black/80">
               {channelName.charAt(0).toUpperCase()}
             </div>
             <div className="min-w-0">
-              <h3 className="truncate font-display text-xl font-semibold leading-tight text-ink">
+              <h3 className="truncate font-display text-xl font-semibold leading-tight text-white">
                 {channelName}
               </h3>
-              <p className="mt-1 line-clamp-1 text-sm font-medium text-[var(--color-text-secondary)]">
+              <p className="mt-1 line-clamp-1 text-sm font-medium text-white/60">
                 {videoTitle}
               </p>
             </div>
@@ -151,31 +151,31 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
 
           <p
             className={clsx(
-              'line-clamp-2 max-w-[34rem] font-display text-[1.35rem] font-semibold leading-[1.14] text-ink',
+              'line-clamp-2 max-w-[34rem] font-display text-[1.35rem] font-semibold leading-[1.14] text-white',
               !isStacked && 'sm:text-2xl',
             )}
           >
             {insight}
           </p>
 
-          <p className="mt-stack-xs line-clamp-2 max-w-[32rem] text-sm leading-6 text-[var(--color-text-secondary)]">
+          <p className="mt-stack-xs line-clamp-2 max-w-[32rem] text-sm leading-6 text-white/60">
             {description}
           </p>
 
-          <div className="mt-stack-md flex flex-wrap items-center gap-y-stack-sm text-sm text-[var(--color-text-tertiary)]">
+          <div className="mt-stack-md flex flex-wrap items-center gap-y-stack-sm text-sm text-white/50">
             <div className="pr-inline-md">
-              <div className="flex items-center gap-inline-xs font-semibold text-ink">
+              <div className="flex items-center gap-inline-xs font-semibold text-white">
                 <Sparkles className="h-4 w-4 fill-current" aria-hidden="true" />
                 {formatScore(item.score)}
               </div>
               <div className="mt-1 text-xs">score</div>
             </div>
-            <div className="border-l border-[var(--color-border-subtle)] px-inline-md">
-              <div className="font-semibold text-ink">{readTime}</div>
+            <div className="border-l border-white/10 px-inline-md">
+              <div className="font-semibold text-white">{readTime}</div>
               <div className="mt-1 text-xs">duration</div>
             </div>
-            <div className="border-l border-[var(--color-border-subtle)] pl-inline-md">
-              <div className="font-semibold text-ink">{titleCase(item.type)}</div>
+            <div className="border-l border-white/10 pl-inline-md">
+              <div className="font-semibold text-white">{titleCase(item.type)}</div>
               <div className="mt-1 text-xs">type</div>
             </div>
           </div>
@@ -192,13 +192,13 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
             {keywords.map((keyword) => (
               <span
                 key={keyword}
-                className="rounded-full bg-white/70 px-inset-sm py-1 text-xs font-semibold text-[var(--color-text-secondary)] shadow-[0_8px_24px_rgba(15,23,42,0.08)] ring-1 ring-black/5 backdrop-blur"
+                className="rounded-full bg-white/10 px-inset-sm py-1 text-xs font-semibold text-white/80 shadow-[0_8px_24px_rgba(0,0,0,0.3)] ring-1 ring-white/10 backdrop-blur"
               >
                 {keyword}
               </span>
             ))}
             {duration && (
-              <span className="inline-flex items-center gap-inline-xs rounded-full bg-white/70 px-inset-sm py-1 text-xs font-semibold text-[var(--color-text-secondary)] shadow-[0_8px_24px_rgba(15,23,42,0.08)] ring-1 ring-black/5 backdrop-blur">
+              <span className="inline-flex items-center gap-inline-xs rounded-full bg-white/10 px-inset-sm py-1 text-xs font-semibold text-white/80 shadow-[0_8px_24px_rgba(0,0,0,0.3)] ring-1 ring-white/10 backdrop-blur">
                 <Clock className="h-3.5 w-3.5" aria-hidden="true" />
                 {duration}
               </span>
@@ -215,34 +215,34 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
         )}
       >
         {onClick ? (
-          <Button
+          <button
             type="button"
-            variant="secondary"
-            size={isStacked ? 'sm' : 'md'}
-            iconLeft={Sparkles}
             className={clsx(
-              'shrink-0 rounded-full border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] text-ink shadow-[0_18px_45px_rgba(56,189,248,0.18),0_0_28px_rgba(167,139,250,0.18)] hover:bg-[linear-gradient(rgba(255,255,255,0.92),rgba(255,255,255,0.92))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box]',
-              isStacked ? 'w-full justify-center px-inset-md text-sm' : 'px-inset-xl',
+              'inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-transparent bg-[linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,0.1))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] font-semibold text-white no-underline transition-all hover:bg-[linear-gradient(rgba(255,255,255,0.15),rgba(255,255,255,0.15))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40',
+              isStacked
+                ? 'h-[var(--button-height-sm)] w-full justify-center px-inset-md text-[length:var(--button-font-size-sm)]'
+                : 'h-[var(--button-height-md)] px-inset-xl text-[length:var(--button-font-size-md)]',
             )}
             onClick={(event) => {
               event.stopPropagation();
               onClick(item.id);
             }}
           >
+            <Sparkles className="h-4 w-4 text-white" aria-hidden="true" />
             {t('card.openSummary')}
-          </Button>
+          </button>
         ) : (
           <Link
             to={detailTarget}
             className={clsx(
-              'inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] font-semibold text-ink no-underline shadow-[0_18px_45px_rgba(56,189,248,0.18),0_0_28px_rgba(167,139,250,0.18)] transition-all hover:bg-[linear-gradient(rgba(255,255,255,0.92),rgba(255,255,255,0.92))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] active:scale-[0.98]',
+              'inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-transparent bg-[linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,0.1))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] font-semibold text-white no-underline shadow-[0_18px_45px_rgba(56,189,248,0.3),0_0_28px_rgba(167,139,250,0.3)] transition-all hover:bg-[linear-gradient(rgba(255,255,255,0.15),rgba(255,255,255,0.15))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] hover:text-white active:scale-[0.98]',
               isStacked
                 ? 'h-[var(--button-height-sm)] w-full justify-center px-inset-md text-[length:var(--button-font-size-sm)]'
                 : 'h-[var(--button-height-md)] px-inset-xl text-[length:var(--button-font-size-md)]',
             )}
             onClick={stopCardClick}
           >
-            <Sparkles className="h-4 w-4 text-[#7c3aed]" aria-hidden="true" />
+            <Sparkles className="h-4 w-4 text-white" aria-hidden="true" />
             {t('card.openSummary')}
           </Link>
         )}
@@ -260,7 +260,7 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
               onSave(item.id);
             }}
             aria-label={t('keep.button')}
-            className="h-11 min-h-11 w-11 min-w-11 rounded-full border border-white/45 bg-white/55 p-0 text-ink shadow-[0_16px_40px_rgba(15,23,42,0.16)] backdrop-blur-xl hover:bg-white/70"
+            className="h-11 min-h-11 w-11 min-w-11 rounded-full border border-white/20 bg-black/55 p-0 text-white shadow-[0_16px_40px_rgba(0,0,0,0.3)] backdrop-blur-xl hover:bg-white/20"
           >
             <Bookmark className="h-4 w-4" aria-hidden="true" />
             <span className="sr-only">{t('keep.button')}</span>
@@ -270,7 +270,7 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
           href={item.video.youtubeUrl}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-11 min-h-11 w-11 min-w-11 items-center justify-center rounded-full border border-white/45 bg-white/55 text-ink shadow-[0_16px_40px_rgba(15,23,42,0.16)] backdrop-blur-xl transition-colors hover:bg-white/70"
+          className="inline-flex h-11 min-h-11 w-11 min-w-11 items-center justify-center rounded-full border border-white/20 bg-black/55 text-white shadow-[0_16px_40px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-colors hover:bg-white/20"
           aria-label={t('feed.openVideo')}
           onClick={stopCardClick}
         >
@@ -296,7 +296,7 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
   );
 
   return (
-    <Card className="relative h-full rounded-card border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] shadow-[0_24px_80px_rgba(15,23,42,0.10)]">
+    <Card className="relative h-full rounded-card border-white/10 bg-black shadow-none">
       {onClick ? (
         <div
           className="block h-full cursor-pointer text-inherit no-underline"
