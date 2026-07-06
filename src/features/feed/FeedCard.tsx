@@ -218,10 +218,10 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
           <button
             type="button"
             className={clsx(
-              'inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-transparent bg-[linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,0.1))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] font-semibold text-white no-underline transition-all hover:bg-[linear-gradient(rgba(255,255,255,0.15),rgba(255,255,255,0.15))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40',
+              'inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-violet-300/20 bg-violet-500/20 font-semibold text-white no-underline backdrop-blur-xl transition-all hover:bg-violet-400/25 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-200/40',
               isStacked
-                ? 'h-[var(--button-height-sm)] w-full justify-center px-inset-md text-[length:var(--button-font-size-sm)]'
-                : 'h-[var(--button-height-md)] px-inset-xl text-[length:var(--button-font-size-md)]',
+                ? 'h-[var(--button-height-sm)] w-full justify-center px-inset-lg text-[length:var(--button-font-size-sm)]'
+                : 'h-[var(--button-height-md)] px-[calc(var(--button-padding-x-md)+0.5rem)] text-[length:var(--button-font-size-md)]',
             )}
             onClick={(event) => {
               event.stopPropagation();
@@ -235,14 +235,14 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
           <Link
             to={detailTarget}
             className={clsx(
-              'inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-transparent bg-[linear-gradient(rgba(255,255,255,0.1),rgba(255,255,255,0.1))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] font-semibold text-white no-underline shadow-[0_18px_45px_rgba(56,189,248,0.3),0_0_28px_rgba(167,139,250,0.3)] transition-all hover:bg-[linear-gradient(rgba(255,255,255,0.15),rgba(255,255,255,0.15))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] hover:text-white active:scale-[0.98]',
+              'inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-violet-300/20 bg-violet-500/20 font-semibold text-white no-underline backdrop-blur-xl transition-all hover:bg-violet-400/25 hover:text-white active:scale-[0.98]',
               isStacked
-                ? 'h-[var(--button-height-sm)] w-full justify-center px-inset-md text-[length:var(--button-font-size-sm)]'
-                : 'h-[var(--button-height-md)] px-inset-xl text-[length:var(--button-font-size-md)]',
+                ? 'h-[var(--button-height-sm)] w-full justify-center px-inset-lg text-[length:var(--button-font-size-sm)]'
+                : 'h-[var(--button-height-md)] px-[calc(var(--button-padding-x-md)+0.5rem)] text-[length:var(--button-font-size-md)]',
             )}
             onClick={stopCardClick}
           >
-            <Sparkles className="h-4 w-4 text-white" aria-hidden="true" />
+            <Sparkles className="h-4 w-4 text-violet-100" aria-hidden="true" />
             {t('card.openSummary')}
           </Link>
         )}
