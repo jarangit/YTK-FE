@@ -36,7 +36,7 @@ export default function EngagementQuestionsSection({ questions }: EngagementQues
                   <div>
                     <h3 className="max-w-[38rem] font-display text-[1.1rem] font-semibold leading-7 tracking-[-0.015em] text-ink">{item.question}</h3>
                     {item.hook && (
-                      <p className="mt-stack-xs inline-flex items-center gap-inline-xs rounded-full border border-accent/20 bg-accent/5 px-3 py-1 text-sm font-medium text-accent">
+                      <p className="mt-stack-xs inline-flex items-center gap-inline-xs rounded-full border border-accent/20 bg-accent/5 px-3 py-1 text-sm font-medium text-ink">
                         <Sparkles className="h-3.5 w-3.5" />
                         {item.hook}
                       </p>

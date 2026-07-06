@@ -138,8 +138,8 @@ export default function AnalysisExtrasSection({ summary }: AnalysisExtrasSection
                 >
                   <Icon className="h-4 w-4 text-accent" />
                   <span className="flex-1 font-display text-base font-semibold text-ink">{label}</span>
-                  <span className="text-sm text-ink-faint">· {count}</span>
-                  <ChevronDown className={clsx('h-4 w-4 text-ink-faint transition-transform', open && 'rotate-180')} />
+                  <span className="text-sm text-ink-muted">· {count}</span>
+                  <ChevronDown className={clsx('h-4 w-4 text-ink-muted transition-transform', open && 'rotate-180')} />
                 </button>
 
                 <div
