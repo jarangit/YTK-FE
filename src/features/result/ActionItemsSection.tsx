@@ -1,6 +1,5 @@
 import { Check, ListChecks } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import Card from '../../shared/components/atoms/Card';
 
 interface ActionItemsSectionProps {
   items: string[];
@@ -12,32 +11,30 @@ export default function ActionItemsSection({ items }: ActionItemsSectionProps) {
   if (items.length === 0) return null;
 
   return (
-    <Card as="section" className="bg-[var(--color-bg-card)]">
-      <div className="p-inset-md sm:p-inset-lg">
+    <section className="border-t border-accent/15 pt-stack-lg sm:pt-stack-xl">
+      <div>
         <div className="flex items-start gap-inline-sm">
-          <div className="rounded-full bg-accent/10 p-2 text-accent">
-            <ListChecks className="h-4 w-4" />
-          </div>
+          <ListChecks className="mt-1 h-4 w-4 text-accent" />
           <div>
-            <h2 className="font-display text-lg font-semibold text-ink">{t('resultTakeaways.title')}</h2>
-            <p className="mt-stack-xs text-sm text-ink-muted">{t('resultTakeaways.subtitle')}</p>
+            <h2 className="font-display text-[1.45rem] font-semibold tracking-[-0.02em] text-ink sm:text-[1.8rem]">{t('resultTakeaways.title')}</h2>
+            <p className="mt-stack-xs max-w-[34rem] text-[15px] leading-7 text-ink-muted">{t('resultTakeaways.subtitle')}</p>
           </div>
         </div>
 
-        <ul className="mt-stack-lg space-y-stack-sm">
+        <ul className="mt-stack-lg space-y-stack-md">
           {items.map((item, index) => (
             <li
               key={`${item}-${index}`}
-              className="flex items-start gap-inline-sm rounded-card border border-border/50 bg-surface px-inset-md py-inset-sm text-sm leading-7 text-ink-muted"
+              className="flex items-start gap-inline-sm border-l border-accent/20 pl-5 sm:pl-6 text-[15px] leading-7 text-ink"
             >
-              <span className="mt-1 rounded-full bg-accent/10 p-1 text-accent">
-                <Check className="h-3 w-3" />
+              <span className="mt-1 rounded-full text-accent">
+                <Check className="h-3.5 w-3.5" />
               </span>
               <span>{item}</span>
             </li>
           ))}
         </ul>
       </div>
-    </Card>
+    </section>
   );
 }

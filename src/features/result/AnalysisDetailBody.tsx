@@ -22,15 +22,16 @@ export default function AnalysisDetailBody({
   hideEmptySections = false,
 }: AnalysisDetailBodyProps) {
   const hasTranscript = video.transcript.length > 0;
+  const overview = video.overview ?? video.summary.summary;
   const timeline = video.timeline ?? [];
   const importantPoints = video.importantPoints ?? [];
   const takeaways = video.takeaways ?? video.outcomes;
   const engagementQuestions = video.engagementQuestions ?? [];
 
   return (
-    <div className="mx-auto max-w-read space-y-stack-md sm:space-y-stack-lg">
+    <div className="mx-auto max-w-read space-y-stack-lg sm:space-y-[3.25rem]">
       <VideoPreviewCard video={video} action={action} />
-      <OverviewSection overview={video.overview ?? video.summary.summary} />
+      <OverviewSection overview={overview} />
       <TimelineSection timeline={timeline} />
       <OutcomeCard outcomes={video.outcomes} />
       <KeyInsightsSection insights={importantPoints} />

@@ -1,7 +1,6 @@
 import { Hash, UserRound, Shapes } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { OriginalContext } from '../analysis/types';
-import Card from '../../shared/components/atoms/Card';
 
 interface KeywordsSectionProps {
   context?: OriginalContext | null;
@@ -19,16 +18,16 @@ function ContextGroup({
   if (items.length === 0) return null;
 
   return (
-    <div>
-      <h3 className="flex items-center gap-inline-xs text-sm font-semibold text-ink">
+    <div className="border-l border-accent/20 pl-5 sm:pl-6">
+      <h3 className="flex items-center gap-inline-xs text-[1.02rem] font-semibold text-ink">
         <Icon className="h-4 w-4 text-accent" />
         {title}
       </h3>
-      <div className="mt-stack-sm flex flex-wrap gap-2">
+      <div className="mt-stack-sm flex flex-wrap gap-2.5">
         {items.map((item) => (
           <span
             key={`${title}-${item}`}
-            className="rounded-full border border-border/60 bg-surface px-3 py-1 text-sm text-ink-muted"
+            className="rounded-full border border-accent/15 bg-accent/5 px-3 py-1 text-sm text-ink-muted"
           >
             {item}
           </span>
@@ -47,15 +46,13 @@ export default function KeywordsSection({ context }: KeywordsSectionProps) {
   if (keywords.length === 0 && people.length === 0 && topics.length === 0) return null;
 
   return (
-    <Card as="section" className="bg-[var(--color-bg-card)]">
-      <div className="p-inset-md sm:p-inset-lg">
+    <section className="border-t border-accent/15 pt-stack-lg sm:pt-stack-xl">
+      <div>
         <div className="flex items-start gap-inline-sm">
-          <div className="rounded-full bg-accent/10 p-2 text-accent">
-            <Hash className="h-4 w-4" />
-          </div>
+          <Hash className="mt-1 h-4 w-4 text-accent" />
           <div>
-            <h2 className="font-display text-lg font-semibold text-ink">{t('resultKeywords.title')}</h2>
-            <p className="mt-stack-xs text-sm text-ink-muted">{t('resultKeywords.subtitle')}</p>
+            <h2 className="font-display text-[1.45rem] font-semibold tracking-[-0.02em] text-ink sm:text-[1.8rem]">{t('resultKeywords.title')}</h2>
+            <p className="mt-stack-xs max-w-[34rem] text-[15px] leading-7 text-ink-muted">{t('resultKeywords.subtitle')}</p>
           </div>
         </div>
 
@@ -65,6 +62,6 @@ export default function KeywordsSection({ context }: KeywordsSectionProps) {
           <ContextGroup title={t('resultKeywords.topics')} items={topics} icon={Shapes} />
         </div>
       </div>
-    </Card>
+    </section>
   );
 }

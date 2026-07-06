@@ -164,7 +164,7 @@ export default function FeedPage() {
         </ContentTransition>
       </section>
 
-      <Drawer open={!!selectedItem} onClose={closeDrawer} title="Detail">
+      <Drawer open={!!selectedItem} onClose={closeDrawer} title="Detail" className="sm:max-w-[760px]">
         {selectedItem && (
           <ContentTransition transitionKey={selectedItem.id}>
             <FeedDetailContent

@@ -287,6 +287,10 @@ const en = {
     answer: 'Answer',
     whyInteresting: 'Why this is interesting',
   },
+  resultWiki: {
+    contents: 'On this page',
+    article: 'Knowledge article',
+  },
   resultKeywords: {
     title: 'Context keywords',
     subtitle: 'Names, concepts, and topics that define the video context.',

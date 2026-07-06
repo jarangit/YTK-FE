@@ -107,9 +107,9 @@ describe('ResultContent', () => {
       />,
     );
 
-    expect(screen.getByText('Timeline')).toBeInTheDocument();
+    expect(screen.getAllByText('Timeline').length).toBeGreaterThan(0);
     expect(screen.getByText('First section')).toBeInTheDocument();
-    expect(screen.getByText('Engagement questions')).toBeInTheDocument();
+    expect(screen.getAllByText('Engagement questions').length).toBeGreaterThan(0);
     expect(screen.getByText('One small framing change can improve your next interview.')).toBeInTheDocument();
   });
 
@@ -123,7 +123,7 @@ describe('ResultContent', () => {
       />,
     );
 
-    expect(screen.getByText('Takeaways')).toBeInTheDocument();
+    expect(screen.getAllByText('Takeaways').length).toBeGreaterThan(0);
     expect(screen.getByText('Takeaway one')).toBeInTheDocument();
     expect(screen.getByText('Takeaway two')).toBeInTheDocument();
   });
@@ -138,7 +138,7 @@ describe('ResultContent', () => {
       />,
     );
 
-    expect(screen.getByText('Key Insights')).toBeInTheDocument();
+    expect(screen.getAllByText('Key Insights').length).toBeGreaterThan(0);
     expect(screen.getByText('Insight one')).toBeInTheDocument();
     expect(screen.getByText('Why it matters')).toBeInTheDocument();
     expect(screen.getByText('keyword')).toBeInTheDocument();

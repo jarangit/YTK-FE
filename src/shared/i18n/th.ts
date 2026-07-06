@@ -286,6 +286,10 @@ const th = {
     answer: 'คำตอบ',
     whyInteresting: 'ทำไมคำถามนี้น่าสนใจ',
   },
+  resultWiki: {
+    contents: 'สารบัญหน้านี้',
+    article: 'บทความความรู้',
+  },
   resultKeywords: {
     title: 'คีย์เวิร์ดของบริบท',
     subtitle: 'ชื่อคน แนวคิด และหัวข้อสำคัญที่เป็นแกนของวิดีโอนี้',

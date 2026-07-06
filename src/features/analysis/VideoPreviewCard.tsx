@@ -42,7 +42,7 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
 
   if (isExtraSmall) {
     return (
-      <Card className="bg-[var(--color-bg-card)]">
+      <Card className="border-border/50 bg-white shadow-none">
         <PreviewMedia
           embedUrl={embedUrl}
           title={video.title}
@@ -56,7 +56,7 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
   }
 
   return (
-    <Card className="bg-[var(--color-bg-card)]">
+    <Card className="border-border/50 bg-white shadow-none">
       <div
         className={clsx(
           isLarge && 'block',
@@ -106,7 +106,7 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
                 />
                 <div className="min-w-0">
                   <p className={clsx(
-                    'truncate text-sm font-medium text-ink-muted',
+                    'truncate text-sm font-medium text-ink-faint',
                     (isExtraSmall || isSmall) && 'text-xs',
                   )}
                   >
@@ -115,8 +115,8 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
                   <h2
                     className={clsx(
                       'font-display font-semibold leading-snug tracking-[-0.02em] text-ink',
-                      isLarge && 'text-xl sm:text-2xl',
-                      isMedium && 'text-lg sm:text-xl',
+                      isLarge && 'text-[1.15rem] sm:text-[1.3rem]',
+                      isMedium && 'text-[1.05rem] sm:text-[1.15rem]',
                       isExtraSmall && 'line-clamp-2 text-sm',
                       isSmall && 'line-clamp-2 text-base',
                     )}
@@ -137,8 +137,8 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
             <MetadataRow
               className={clsx(
                 'flex flex-wrap items-center text-ink-muted',
-                isLarge && 'mt-stack-sm gap-inline-lg text-xs',
-                isMedium && 'mt-stack-sm gap-inline-md text-xs',
+                isLarge && 'mt-stack-sm gap-inline-lg text-[11px]',
+                isMedium && 'mt-stack-sm gap-inline-md text-[11px]',
                 isExtraSmall && 'mt-2 gap-2 text-[10px]',
                 isSmall && 'mt-3 gap-2 text-[11px]',
               )}
@@ -151,9 +151,9 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
             target="_blank"
             rel="noopener noreferrer"
             className={clsx(
-              'inline-flex items-center gap-inline-xs font-medium text-accent transition-colors hover:text-accent-hover no-underline',
-              isLarge && 'mt-stack-sm text-xs',
-              isMedium && 'mt-stack-sm text-xs',
+              'inline-flex items-center gap-inline-xs font-medium text-ink-muted transition-colors hover:text-ink no-underline',
+              isLarge && 'mt-stack-sm text-[11px]',
+              isMedium && 'mt-stack-sm text-[11px]',
               isExtraSmall && 'mt-2 text-[10px]',
               isSmall && 'mt-3 text-[11px]',
             )}

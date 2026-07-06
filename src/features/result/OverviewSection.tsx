@@ -1,7 +1,5 @@
-import { Lightbulb } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
-import Card from '../../shared/components/atoms/Card';
 
 interface OverviewSectionProps {
   overview?: string;
@@ -14,22 +12,18 @@ export default function OverviewSection({ overview = '' }: OverviewSectionProps)
   if (!normalizedOverview) return null;
 
   return (
-    <Card
-      as="section"
-      className="border-accent/20 bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(246,248,250,1)_100%)]"
-    >
-      <div className="p-inset-lg sm:p-[calc(var(--space-inset-lg)*1.2)]">
-        <div className="flex items-center gap-inline-xs text-sm font-semibold text-accent">
-          <Lightbulb className="h-4 w-4" />
-          <span className="uppercase tracking-[0.08em]">{t('summary.startHere')}</span>
+    <section className="border-t border-accent/20 pt-stack-lg sm:pt-stack-xl">
+      <div>
+        <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">
+          {t('summary.startHere')}
         </div>
-        <h2 className="mt-stack-sm max-w-[40rem] font-display text-[1.5rem] font-semibold leading-[1.25] tracking-[-0.02em] text-ink sm:text-[1.85rem]">
+        <h2 className="mt-stack-sm max-w-[34rem] font-display text-[1.7rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.3rem]">
           {t('summary.overview')}
         </h2>
-        <div className="mt-stack-md max-w-[46rem] text-base leading-8 text-ink-muted [&>p]:mb-stack-md">
+        <div className="mt-stack-md max-w-[42rem] border-l-2 border-accent/25 pl-5 sm:pl-6 text-[1.06rem] leading-[1.95] text-ink [&>p]:mb-stack-md [&>p:last-child]:mb-0">
           <ReactMarkdown>{normalizedOverview}</ReactMarkdown>
         </div>
       </div>
-    </Card>
+    </section>
   );
 }
