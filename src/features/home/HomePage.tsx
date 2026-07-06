@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
@@ -30,7 +30,7 @@ export default function HomePage() {
           <ContentTransition transitionKey="home-hero">
             <div className="mx-auto max-w-[900px] text-center">
               <h1 className="mx-auto max-w-[760px] font-display text-[34px] font-semibold tracking-[-0.035em] text-ink sm:text-[42px] sm:leading-[1.06] lg:text-[52px]">
-                {t('home.title')}
+                <Trans i18nKey="home.title" components={{ 0: <span className="text-accent" /> }} />
               </h1>
               <p className="mx-auto mt-4 max-w-[620px] text-[16px] leading-7 text-ink-muted sm:text-[18px]">
                 {t('home.subtitle')}

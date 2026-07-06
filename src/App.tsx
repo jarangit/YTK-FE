@@ -13,6 +13,7 @@ import AccountPage from './features/account/AccountPage';
 import PodcastPage from './features/podcast/PodcastPage';
 import StaticPage from './features/static/StaticPage';
 import NotFoundPage from './features/static/NotFoundPage';
+import ReportPage from './features/report/ReportPage';
 import { AuthProvider } from './shared/auth/AuthContext';
 import ErrorBoundary from './shared/components/atoms/ErrorBoundary';
 import SignInModal from './app/components/SignInModal';
@@ -52,6 +53,7 @@ function AppLayout() {
         <Route path="/feed/:id" element={<FeedDetailPage />} />
         <Route path="/podcast" element={<PodcastPage />} />
         <Route path="/result" element={<ResultPage />} />
+        <Route path="/report" element={<ReportPage />} />
         <Route
           path="/account"
           element={(
