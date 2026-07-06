@@ -26,7 +26,7 @@ export default function FeedPage() {
     fetchNextPage,
     hasNextPage,
     refetch,
-  } = useFeedQuery(debouncedQuery, undefined, 10);
+  } = useFeedQuery(debouncedQuery, undefined, 30);
   const saveFeedItem = useSaveFeedItemMutation();
   const filteredItems = useMemo(
     () => data?.pages.flatMap((page) => page.items) ?? [],
@@ -36,6 +36,11 @@ export default function FeedPage() {
     () => filteredItems.find((item) => item.id === selectedItemId) ?? null,
     [filteredItems, selectedItemId],
   );
+  const contentState = isLoading
+    ? 'loading'
+    : filteredItems.length === 0
+      ? 'empty'
+      : 'content';
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {
@@ -104,7 +109,7 @@ export default function FeedPage() {
           />
         </div>
 
-        <ContentTransition transitionKey={`${debouncedQuery.toLowerCase()}:${filteredItems.map((item) => item.id).join(',')}`}>
+        <ContentTransition transitionKey={`${debouncedQuery.toLowerCase()}:${contentState}`}>
           <div className="grid grid-cols-1 gap-inline-xl">
             {filteredItems.map((item) => (
               <FeedCard
