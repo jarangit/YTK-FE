@@ -1,17 +1,17 @@
-import { memo } from 'react';
-import { Bookmark, Clock, Sparkles, Trash2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import clsx from 'clsx';
-import type { FeedItem } from './types';
-import IconButton from '../../shared/components/atoms/IconButton';
-import Card from '../../shared/components/atoms/Card';
-import { Button } from '../../shared/components/atoms/Button';
+import { memo } from "react";
+import { Bookmark, Clock, Sparkles, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import clsx from "clsx";
+import type { FeedItem } from "./types";
+import IconButton from "../../shared/components/atoms/IconButton";
+import Card from "../../shared/components/atoms/Card";
+import { Button } from "../../shared/components/atoms/Button";
 
 function extractVideoId(videoUrl: string) {
   try {
     const url = new URL(videoUrl);
-    return url.searchParams.get('v') ?? videoUrl;
+    return url.searchParams.get("v") ?? videoUrl;
   } catch {
     return videoUrl;
   }
@@ -24,19 +24,19 @@ interface FeedCardProps {
   onRemove?: (id: string) => void;
   onSave?: (id: string) => void;
   saving?: boolean;
-  layout?: 'auto' | 'stacked';
+  layout?: "auto" | "stacked";
 }
 
 function metadataString(item: FeedItem, key: string) {
   const value = item.metadata?.[key];
-  return typeof value === 'string' ? value : '';
+  return typeof value === "string" ? value : "";
 }
 
 function formatDuration(totalSeconds: number | null) {
-  if (totalSeconds == null) return '';
+  if (totalSeconds == null) return "";
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
-  return `${minutes}:${String(seconds).padStart(2, '0')}`;
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
 }
 
 function formatScore(score: number) {
@@ -59,15 +59,24 @@ function YouTubeLogo(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false, layout = 'auto' }: FeedCardProps) {
+function FeedCardComponent({
+  item,
+  to,
+  onClick,
+  onRemove,
+  onSave,
+  saving = false,
+  layout = "auto",
+}: FeedCardProps) {
   const { t } = useTranslation();
-  const isStacked = layout === 'stacked';
-  const insight = metadataString(item, 'insight') || item.body;
-  const description = item.analysis.summary && item.analysis.summary !== insight
-    ? item.analysis.summary
-    : item.body;
-  const videoTitle = item.video.title ?? 'YouTube analysis';
-  const channelName = item.video.channelName ?? 'Unknown channel';
+  const isStacked = layout === "stacked";
+  const insight = metadataString(item, "insight") || item.body;
+  const description =
+    item.analysis.summary && item.analysis.summary !== insight
+      ? item.analysis.summary
+      : item.body;
+  const videoTitle = item.video.title ?? "YouTube analysis";
+  const channelName = item.video.channelName ?? "Unknown channel";
   const duration = formatDuration(item.video.duration);
   const readTime = item.video.duration
     ? `${Math.max(1, Math.ceil(item.video.duration / 60))} min read`
@@ -84,7 +93,7 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
 
   const handleOpenKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (!onClick) return;
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       onClick(item.id);
     }
@@ -97,15 +106,16 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
   const content = (
     <div
       className={clsx(
-        'relative flex h-full flex-col overflow-hidden rounded-card bg-black',
-        isStacked && 'min-h-[100%]',
-        !isStacked && 'sm:min-h-[320px] lg:min-h-[300px]',
+        "relative flex h-full flex-col overflow-hidden rounded-card bg-black",
+        isStacked && "min-h-[100%]",
+        !isStacked && "sm:min-h-[320px] lg:min-h-[300px]",
       )}
     >
       <div
         className={clsx(
-          'relative aspect-video overflow-hidden bg-surface',
-          !isStacked && 'sm:absolute sm:inset-y-0 sm:left-auto sm:right-0 sm:top-0 sm:h-auto sm:w-[54%] sm:aspect-auto',
+          "relative aspect-video overflow-hidden bg-surface",
+          !isStacked &&
+            "sm:absolute sm:inset-y-0 sm:left-auto sm:right-0 sm:top-0 sm:h-auto sm:w-[54%] sm:aspect-auto",
         )}
       >
         {item.video.thumbnail ? (
@@ -122,16 +132,18 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
         )}
         <div
           className={clsx(
-            'absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.58)_100%)]',
-            !isStacked && 'sm:bg-[linear-gradient(90deg,rgba(0,0,0,0.9)_0%,rgba(0,0,0,0.48)_34%,rgba(0,0,0,0.02)_68%)]',
+            "absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(0,0,0,0.58)_100%)]",
+            !isStacked &&
+              "sm:bg-[linear-gradient(90deg,rgba(0,0,0,0.9)_0%,rgba(0,0,0,0.48)_34%,rgba(0,0,0,0.02)_68%)]",
           )}
         />
       </div>
 
       <div
         className={clsx(
-          'relative z-[1] flex flex-1 flex-col p-inset-md',
-          !isStacked && 'sm:min-h-[320px] sm:max-w-[70%] sm:p-inset-lg lg:min-h-[300px] lg:max-w-[64%]',
+          "relative z-[1] flex flex-1 flex-col p-inset-md",
+          !isStacked &&
+            "sm:min-h-[320px] sm:max-w-[70%] sm:p-inset-lg lg:min-h-[300px] lg:max-w-[64%]",
         )}
       >
         <div>
@@ -151,8 +163,8 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
 
           <p
             className={clsx(
-              'line-clamp-2 max-w-[34rem] font-display text-[1.35rem] font-semibold leading-[1.14] text-white',
-              !isStacked && 'sm:text-2xl',
+              "line-clamp-2 max-w-[34rem] font-display text-[1.35rem] font-semibold leading-[1.14] text-white",
+              !isStacked && "sm:text-2xl",
             )}
           >
             {insight}
@@ -175,7 +187,9 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
               <div className="mt-1 text-xs">duration</div>
             </div>
             <div className="border-l border-white/10 pl-inline-md">
-              <div className="font-semibold text-white">{titleCase(item.type)}</div>
+              <div className="font-semibold text-white">
+                {titleCase(item.type)}
+              </div>
               <div className="mt-1 text-xs">type</div>
             </div>
           </div>
@@ -183,9 +197,10 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
 
         <div
           className={clsx(
-            'mt-stack-md flex flex-col gap-stack-sm',
-            isStacked && 'mt-auto pt-stack-md',
-            !isStacked && 'sm:flex-row sm:items-end sm:justify-between sm:pr-44',
+            "mt-stack-md flex flex-col gap-stack-sm",
+            isStacked && "mt-auto pt-stack-md",
+            !isStacked &&
+              "sm:flex-row sm:items-end sm:justify-between sm:pr-44",
           )}
         >
           <div className="flex min-w-0 flex-wrap items-center gap-inline-sm">
@@ -209,19 +224,20 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
 
       <div
         className={clsx(
-          'relative z-20 mt-auto flex justify-end px-inset-md pb-inset-md',
-          isStacked && 'justify-stretch',
-          !isStacked && 'sm:absolute sm:bottom-inset-lg sm:right-inset-lg sm:px-0 sm:pb-0',
+          "relative z-20 mt-auto flex justify-end px-inset-md pb-inset-md",
+          isStacked && "justify-stretch",
+          !isStacked &&
+            "sm:absolute sm:bottom-inset-lg sm:right-inset-lg sm:px-0 sm:pb-0",
         )}
       >
         {onClick ? (
           <button
             type="button"
             className={clsx(
-              'inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-violet-300/20 bg-violet-500/20 font-semibold text-white no-underline backdrop-blur-xl transition-all hover:bg-violet-400/25 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-200/40',
+              "inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-violet-300/20 bg-violet-500/20 font-semibold text-white no-underline backdrop-blur-xl transition-all hover:bg-violet-400/25 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-200/40",
               isStacked
-                ? 'h-[var(--button-height-sm)] w-full justify-center px-inset-lg text-[length:var(--button-font-size-sm)]'
-                : 'h-[var(--button-height-md)] px-[calc(var(--button-padding-x-md)+0.5rem)] text-[length:var(--button-font-size-md)]',
+                ? "h-[var(--button-height-sm)] w-full justify-center px-inset-lg text-[length:var(--button-font-size-sm)]"
+                : "h-[var(--button-height-md)] px-[calc(var(--button-padding-x-md)+0.5rem)] text-[length:var(--button-font-size-md)]",
             )}
             onClick={(event) => {
               event.stopPropagation();
@@ -229,21 +245,21 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
             }}
           >
             <Sparkles className="h-4 w-4 text-white" aria-hidden="true" />
-            {t('card.openSummary')}
+            {t("card.openSummary")}
           </button>
         ) : (
           <Link
             to={detailTarget}
             className={clsx(
-              'inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-violet-300/20 bg-violet-500/20 font-semibold text-white no-underline backdrop-blur-xl transition-all hover:bg-violet-400/25 hover:text-white active:scale-[0.98]',
+              "inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-violet-300/20 bg-violet-500/20 font-semibold text-white no-underline backdrop-blur-xl transition-all hover:bg-violet-400/25 hover:text-white active:scale-[0.98]",
               isStacked
-                ? 'h-[var(--button-height-sm)] w-full justify-center px-inset-lg text-[length:var(--button-font-size-sm)]'
-                : 'h-[var(--button-height-md)] px-[calc(var(--button-padding-x-md)+0.5rem)] text-[length:var(--button-font-size-md)]',
+                ? "h-[var(--button-height-sm)] w-full justify-center px-inset-lg text-[length:var(--button-font-size-sm)]"
+                : "h-[var(--button-height-md)] px-[calc(var(--button-padding-x-md)+0.5rem)] text-[length:var(--button-font-size-md)]",
             )}
             onClick={stopCardClick}
           >
             <Sparkles className="h-4 w-4 text-violet-100" aria-hidden="true" />
-            {t('card.openSummary')}
+            {t("card.openSummary")}
           </Link>
         )}
       </div>
@@ -259,11 +275,11 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
               event.stopPropagation();
               onSave(item.id);
             }}
-            aria-label={t('keep.button')}
+            aria-label={t("keep.button")}
             className="h-11 min-h-11 w-11 min-w-11 rounded-full border border-white/20 bg-black/55 p-0 text-white shadow-[0_16px_40px_rgba(0,0,0,0.3)] backdrop-blur-xl hover:bg-white/20"
           >
             <Bookmark className="h-4 w-4" aria-hidden="true" />
-            <span className="sr-only">{t('keep.button')}</span>
+            <span className="sr-only">{t("keep.button")}</span>
           </Button>
         )}
         <a
@@ -271,7 +287,7 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
           target="_blank"
           rel="noreferrer"
           className="inline-flex h-11 min-h-11 w-11 min-w-11 items-center justify-center rounded-full border border-white/20 bg-black/55 text-white shadow-[0_16px_40px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-colors hover:bg-white/20"
-          aria-label={t('feed.openVideo')}
+          aria-label={t("feed.openVideo")}
           onClick={stopCardClick}
         >
           <YouTubeLogo className="h-4 w-4" />
@@ -285,7 +301,7 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
         >
           <IconButton
             icon={Trash2}
-            ariaLabel={t('card.remove')}
+            ariaLabel={t("card.remove")}
             variant="ghost"
             size="sm"
             onClick={() => onRemove(item.id)}
@@ -302,7 +318,7 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
           className="block h-full cursor-pointer text-inherit no-underline"
           onClick={handleOpen}
           role="button"
-          aria-label={`${t('card.openSummary')}: ${videoTitle}`}
+          aria-label={`${t("card.openSummary")}: ${videoTitle}`}
           tabIndex={0}
           onKeyDown={handleOpenKeyDown}
         >
@@ -314,9 +330,9 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
           <Link
             to={detailTarget}
             className="absolute inset-0 z-[2]"
-            aria-label={`${t('card.openSummary')}: ${videoTitle}`}
+            aria-label={`${t("card.openSummary")}: ${videoTitle}`}
           >
-            <span className="sr-only">{t('card.openSummary')}</span>
+            <span className="sr-only">{t("card.openSummary")}</span>
           </Link>
         </div>
       )}
