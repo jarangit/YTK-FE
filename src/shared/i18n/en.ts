@@ -53,6 +53,13 @@ const en = {
     pasteUrl: 'Paste URL from clipboard',
     pasteError: 'Could not read clipboard. Check your browser permissions.',
     feedCta: 'Browse community feed',
+    feedPreviewEyebrow: 'Community picks',
+    feedPreviewTitle: 'Recently summarized videos',
+    feedPreviewSubtitle:
+      'Explore summaries already available in the feed, then open the full feed when you want more signals before watching.',
+    feedPreviewMore: 'View more',
+    feedPreviewLoading: 'Loading feed highlights...',
+    feedPreviewEmpty: 'No feed summaries are available yet.',
     exampleLoading: 'Loading example analysis',
     exampleErrorTitle: 'The example could not be loaded.',
     exampleErrorDescription: 'Try again to see what an analysis looks like before you submit a video.',

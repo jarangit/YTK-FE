@@ -1,7 +1,8 @@
 import { memo } from 'react';
-import { Bookmark, Clock, ExternalLink, Sparkles, Trash2 } from 'lucide-react';
+import { Bookmark, Clock, Sparkles, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import type { FeedItem } from './types';
 import IconButton from '../../shared/components/atoms/IconButton';
 import Card from '../../shared/components/atoms/Card';
@@ -23,6 +24,7 @@ interface FeedCardProps {
   onRemove?: (id: string) => void;
   onSave?: (id: string) => void;
   saving?: boolean;
+  layout?: 'auto' | 'stacked';
 }
 
 function metadataString(item: FeedItem, key: string) {
@@ -45,8 +47,21 @@ function titleCase(value: string) {
   return value.charAt(0) + value.slice(1).toLowerCase();
 }
 
-function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false }: FeedCardProps) {
+function YouTubeLogo(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M21.58 7.19a2.99 2.99 0 0 0-2.1-2.12C17.62 4.5 12 4.5 12 4.5s-5.62 0-7.48.57a2.99 2.99 0 0 0-2.1 2.12A31.2 31.2 0 0 0 1.88 12c0 1.62.2 3.23.54 4.81a2.99 2.99 0 0 0 2.1 2.12c1.86.57 7.48.57 7.48.57s5.62 0 7.48-.57a2.99 2.99 0 0 0 2.1-2.12c.34-1.58.54-3.19.54-4.81 0-1.62-.2-3.23-.54-4.81Z"
+        fill="#FF0033"
+      />
+      <path d="m10 15.5 5-3.5-5-3.5v7Z" fill="white" />
+    </svg>
+  );
+}
+
+function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false, layout = 'auto' }: FeedCardProps) {
   const { t } = useTranslation();
+  const isStacked = layout === 'stacked';
   const insight = metadataString(item, 'insight') || item.body;
   const description = item.analysis.summary && item.analysis.summary !== insight
     ? item.analysis.summary
@@ -80,8 +95,19 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
   };
 
   const content = (
-    <div className="relative overflow-hidden rounded-card bg-[var(--color-bg-card)] sm:min-h-[320px] lg:min-h-[300px]">
-      <div className="relative aspect-video overflow-hidden bg-surface sm:absolute sm:inset-y-0 sm:left-auto sm:right-0 sm:top-0 sm:h-auto sm:w-[54%] sm:aspect-auto">
+    <div
+      className={clsx(
+        'relative flex h-full flex-col overflow-hidden rounded-card bg-[var(--color-bg-card)]',
+        isStacked && 'min-h-[100%]',
+        !isStacked && 'sm:min-h-[320px] lg:min-h-[300px]',
+      )}
+    >
+      <div
+        className={clsx(
+          'relative aspect-video overflow-hidden bg-surface',
+          !isStacked && 'sm:absolute sm:inset-y-0 sm:left-auto sm:right-0 sm:top-0 sm:h-auto sm:w-[54%] sm:aspect-auto',
+        )}
+      >
         {item.video.thumbnail ? (
           <div
             className="h-full w-full bg-cover bg-center"
@@ -94,10 +120,20 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
             <Sparkles className="h-12 w-12 text-white/70" aria-hidden="true" />
           </div>
         )}
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(255,255,255,0.58)_100%)] sm:bg-[linear-gradient(90deg,rgba(255,255,255,1.9)_0%,rgba(255,255,255,0.48)_34%,rgba(255,255,255,0.02)_68%)]" />
+        <div
+          className={clsx(
+            'absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(255,255,255,0.58)_100%)]',
+            !isStacked && 'sm:bg-[linear-gradient(90deg,rgba(255,255,255,1.9)_0%,rgba(255,255,255,0.48)_34%,rgba(255,255,255,0.02)_68%)]',
+          )}
+        />
       </div>
 
-      <div className="relative z-[1] flex flex-col justify-between p-inset-md sm:min-h-[320px] sm:max-w-[70%] sm:p-inset-lg lg:min-h-[300px] lg:max-w-[64%]">
+      <div
+        className={clsx(
+          'relative z-[1] flex flex-1 flex-col p-inset-md',
+          !isStacked && 'sm:min-h-[320px] sm:max-w-[70%] sm:p-inset-lg lg:min-h-[300px] lg:max-w-[64%]',
+        )}
+      >
         <div>
           <div className="mb-stack-sm flex items-center gap-inline-md">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface text-base font-semibold text-ink shadow-[0_14px_32px_rgba(15,23,42,0.14)] ring-4 ring-white/80">
@@ -113,7 +149,12 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
             </div>
           </div>
 
-          <p className="line-clamp-2 max-w-[34rem] font-display text-[1.35rem] font-semibold leading-[1.14] text-ink sm:text-2xl">
+          <p
+            className={clsx(
+              'line-clamp-2 max-w-[34rem] font-display text-[1.35rem] font-semibold leading-[1.14] text-ink',
+              !isStacked && 'sm:text-2xl',
+            )}
+          >
             {insight}
           </p>
 
@@ -140,7 +181,13 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
           </div>
         </div>
 
-        <div className="mt-stack-md flex flex-col gap-stack-sm sm:flex-row sm:items-end sm:justify-between sm:pr-44">
+        <div
+          className={clsx(
+            'mt-stack-md flex flex-col gap-stack-sm',
+            isStacked && 'mt-auto pt-stack-md',
+            !isStacked && 'sm:flex-row sm:items-end sm:justify-between sm:pr-44',
+          )}
+        >
           <div className="flex min-w-0 flex-wrap items-center gap-inline-sm">
             {keywords.map((keyword) => (
               <span
@@ -160,14 +207,23 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
         </div>
       </div>
 
-      <div className="relative z-20 flex justify-end px-inset-md pb-inset-md sm:absolute sm:bottom-inset-lg sm:right-inset-lg sm:px-0 sm:pb-0">
+      <div
+        className={clsx(
+          'relative z-20 mt-auto flex justify-end px-inset-md pb-inset-md',
+          isStacked && 'justify-stretch',
+          !isStacked && 'sm:absolute sm:bottom-inset-lg sm:right-inset-lg sm:px-0 sm:pb-0',
+        )}
+      >
         {onClick ? (
           <Button
             type="button"
             variant="secondary"
-            size="md"
+            size={isStacked ? 'sm' : 'md'}
             iconLeft={Sparkles}
-            className="shrink-0 rounded-full border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] px-inset-xl text-ink shadow-[0_18px_45px_rgba(56,189,248,0.18),0_0_28px_rgba(167,139,250,0.18)] hover:bg-[linear-gradient(rgba(255,255,255,0.92),rgba(255,255,255,0.92))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box]"
+            className={clsx(
+              'shrink-0 rounded-full border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] text-ink shadow-[0_18px_45px_rgba(56,189,248,0.18),0_0_28px_rgba(167,139,250,0.18)] hover:bg-[linear-gradient(rgba(255,255,255,0.92),rgba(255,255,255,0.92))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box]',
+              isStacked ? 'w-full justify-center px-inset-md text-sm' : 'px-inset-xl',
+            )}
             onClick={(event) => {
               event.stopPropagation();
               onClick(item.id);
@@ -178,7 +234,12 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
         ) : (
           <Link
             to={detailTarget}
-            className="inline-flex h-[var(--button-height-md)] shrink-0 items-center justify-center gap-inline-sm rounded-full border border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] px-inset-xl text-[length:var(--button-font-size-md)] font-semibold text-ink no-underline shadow-[0_18px_45px_rgba(56,189,248,0.18),0_0_28px_rgba(167,139,250,0.18)] transition-all hover:bg-[linear-gradient(rgba(255,255,255,0.92),rgba(255,255,255,0.92))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] active:scale-[0.98]"
+            className={clsx(
+              'inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full border border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] font-semibold text-ink no-underline shadow-[0_18px_45px_rgba(56,189,248,0.18),0_0_28px_rgba(167,139,250,0.18)] transition-all hover:bg-[linear-gradient(rgba(255,255,255,0.92),rgba(255,255,255,0.92))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] active:scale-[0.98]',
+              isStacked
+                ? 'h-[var(--button-height-sm)] w-full justify-center px-inset-md text-[length:var(--button-font-size-sm)]'
+                : 'h-[var(--button-height-md)] px-inset-xl text-[length:var(--button-font-size-md)]',
+            )}
             onClick={stopCardClick}
           >
             <Sparkles className="h-4 w-4 text-[#7c3aed]" aria-hidden="true" />
@@ -213,7 +274,7 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
           aria-label={t('feed.openVideo')}
           onClick={stopCardClick}
         >
-          <ExternalLink className="h-4 w-4" aria-hidden="true" />
+          <YouTubeLogo className="h-4 w-4" />
         </a>
       </div>
 
@@ -235,10 +296,10 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
   );
 
   return (
-    <Card className="relative rounded-card border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] shadow-[0_24px_80px_rgba(15,23,42,0.10)]">
+    <Card className="relative h-full rounded-card border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] shadow-[0_24px_80px_rgba(15,23,42,0.10)]">
       {onClick ? (
         <div
-          className="block cursor-pointer text-inherit no-underline"
+          className="block h-full cursor-pointer text-inherit no-underline"
           onClick={handleOpen}
           role="button"
           aria-label={`${t('card.openSummary')}: ${videoTitle}`}
@@ -248,7 +309,7 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
           {content}
         </div>
       ) : (
-        <div className="text-inherit no-underline">
+        <div className="h-full text-inherit no-underline">
           {content}
           <Link
             to={detailTarget}
