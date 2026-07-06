@@ -16,13 +16,49 @@ const video: VideoAnalysis = {
   language: 'en',
   videoId: 'abc123',
   title: 'Worth it video',
-  channelName: '',
+  channelName: 'Channel name',
   channelUrl: '',
   duration: '',
   thumbnailUrl: '',
   videoUrl: 'https://www.youtube.com/watch?v=abc123',
+  channelLogo: 'https://example.com/channel-logo.jpg',
   outcomes: ['Outcome one', 'Outcome two'],
   keywords: ['keyword'],
+  overview: 'Full overview',
+  timeline: [
+    {
+      heading: 'First section',
+      whatIsCovered: 'This section introduces the main idea.',
+      importantDetails: ['Detail one', 'Detail two'],
+    },
+  ],
+  importantPoints: [
+    {
+      point: 'Insight one',
+      whyItMatters: 'Because it matters',
+    },
+  ],
+  takeaways: ['Takeaway one', 'Takeaway two'],
+  careerInference: {
+    likelyRoles: ['Product manager'],
+    confidence: 'medium',
+    reasoning: 'The speaker focuses on product decision making.',
+    recommendedTopics: ['User interviews'],
+    personalizedAdvice: ['Practice summarizing customer pain in one sentence.'],
+  },
+  engagementQuestions: [
+    {
+      question: 'What makes this insight useful?',
+      answer: 'It turns the lesson into a reusable mental prompt.',
+      hook: 'One small framing change can improve your next interview.',
+      whyInteresting: 'It connects theory to a concrete action the user can try next.',
+    },
+  ],
+  originalContext: {
+    keywords: ['keyword'],
+    people: ['Jane Doe'],
+    topics: ['product discovery'],
+  },
   transcript: [
     { startSeconds: 0, text: 'Segment one' },
     { startSeconds: 60, text: 'Segment two' },
@@ -32,7 +68,7 @@ const video: VideoAnalysis = {
   ],
   summary: {
     summary: 'Full overview',
-    oneLineSummary: 'Fast summary',
+    oneLineSummary: 'Full overview',
     detailedExplanation: [],
     importantDetails: [],
     examples: [],
@@ -52,12 +88,7 @@ const video: VideoAnalysis = {
       deepQuestions: [],
     },
     limitations: [],
-    worthIt: {
-      difficulty: 'beginner',
-      estimatedValue: 'This is useful if you want the big ideas quickly.',
-      bestFor: ['Busy learners'],
-      skipIf: ['You want deep technical detail'],
-    },
+    worthIt: null,
   },
 };
 
@@ -66,7 +97,7 @@ describe('ResultContent', () => {
     localStorage.setItem('youtive_lang', 'en');
   });
 
-  it('renders the worth-it section with best-for and skip-if content', () => {
+  it('renders the new timeline and engagement sections', () => {
     render(
       <ResultContent
         video={video}
@@ -76,13 +107,13 @@ describe('ResultContent', () => {
       />,
     );
 
-    expect(screen.getByText('Worth your time?')).toBeInTheDocument();
-    expect(screen.getByText('Busy learners')).toBeInTheDocument();
-    expect(screen.getByText('You want deep technical detail')).toBeInTheDocument();
-    expect(screen.getByText(/This is useful if you want the big ideas quickly./)).toBeInTheDocument();
+    expect(screen.getByText('Timeline')).toBeInTheDocument();
+    expect(screen.getByText('First section')).toBeInTheDocument();
+    expect(screen.getByText('Engagement questions')).toBeInTheDocument();
+    expect(screen.getByText('One small framing change can improve your next interview.')).toBeInTheDocument();
   });
 
-  it('shows action items in the existing takeaways area', () => {
+  it('shows takeaways in the takeaways area', () => {
     render(
       <ResultContent
         video={video}
@@ -92,12 +123,12 @@ describe('ResultContent', () => {
       />,
     );
 
-    expect(screen.getByText('Action items')).toBeInTheDocument();
+    expect(screen.getByText('Takeaways')).toBeInTheDocument();
     expect(screen.getByText('Takeaway one')).toBeInTheDocument();
     expect(screen.getByText('Takeaway two')).toBeInTheDocument();
   });
 
-  it('renders key insights and context keywords directly on the page', () => {
+  it('renders important points and original context directly on the page', () => {
     render(
       <ResultContent
         video={video}
@@ -109,8 +140,9 @@ describe('ResultContent', () => {
 
     expect(screen.getByText('Key Insights')).toBeInTheDocument();
     expect(screen.getByText('Insight one')).toBeInTheDocument();
-    expect(screen.getByText('How to apply it')).toBeInTheDocument();
+    expect(screen.getByText('Why it matters')).toBeInTheDocument();
     expect(screen.getByText('keyword')).toBeInTheDocument();
+    expect(screen.getByText('Jane Doe')).toBeInTheDocument();
   });
 
   it('renders and expands the transcript', async () => {

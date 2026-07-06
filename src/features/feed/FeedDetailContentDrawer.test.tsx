@@ -53,6 +53,26 @@ const video: VideoAnalysis = {
   videoUrl: 'https://www.youtube.com/watch?v=abc123',
   outcomes: ['Outcome one'],
   keywords: ['keyword'],
+  overview: 'Full overview',
+  timeline: [
+    {
+      heading: 'First section',
+      whatIsCovered: 'This section introduces the main idea.',
+      importantDetails: ['Detail one'],
+    },
+  ],
+  importantPoints: [
+    {
+      point: 'Insight one',
+      whyItMatters: 'Because it matters',
+    },
+  ],
+  takeaways: ['Takeaway one'],
+  originalContext: {
+    keywords: ['keyword'],
+    people: [],
+    topics: ['topic'],
+  },
   transcript: [],
   summary: {
     summary: 'Full overview',
@@ -105,7 +125,7 @@ describe('FeedDetailContent', () => {
     );
 
     expect(useVideoAnalysisQueryMock).toHaveBeenCalledWith('analysis-1');
-    expect(screen.getByText('Action items')).toBeInTheDocument();
+    expect(screen.getByText('Takeaways')).toBeInTheDocument();
     expect(screen.getByText('Key Insights')).toBeInTheDocument();
     expect(screen.getByText('keyword')).toBeInTheDocument();
     expect(screen.queryByText('Full transcript')).not.toBeInTheDocument();

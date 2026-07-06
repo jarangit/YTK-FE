@@ -1,15 +1,50 @@
-import { Hash } from 'lucide-react';
+import { Hash, UserRound, Shapes } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import type { OriginalContext } from '../analysis/types';
 import Card from '../../shared/components/atoms/Card';
 
 interface KeywordsSectionProps {
-  keywords: string[];
+  context?: OriginalContext | null;
 }
 
-export default function KeywordsSection({ keywords }: KeywordsSectionProps) {
-  const { t } = useTranslation();
+function ContextGroup({
+  title,
+  items,
+  icon: Icon,
+}: {
+  title: string;
+  items: string[];
+  icon: typeof Hash;
+}) {
+  if (items.length === 0) return null;
 
-  if (keywords.length === 0) return null;
+  return (
+    <div>
+      <h3 className="flex items-center gap-inline-xs text-sm font-semibold text-ink">
+        <Icon className="h-4 w-4 text-accent" />
+        {title}
+      </h3>
+      <div className="mt-stack-sm flex flex-wrap gap-2">
+        {items.map((item) => (
+          <span
+            key={`${title}-${item}`}
+            className="rounded-full border border-border/60 bg-surface px-3 py-1 text-sm text-ink-muted"
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function KeywordsSection({ context }: KeywordsSectionProps) {
+  const { t } = useTranslation();
+  const keywords = context?.keywords ?? [];
+  const people = context?.people ?? [];
+  const topics = context?.topics ?? [];
+
+  if (keywords.length === 0 && people.length === 0 && topics.length === 0) return null;
 
   return (
     <Card as="section" className="bg-[var(--color-bg-card)]">
@@ -24,15 +59,10 @@ export default function KeywordsSection({ keywords }: KeywordsSectionProps) {
           </div>
         </div>
 
-        <div className="mt-stack-lg flex flex-wrap gap-2">
-          {keywords.map((keyword) => (
-            <span
-              key={keyword}
-              className="rounded-full border border-border/60 bg-surface px-3 py-1 text-sm text-ink-muted"
-            >
-              {keyword}
-            </span>
-          ))}
+        <div className="mt-stack-lg grid gap-stack-md sm:grid-cols-3">
+          <ContextGroup title={t('resultKeywords.keywords')} items={keywords} icon={Hash} />
+          <ContextGroup title={t('resultKeywords.people')} items={people} icon={UserRound} />
+          <ContextGroup title={t('resultKeywords.topics')} items={topics} icon={Shapes} />
         </div>
       </div>
     </Card>

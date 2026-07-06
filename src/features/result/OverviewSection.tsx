@@ -1,19 +1,17 @@
 import { Lightbulb } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import type { AnalysisSummary } from '../analysis/types';
 import ReactMarkdown from 'react-markdown';
 import Card from '../../shared/components/atoms/Card';
 
 interface OverviewSectionProps {
-  summary: AnalysisSummary;
+  overview?: string;
 }
 
-export default function OverviewSection({ summary }: OverviewSectionProps) {
+export default function OverviewSection({ overview = '' }: OverviewSectionProps) {
   const { t } = useTranslation();
-  const overview = summary.summary.trim();
-  const kicker = summary.oneLineSummary.trim();
+  const normalizedOverview = overview.trim();
 
-  if (!overview) return null;
+  if (!normalizedOverview) return null;
 
   return (
     <Card
@@ -26,10 +24,10 @@ export default function OverviewSection({ summary }: OverviewSectionProps) {
           <span className="uppercase tracking-[0.08em]">{t('summary.startHere')}</span>
         </div>
         <h2 className="mt-stack-sm max-w-[40rem] font-display text-[1.5rem] font-semibold leading-[1.25] tracking-[-0.02em] text-ink sm:text-[1.85rem]">
-          {kicker || t('summary.overview')}
+          {t('summary.overview')}
         </h2>
         <div className="mt-stack-md max-w-[46rem] text-base leading-8 text-ink-muted [&>p]:mb-stack-md">
-          <ReactMarkdown>{overview}</ReactMarkdown>
+          <ReactMarkdown>{normalizedOverview}</ReactMarkdown>
         </div>
       </div>
     </Card>

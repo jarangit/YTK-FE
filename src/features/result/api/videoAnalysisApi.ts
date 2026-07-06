@@ -1,12 +1,11 @@
 import type {
   AnalysisSummary,
-  DetailedExplanation,
-  ExampleItem,
-  KeyInsight,
-  MentalModel,
-  ResearchRoadmap,
+  AnalysisTimelineItem,
+  CareerInference,
+  EngagementQuestion,
+  ImportantPoint,
+  OriginalContext,
   VideoAnalysis,
-  WorthItSummary,
 } from '../../analysis/types';
 import type { TranscriptSegment } from '../../analysis/types';
 import { apiRequest } from '../../../shared/api/httpClient';
@@ -42,50 +41,38 @@ interface BackendAnalysisPayload {
   id: string;
   language: string;
   status?: BackendAnalysisStatus;
-  summary: string;
-  worthIt?: {
-    skipIf?: string[];
-    bestFor?: string[];
-    difficulty?: string;
-    estimatedValue?: string;
-  } | null;
-  learningOutcomes?: string[];
-  detailedExplanation: Array<{
-    topic: string;
-    explanation: string;
-  }>;
-  importantDetails: string[];
-  examples: Array<{
-    topic: string;
-    example: string;
-  }>;
-  limitations: string[];
-  keyInsights: Array<{
-    insight: string;
-    whyImportant: string;
-    mindsetChange: string;
-    howToApply?: string;
-  }>;
-  mentalModel: {
-    name: string;
-    steps: string[];
-    description: string;
-  } | null;
-  actionItems?: string[];
-  practicalTakeaways: string[];
-  researchRoadmap: {
-    tools: string[];
-    trends: string[];
-    concepts: string[];
-    deepQuestions: string[];
-  } | null;
-  oneLineSummary: string;
-  originalContext?: {
-    keywords?: string[];
-  } | null;
-  failureCode?: string | null;
-  failureMessage?: string | null;
-  createdAt: string;
+   overview?: string | null;
+   timeline?: Array<{
+     heading?: string | null;
+     whatIsCovered?: string | null;
+     importantDetails?: string[] | null;
+   }> | null;
+   importantPoints?: Array<{
+     point?: string | null;
+     whyItMatters?: string | null;
+   }> | null;
+   takeaways?: string[] | null;
+   careerInference?: {
+     likelyRoles?: string[] | null;
+     confidence?: 'low' | 'medium' | 'high' | null;
+     reasoning?: string | null;
+     recommendedTopics?: string[] | null;
+     personalizedAdvice?: string[] | null;
+   } | null;
+   engagementQuestions?: Array<{
+     question?: string | null;
+     answer?: string | null;
+     hook?: string | null;
+     whyInteresting?: string | null;
+   }> | null;
+   originalContext?: {
+     keywords?: string[];
+     people?: string[];
+     topics?: string[];
+   } | null;
+   failureCode?: string | null;
+   failureMessage?: string | null;
+   createdAt: string;
 }
 
 export interface BackendVideoAnalysisResponse {
@@ -95,6 +82,8 @@ export interface BackendVideoAnalysisResponse {
   youtubeUrl: string;
   title?: string;
   thumbnail?: string;
+  channelId?: string;
+  channelLogo?: string;
   channelName?: string;
   duration?: number;
   publishedAt?: string;
@@ -102,7 +91,10 @@ export interface BackendVideoAnalysisResponse {
   createdAt: string;
   failureCode?: string;
   failureMessage?: string;
-  transcript: BackendTranscriptSegment[];
+  transcript?: BackendTranscriptSegment[] | {
+    en?: BackendTranscriptSegment[] | null;
+    th?: BackendTranscriptSegment[] | null;
+  } | null;
   analysis: BackendAnalysisPayload | null;
 }
 
@@ -182,128 +174,34 @@ function normalizeText(value: unknown) {
   return typeof value === 'string' ? value.trim() : '';
 }
 
-function normalizeWorthIt(value: unknown): WorthItSummary | null {
-  if (!value || typeof value !== 'object') return null;
-
-  const worthIt = value as Record<string, unknown>;
-  const normalized = {
-    difficulty: normalizeText(worthIt.difficulty),
-    estimatedValue: normalizeText(worthIt.estimatedValue),
-    bestFor: normalizeStringList(worthIt.bestFor),
-    skipIf: normalizeStringList(worthIt.skipIf),
-  };
-
-  return normalized.difficulty
-    || normalized.estimatedValue
-    || normalized.bestFor.length > 0
-    || normalized.skipIf.length > 0
-    ? normalized
-    : null;
-}
-
-function normalizeDetailedExplanation(value: unknown): DetailedExplanation[] {
-  if (!Array.isArray(value)) return [];
-
-  return value
-    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
-    .map((item) => ({
-      topic: normalizeText(item.topic),
-      explanation: normalizeText(item.explanation),
-    }))
-    .filter((item) => item.topic || item.explanation);
-}
-
-function normalizeExamples(value: unknown): ExampleItem[] {
-  if (!Array.isArray(value)) return [];
-
-  return value
-    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
-    .map((item) => ({
-      topic: normalizeText(item.topic),
-      example: normalizeText(item.example),
-    }))
-    .filter((item) => item.topic || item.example);
-}
-
-function normalizeKeyInsights(value: unknown): KeyInsight[] {
-  if (!Array.isArray(value)) return [];
-
-  return value
-    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
-    .map((item) => ({
-      insight: normalizeText(item.insight),
-      whyImportant: normalizeText(item.whyImportant),
-      mindsetChange: normalizeText(item.howToApply) || normalizeText(item.mindsetChange),
-    }))
-    .filter((item) => item.insight || item.whyImportant || item.mindsetChange);
-}
-
-function normalizeMentalModel(value: unknown): MentalModel | null {
-  if (!value || typeof value !== 'object') return null;
-  const model = value as Record<string, unknown>;
-  const normalized = {
-    name: normalizeText(model.name),
-    description: normalizeText(model.description),
-    steps: normalizeSummaryList(model.steps),
-  };
-
-  return normalized.name || normalized.description || normalized.steps.length ? normalized : null;
-}
-
-function normalizeResearchRoadmap(value: unknown): ResearchRoadmap {
-  const roadmap = value && typeof value === 'object'
-    ? value as Record<string, unknown>
-    : {};
-
-  return {
-    tools: normalizeSummaryList(roadmap.tools),
-    trends: normalizeSummaryList(roadmap.trends),
-    concepts: normalizeSummaryList(roadmap.concepts),
-    deepQuestions: normalizeSummaryList(roadmap.deepQuestions),
-  };
-}
-
 function normalizeSummary(analysis?: BackendAnalysisPayload | null): AnalysisSummary {
-  const rawSummary = analysis?.summary;
-
-  if (rawSummary && typeof rawSummary === 'object') {
-    const legacy = rawSummary as Record<string, unknown>;
-    const summary = normalizeText(legacy.bigIdea) || normalizeText(legacy.overview);
-
-    return {
-      summary,
-      oneLineSummary: summary,
-      detailedExplanation: [],
-      importantDetails: [],
-      examples: [],
-      keyInsights: normalizeSummaryList(legacy.keyPoints).map((insight, index) => ({
-        insight,
-        whyImportant: normalizeSummaryList(legacy.usefulExamples)[index] ?? '',
-        mindsetChange: '',
-      })),
-      mentalModel: null,
-      practicalTakeaways: normalizeSummaryList(legacy.thingsToRemember),
-      researchRoadmap: normalizeResearchRoadmap(null),
-      limitations: [],
-      worthIt: null,
-    };
-  }
-
-  const actionItems = normalizeStringList(analysis?.actionItems);
-  const practicalTakeaways = normalizeSummaryList(analysis?.practicalTakeaways);
+  const overview = normalizeText(analysis?.overview);
+  const keyInsights = normalizeImportantPoints(analysis?.importantPoints).map((item) => ({
+    insight: item.point,
+    whyImportant: item.whyItMatters,
+    mindsetChange: '',
+  }));
+  const detailedExplanation = normalizeTimeline(analysis?.timeline).map((item) => ({
+    topic: item.heading,
+    explanation: item.whatIsCovered,
+  })).filter((item) => item.topic || item.explanation);
+  const importantDetails = normalizeTimeline(analysis?.timeline)
+    .flatMap((item) => item.importantDetails)
+    .filter((item, index, array) => array.indexOf(item) === index);
+  const practicalTakeaways = normalizeSummaryList(analysis?.takeaways);
 
   return {
-    summary: normalizeText(rawSummary),
-    oneLineSummary: normalizeText(analysis?.oneLineSummary),
-    detailedExplanation: normalizeDetailedExplanation(analysis?.detailedExplanation),
-    importantDetails: normalizeSummaryList(analysis?.importantDetails),
-    examples: normalizeExamples(analysis?.examples),
-    keyInsights: normalizeKeyInsights(analysis?.keyInsights),
-    mentalModel: normalizeMentalModel(analysis?.mentalModel),
-    practicalTakeaways: actionItems.length > 0 ? actionItems : practicalTakeaways,
-    researchRoadmap: normalizeResearchRoadmap(analysis?.researchRoadmap),
-    limitations: normalizeSummaryList(analysis?.limitations),
-    worthIt: normalizeWorthIt(analysis?.worthIt),
+    summary: overview,
+    oneLineSummary: overview,
+    detailedExplanation,
+    importantDetails,
+    examples: [],
+    keyInsights,
+    mentalModel: null,
+    practicalTakeaways,
+    researchRoadmap: { tools: [], trends: [], concepts: [], deepQuestions: [] },
+    limitations: [],
+    worthIt: null,
   };
 }
 
@@ -311,14 +209,105 @@ function normalizeDerivedOutcomes(analysis?: BackendAnalysisPayload | null): str
   if (!analysis) return [];
 
   const derived = [
-    ...normalizeStringList(analysis.learningOutcomes),
-    ...normalizeStringList(analysis.actionItems),
-    ...normalizeSummaryList(analysis.practicalTakeaways),
-    ...normalizeSummaryList(analysis.importantDetails),
-    ...normalizeDetailedExplanation(analysis.detailedExplanation).map((item) => item.topic || item.explanation),
+    ...normalizeSummaryList(analysis.takeaways),
+    ...normalizeImportantPoints(analysis.importantPoints).map((item) => item.point || item.whyItMatters),
+    ...normalizeTimeline(analysis.timeline).flatMap((item) => [item.heading, item.whatIsCovered, ...item.importantDetails]),
+    ...normalizeCareerInference(analysis.careerInference)?.personalizedAdvice ?? [],
   ];
 
   return Array.from(new Set(derived.filter((item) => item.trim().length > 0))).slice(0, 4);
+}
+
+function normalizeTimeline(value: unknown): AnalysisTimelineItem[] {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
+    .map((item) => ({
+      heading: normalizeText(item.heading),
+      whatIsCovered: normalizeText(item.whatIsCovered),
+      importantDetails: normalizeSummaryList(item.importantDetails),
+    }))
+    .filter((item) => item.heading || item.whatIsCovered || item.importantDetails.length > 0);
+}
+
+function normalizeImportantPoints(value: unknown): ImportantPoint[] {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
+    .map((item) => ({
+      point: normalizeText(item.point),
+      whyItMatters: normalizeText(item.whyItMatters),
+    }))
+    .filter((item) => item.point || item.whyItMatters);
+}
+
+function normalizeCareerInference(value: unknown): CareerInference | null {
+  if (!value || typeof value !== 'object') return null;
+
+  const careerInference = value as Record<string, unknown>;
+  const confidence = careerInference.confidence === 'low'
+    || careerInference.confidence === 'medium'
+    || careerInference.confidence === 'high'
+    ? careerInference.confidence
+    : 'low';
+  const normalized: CareerInference = {
+    likelyRoles: normalizeStringList(careerInference.likelyRoles),
+    confidence,
+    reasoning: normalizeText(careerInference.reasoning),
+    recommendedTopics: normalizeStringList(careerInference.recommendedTopics),
+    personalizedAdvice: normalizeStringList(careerInference.personalizedAdvice),
+  };
+
+  return normalized.likelyRoles.length > 0
+    || normalized.reasoning
+    || normalized.recommendedTopics.length > 0
+    || normalized.personalizedAdvice.length > 0
+    ? normalized
+    : null;
+}
+
+function normalizeEngagementQuestions(value: unknown): EngagementQuestion[] {
+  if (!Array.isArray(value)) return [];
+
+  return value
+    .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
+    .map((item) => ({
+      question: normalizeText(item.question),
+      answer: normalizeText(item.answer),
+      hook: normalizeText(item.hook),
+      whyInteresting: normalizeText(item.whyInteresting),
+    }))
+    .filter((item) => item.question || item.answer || item.hook || item.whyInteresting);
+}
+
+function normalizeOriginalContext(value: unknown): OriginalContext | null {
+  if (!value || typeof value !== 'object') return null;
+
+  const context = value as Record<string, unknown>;
+  const normalized: OriginalContext = {
+    keywords: normalizeStringList(context.keywords),
+    people: normalizeStringList(context.people),
+    topics: normalizeStringList(context.topics),
+  };
+
+  return normalized.keywords.length > 0 || normalized.people.length > 0 || normalized.topics.length > 0
+    ? normalized
+    : null;
+}
+
+function extractTranscriptByLanguage(
+  transcript: BackendVideoAnalysisResponse['transcript'],
+  language?: VideoAnalysis['language'],
+) {
+  if (Array.isArray(transcript)) return transcript;
+  if (!transcript || typeof transcript !== 'object') return [];
+
+  const preferred = language ? transcript[language] : undefined;
+  const fallback = transcript.en ?? transcript.th ?? [];
+
+  return Array.isArray(preferred) ? preferred : Array.isArray(fallback) ? fallback : [];
 }
 
 function normalizeTranscriptSegment(segment: BackendTranscriptSegment): TranscriptSegment {
@@ -333,8 +322,18 @@ export function normalizeVideoResponse(payload: BackendVideoAnalysisResponse): V
   const analysisId = payload.analysis?.id ?? payload.analysisId ?? payload.id;
   const language = payload.analysis?.language === 'th' ? 'th' : payload.analysis?.language === 'en' ? 'en' : undefined;
   const normalizedSummary = normalizeSummary(payload.analysis);
+  const overview = normalizeText(payload.analysis?.overview);
+  const timeline = normalizeTimeline(payload.analysis?.timeline);
+  const importantPoints = normalizeImportantPoints(payload.analysis?.importantPoints);
+  const takeaways = normalizeSummaryList(payload.analysis?.takeaways);
+  const careerInference = normalizeCareerInference(payload.analysis?.careerInference);
+  const engagementQuestions = normalizeEngagementQuestions(payload.analysis?.engagementQuestions);
+  const originalContext = normalizeOriginalContext(payload.analysis?.originalContext);
   const title = payload.title?.trim() || 'Untitled video';
-  const outcomes = normalizeStringList(payload.analysis?.learningOutcomes);
+  const outcomes = takeaways.length > 0 ? takeaways : normalizeDerivedOutcomes(payload.analysis);
+  const transcript = extractTranscriptByLanguage(payload.transcript, language)
+    .map(normalizeTranscriptSegment)
+    .filter((segment) => segment.text.length > 0);
 
   return {
     id: payload.id,
@@ -342,18 +341,26 @@ export function normalizeVideoResponse(payload: BackendVideoAnalysisResponse): V
     language,
     videoId: payload.youtubeVideoId,
     title,
+    youtubeUrl: payload.youtubeUrl,
     channelName: payload.channelName ?? '',
     channelUrl: '',
+    channelId: payload.channelId,
+    channelLogo: payload.channelLogo,
     duration: formatDuration(payload.duration ?? 0),
     thumbnailUrl: payload.thumbnail ?? '',
     videoUrl: payload.youtubeUrl,
     publishedAt: payload.publishedAt ?? undefined,
-    outcomes: outcomes.length > 0 ? outcomes : normalizeDerivedOutcomes(payload.analysis),
+    outcomes,
     summary: normalizedSummary,
-    keywords: normalizeStringList(payload.analysis?.originalContext?.keywords),
-    transcript: Array.isArray(payload.transcript)
-      ? payload.transcript.map(normalizeTranscriptSegment).filter((segment) => segment.text.length > 0)
-      : [],
+    keywords: originalContext?.keywords ?? [],
+    overview,
+    timeline,
+    importantPoints,
+    takeaways,
+    careerInference,
+    engagementQuestions,
+    originalContext,
+    transcript,
   };
 }
 
@@ -406,9 +413,10 @@ export async function getVideoAnalysisResult(analysisId: string): Promise<VideoA
 
   const response = await apiRequest<ApiEnvelope<BackendVideoAnalysisResponse>>(`/videos/analyses/${analysisId}`);
   const payload = response.data;
-  const transcript = Array.isArray(payload.transcript)
-    ? payload.transcript.map(normalizeTranscriptSegment).filter((segment) => segment.text.length > 0)
-    : [];
+  const language = payload.analysis?.language === 'th' ? 'th' : payload.analysis?.language === 'en' ? 'en' : undefined;
+  const transcript = extractTranscriptByLanguage(payload.transcript, language)
+    .map(normalizeTranscriptSegment)
+    .filter((segment) => segment.text.length > 0);
   const normalizedVideo = hasRenderableVideoData(payload) || payload.status === 'COMPLETED'
     ? normalizeVideoResponse(payload)
     : null;
@@ -416,7 +424,7 @@ export async function getVideoAnalysisResult(analysisId: string): Promise<VideoA
   const analysisStatus = payload.analysis?.status ?? payload.status;
   const failureCode = payload.analysis?.failureCode ?? payload.failureCode ?? undefined;
   const failureMessage = payload.analysis?.failureMessage ?? payload.failureMessage ?? undefined;
-  const language = normalizedVideo?.language;
+  const resolvedLanguage = normalizedVideo?.language ?? language;
 
   return {
     analysisId: resolvedAnalysisId,
@@ -426,7 +434,7 @@ export async function getVideoAnalysisResult(analysisId: string): Promise<VideoA
     failureCode,
     failureMessage,
     youtubeUrl: payload.youtubeUrl,
-    language,
+    language: resolvedLanguage,
   };
 }
 

@@ -21,38 +21,40 @@ function createPayload(overrides: Partial<BackendVideoAnalysisResponse> = {}): B
       id: 'analysis-1',
       language: 'th',
       status: 'COMPLETED',
-      summary: 'Main summary',
-      worthIt: {
-        difficulty: 'beginner',
-        estimatedValue: 'Helpful for long-term thinking',
-        bestFor: ['Beginners'],
-        skipIf: ['Advanced practitioners'],
-      },
-      learningOutcomes: ['Understand compounding', 'Recognize the role of luck'],
-      detailedExplanation: [],
-      importantDetails: [],
-      examples: [],
-      limitations: [],
-      keyInsights: [
+      overview: 'Main summary',
+      timeline: [
         {
-          insight: 'Wealth takes time',
-          whyImportant: 'Compounding needs patience',
-          mindsetChange: '',
-          howToApply: 'Invest consistently over time',
+          heading: 'Core lesson',
+          whatIsCovered: 'The speaker explains why long-term investing needs patience.',
+          importantDetails: ['Compounding is slow at first', 'Consistency matters more than perfect timing'],
         },
       ],
-      mentalModel: null,
-      actionItems: ['Start early', 'Lower your expectations'],
-      practicalTakeaways: ['Legacy fallback takeaway'],
-      researchRoadmap: {
-        tools: [],
-        trends: [],
-        concepts: [],
-        deepQuestions: [],
+      importantPoints: [
+        {
+          point: 'Wealth takes time',
+          whyItMatters: 'Compounding needs patience',
+        },
+      ],
+      takeaways: ['Start early', 'Lower your expectations'],
+      careerInference: {
+        likelyRoles: ['Investor'],
+        confidence: 'medium',
+        reasoning: 'The transcript focuses on personal finance habits.',
+        recommendedTopics: ['Asset allocation'],
+        personalizedAdvice: ['Invest consistently over time'],
       },
-      oneLineSummary: 'A quick lesson on long-term investing',
+      engagementQuestions: [
+        {
+          question: 'Why does long-term investing feel slow?',
+          answer: 'Because the early phase of compounding looks small before momentum builds.',
+          hook: 'The boring middle is where returns are built.',
+          whyInteresting: 'It reframes patience as part of the mechanism, not a side effect.',
+        },
+      ],
       originalContext: {
         keywords: ['investing', 'luck'],
+        people: [],
+        topics: ['personal finance'],
       },
       failureCode: null,
       failureMessage: null,
@@ -63,28 +65,27 @@ function createPayload(overrides: Partial<BackendVideoAnalysisResponse> = {}): B
 }
 
 describe('normalizeVideoResponse', () => {
-  it('maps the new analysis payload into the existing UI model', () => {
+  it('maps the new analysis payload into the result UI model', () => {
     const normalized = normalizeVideoResponse(createPayload());
 
     expect(normalized.outcomes).toEqual([
-      'Understand compounding',
-      'Recognize the role of luck',
-    ]);
-    expect(normalized.summary.practicalTakeaways).toEqual([
       'Start early',
       'Lower your expectations',
     ]);
-    expect(normalized.summary.keyInsights[0]).toMatchObject({
-      insight: 'Wealth takes time',
-      whyImportant: 'Compounding needs patience',
-      mindsetChange: 'Invest consistently over time',
+    expect(normalized.takeaways).toEqual([
+      'Start early',
+      'Lower your expectations',
+    ]);
+    expect(normalized.importantPoints?.[0]).toMatchObject({
+      point: 'Wealth takes time',
+      whyItMatters: 'Compounding needs patience',
     });
-    expect(normalized.summary.worthIt).toEqual({
-      difficulty: 'beginner',
-      estimatedValue: 'Helpful for long-term thinking',
-      bestFor: ['Beginners'],
-      skipIf: ['Advanced practitioners'],
+    expect(normalized.timeline?.[0]).toMatchObject({
+      heading: 'Core lesson',
+      whatIsCovered: 'The speaker explains why long-term investing needs patience.',
     });
+    expect(normalized.careerInference?.recommendedTopics).toEqual(['Asset allocation']);
+    expect(normalized.engagementQuestions?.[0].hook).toBe('The boring middle is where returns are built.');
     expect(normalized.keywords).toEqual(['investing', 'luck']);
     expect(normalized.transcript).toEqual([
       { startSeconds: 0, endSeconds: 30, text: 'Intro' },
@@ -106,32 +107,50 @@ describe('normalizeVideoResponse', () => {
     expect(normalized.duration).toBe('0:00');
   });
 
-  it('returns a null worth-it section when the payload is empty', () => {
+  it('returns null for optional inference blocks when the payload is empty', () => {
     const normalized = normalizeVideoResponse(createPayload({
       analysis: {
         ...createPayload().analysis!,
-        worthIt: {
-          difficulty: '',
-          estimatedValue: '',
-          bestFor: [],
-          skipIf: [],
+        careerInference: {
+          likelyRoles: [],
+          confidence: 'low',
+          reasoning: '',
+          recommendedTopics: [],
+          personalizedAdvice: [],
         },
       },
     }));
 
-    expect(normalized.summary.worthIt).toBeNull();
+    expect(normalized.careerInference).toBeNull();
   });
 
-  it('keeps legacy practical takeaways when action items are not provided', () => {
+  it('derives outcomes from the remaining analysis content when takeaways are not provided', () => {
     const normalized = normalizeVideoResponse(createPayload({
       analysis: {
         ...createPayload().analysis!,
-        actionItems: undefined,
-        learningOutcomes: undefined,
+        takeaways: undefined,
       },
     }));
 
-    expect(normalized.summary.practicalTakeaways).toEqual(['Legacy fallback takeaway']);
-    expect(normalized.outcomes).toEqual(['Legacy fallback takeaway']);
+    expect(normalized.takeaways).toEqual([]);
+    expect(normalized.outcomes).toEqual([
+      'Wealth takes time',
+      'Core lesson',
+      'The speaker explains why long-term investing needs patience.',
+      'Compounding is slow at first',
+    ]);
+  });
+
+  it('prefers transcript entries for the active language when transcript is keyed by language', () => {
+    const normalized = normalizeVideoResponse(createPayload({
+      transcript: {
+        th: [{ startTime: '0:05', text: 'สวัสดี' }],
+        en: [{ startTime: '0:01', text: 'Hello' }],
+      },
+    }));
+
+    expect(normalized.transcript).toEqual([
+      { startSeconds: 5, endSeconds: undefined, text: 'สวัสดี' },
+    ]);
   });
 });

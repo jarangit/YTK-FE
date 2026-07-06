@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import type { VideoAnalysis } from './types';
 import Card from '../../shared/components/atoms/Card';
+import Avatar from '../../shared/components/atoms/Avatar';
 import MediaThumbnail from '../../shared/components/molecules/MediaThumbnail';
 import MetadataRow from '../../shared/components/molecules/MetadataRow';
 
@@ -95,17 +96,36 @@ export default function VideoPreviewCard({ video, action, size = 'l' }: Props) {
           )}
         >
           <div className={clsx(!(isExtraSmall || isSmall) && 'flex flex-col gap-stack-md sm:flex-row sm:items-start sm:justify-between')}>
-            <h2
-              className={clsx(
-                'font-display font-semibold leading-snug tracking-[-0.02em] text-ink',
-                isLarge && 'text-xl sm:text-2xl',
-                isMedium && 'text-lg sm:text-xl',
-                isExtraSmall && 'line-clamp-2 text-sm',
-                isSmall && 'line-clamp-2 text-base',
-              )}
-            >
-              {video.title}
-            </h2>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-inline-sm">
+                <Avatar
+                  src={video.channelLogo}
+                  alt={video.channelName}
+                  fallback={video.channelName || video.title}
+                  size={isExtraSmall || isSmall ? 'sm' : 'md'}
+                />
+                <div className="min-w-0">
+                  <p className={clsx(
+                    'truncate text-sm font-medium text-ink-muted',
+                    (isExtraSmall || isSmall) && 'text-xs',
+                  )}
+                  >
+                    {video.channelName}
+                  </p>
+                  <h2
+                    className={clsx(
+                      'font-display font-semibold leading-snug tracking-[-0.02em] text-ink',
+                      isLarge && 'text-xl sm:text-2xl',
+                      isMedium && 'text-lg sm:text-xl',
+                      isExtraSmall && 'line-clamp-2 text-sm',
+                      isSmall && 'line-clamp-2 text-base',
+                    )}
+                  >
+                    {video.title}
+                  </h2>
+                </div>
+              </div>
+            </div>
             {action && (
               <div className={clsx('shrink-0', (isExtraSmall || isSmall) && 'mt-3')}>
                 {action}

@@ -1,10 +1,10 @@
-import { Lightbulb, RefreshCw, Target } from 'lucide-react';
+import { Lightbulb, Target } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import type { KeyInsight } from '../analysis/types';
+import type { ImportantPoint } from '../analysis/types';
 import Card from '../../shared/components/atoms/Card';
 
 interface KeyInsightsSectionProps {
-  insights: KeyInsight[];
+  insights: ImportantPoint[];
 }
 
 export default function KeyInsightsSection({ insights }: KeyInsightsSectionProps) {
@@ -28,7 +28,7 @@ export default function KeyInsightsSection({ insights }: KeyInsightsSectionProps
         <div className="mt-stack-lg space-y-stack-md">
           {insights.map((item, index) => (
             <article
-              key={`${item.insight}-${index}`}
+              key={`${item.point}-${index}`}
               className="rounded-card border border-border/50 bg-surface px-inset-md py-inset-sm"
             >
               <div className="flex items-start gap-inline-sm">
@@ -36,27 +36,16 @@ export default function KeyInsightsSection({ insights }: KeyInsightsSectionProps
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <h3 className="font-display text-base font-semibold leading-7 text-ink">{item.insight}</h3>
-                  {(item.whyImportant || item.mindsetChange) && (
-                    <dl className="mt-stack-sm grid gap-stack-md sm:grid-cols-2">
-                      {item.whyImportant && (
-                        <div>
-                          <dt className="flex items-center gap-inline-xs text-xs font-semibold uppercase tracking-wide text-ink-faint">
-                            <Target className="h-3.5 w-3.5" />
-                            {t('summary.whyImportant')}
-                          </dt>
-                          <dd className="mt-stack-xs text-sm leading-7 text-ink-muted">{item.whyImportant}</dd>
-                        </div>
-                      )}
-                      {item.mindsetChange && (
-                        <div>
-                          <dt className="flex items-center gap-inline-xs text-xs font-semibold uppercase tracking-wide text-ink-faint">
-                            <RefreshCw className="h-3.5 w-3.5" />
-                            {t('resultInsights.howToApply')}
-                          </dt>
-                          <dd className="mt-stack-xs text-sm leading-7 text-ink-muted">{item.mindsetChange}</dd>
-                        </div>
-                      )}
+                  <h3 className="font-display text-base font-semibold leading-7 text-ink">{item.point}</h3>
+                  {item.whyItMatters && (
+                    <dl className="mt-stack-sm">
+                      <div>
+                        <dt className="flex items-center gap-inline-xs text-xs font-semibold uppercase tracking-wide text-ink-faint">
+                          <Target className="h-3.5 w-3.5" />
+                          {t('summary.whyImportant')}
+                        </dt>
+                        <dd className="mt-stack-xs text-sm leading-7 text-ink-muted">{item.whyItMatters}</dd>
+                      </div>
                     </dl>
                   )}
                 </div>

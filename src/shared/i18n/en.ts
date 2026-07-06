@@ -259,13 +259,40 @@ const en = {
     subtitle: 'The main ideas from the analysis, plus why they matter and how to use them.',
     howToApply: 'How to apply it',
   },
-  resultActions: {
-    title: 'Action items',
-    subtitle: 'Specific next steps you can carry forward after this video.',
+  resultTimeline: {
+    title: 'Timeline',
+    subtitle: 'Follow the video in order, with the key details grouped by section.',
+  },
+  resultTakeaways: {
+    title: 'Takeaways',
+    subtitle: 'The main ideas worth remembering after this video.',
+  },
+  careerInference: {
+    title: 'Career inference',
+    subtitle: 'A product-facing guess about who this video may be most relevant for. Treat it as an inference, not a fact.',
+    confidence: 'Confidence',
+    likelyRoles: 'Likely roles',
+    reasoning: 'Why this was inferred',
+    recommendedTopics: 'Recommended topics',
+    personalizedAdvice: 'Personalized advice',
+    level: {
+      low: 'Low',
+      medium: 'Medium',
+      high: 'High',
+    },
+  },
+  engagementQuestions: {
+    title: 'Engagement questions',
+    subtitle: 'Prompt-style questions and hooks that can bring the user back into the material.',
+    answer: 'Answer',
+    whyInteresting: 'Why this is interesting',
   },
   resultKeywords: {
     title: 'Context keywords',
     subtitle: 'Names, concepts, and topics that define the video context.',
+    keywords: 'Keywords',
+    people: 'People',
+    topics: 'Topics',
   },
   keep: {
     title: 'Keep for later',

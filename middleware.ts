@@ -13,8 +13,10 @@ function escapeHtml(s: string): string {
 }
 
 interface BackendAnalysisPayload {
-  oneLineSummary?: string;
-  summary?: string;
+  overview?: string;
+  importantPoints?: Array<{
+    point?: string;
+  }>;
 }
 
 interface BackendResponseData {
@@ -95,7 +97,9 @@ export default async function middleware(request: Request): Promise<Response | u
     const video: BackendResponseData = json.data ?? json;
 
     const videoTitle = video.title ?? OG_TITLE;
-    const description = video.analysis?.oneLineSummary ?? video.analysis?.summary ?? OG_DESC;
+    const description = video.analysis?.overview
+      ?? video.analysis?.importantPoints?.[0]?.point
+      ?? OG_DESC;
     const thumbnail = video.thumbnailUrl ?? video.thumbnail ?? '';
     const channelName = video.channelName ?? '';
 

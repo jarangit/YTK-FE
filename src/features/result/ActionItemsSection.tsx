@@ -19,8 +19,8 @@ export default function ActionItemsSection({ items }: ActionItemsSectionProps) {
             <ListChecks className="h-4 w-4" />
           </div>
           <div>
-            <h2 className="font-display text-lg font-semibold text-ink">{t('resultActions.title')}</h2>
-            <p className="mt-stack-xs text-sm text-ink-muted">{t('resultActions.subtitle')}</p>
+            <h2 className="font-display text-lg font-semibold text-ink">{t('resultTakeaways.title')}</h2>
+            <p className="mt-stack-xs text-sm text-ink-muted">{t('resultTakeaways.subtitle')}</p>
           </div>
         </div>
 

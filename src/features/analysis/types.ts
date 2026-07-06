@@ -4,6 +4,38 @@ export interface TranscriptSegment {
   text: string;
 }
 
+export interface AnalysisTimelineItem {
+  heading: string;
+  whatIsCovered: string;
+  importantDetails: string[];
+}
+
+export interface ImportantPoint {
+  point: string;
+  whyItMatters: string;
+}
+
+export interface CareerInference {
+  likelyRoles: string[];
+  confidence: 'low' | 'medium' | 'high';
+  reasoning: string;
+  recommendedTopics: string[];
+  personalizedAdvice: string[];
+}
+
+export interface EngagementQuestion {
+  question: string;
+  answer: string;
+  hook: string;
+  whyInteresting: string;
+}
+
+export interface OriginalContext {
+  keywords: string[];
+  people: string[];
+  topics: string[];
+}
+
 export interface KeyInsight {
   insight: string;
   whyImportant: string;
@@ -92,8 +124,11 @@ export interface VideoAnalysis {
   language?: 'en' | 'th';
   videoId: string;
   title: string;
+  youtubeUrl?: string;
   channelName: string;
   channelUrl: string;
+  channelId?: string;
+  channelLogo?: string;
   duration: string;
   thumbnailUrl: string;
   videoUrl: string;
@@ -101,5 +136,12 @@ export interface VideoAnalysis {
   outcomes: string[];
   summary: AnalysisSummary;
   keywords: string[];
+  overview?: string;
+  timeline?: AnalysisTimelineItem[];
+  importantPoints?: ImportantPoint[];
+  takeaways?: string[];
+  careerInference?: CareerInference | null;
+  engagementQuestions?: EngagementQuestion[];
+  originalContext?: OriginalContext | null;
   transcript: TranscriptSegment[];
 }
