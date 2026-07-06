@@ -91,7 +91,7 @@ export default function HomePage() {
                   <FeedCard
                     key={item.id}
                     item={item}
-                    to={`/feed/${item.id}`}
+                    to={`/result?analysisId=${encodeURIComponent(item.analysis.id)}`}
                     layout="stacked"
                   />
                 ))}
