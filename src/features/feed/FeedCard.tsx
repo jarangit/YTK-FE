@@ -1,13 +1,11 @@
 import { memo } from 'react';
-import { Bookmark, Clock, MoreHorizontal, Trash2 } from 'lucide-react';
+import { Bookmark, Clock, ExternalLink, Sparkles, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import type { FeedItem } from './types';
-import Badge from '../../shared/components/atoms/Badge';
 import IconButton from '../../shared/components/atoms/IconButton';
 import Card from '../../shared/components/atoms/Card';
 import { Button } from '../../shared/components/atoms/Button';
-import MediaThumbnail from '../../shared/components/molecules/MediaThumbnail';
 
 function extractVideoId(videoUrl: string) {
   try {
@@ -32,104 +30,198 @@ function metadataString(item: FeedItem, key: string) {
   return typeof value === 'string' ? value : '';
 }
 
+function formatDuration(totalSeconds: number | null) {
+  if (totalSeconds == null) return '';
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${String(seconds).padStart(2, '0')}`;
+}
+
+function formatScore(score: number) {
+  return Number.isInteger(score) ? String(score) : score.toFixed(1);
+}
+
+function titleCase(value: string) {
+  return value.charAt(0) + value.slice(1).toLowerCase();
+}
+
 function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false }: FeedCardProps) {
   const { t } = useTranslation();
   const insight = metadataString(item, 'insight') || item.body;
-  const displayTitle = insight;
-  const description = item.analysis.summary && item.analysis.summary !== displayTitle
+  const description = item.analysis.summary && item.analysis.summary !== insight
     ? item.analysis.summary
     : item.body;
   const videoTitle = item.video.title ?? 'YouTube analysis';
   const channelName = item.video.channelName ?? 'Unknown channel';
-  function formatDuration(totalSeconds: number | null) {
-    if (totalSeconds == null) return '';
-    const m = Math.floor(totalSeconds / 60);
-    const s = totalSeconds % 60;
-    return `${m}:${String(s).padStart(2, '0')}`;
-  }
-
+  const duration = formatDuration(item.video.duration);
   const readTime = item.video.duration
     ? `${Math.max(1, Math.ceil(item.video.duration / 60))} min read`
     : `${Math.max(1, Math.ceil(insight.length / 520))} min read`;
+  const keywords = item.keywords.slice(0, 3);
+  const detailTarget = to ?? `/feed/${extractVideoId(item.video.youtubeUrl)}`;
+  const cardBackground = item.video.thumbnail
+    ? { backgroundImage: `url(${item.video.thumbnail})` }
+    : undefined;
+
+  const handleOpen = () => {
+    onClick?.(item.id);
+  };
+
+  const handleOpenKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!onClick) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onClick(item.id);
+    }
+  };
+
+  const stopCardClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+  };
+
   const content = (
-    <div className="grid min-h-[260px] gap-stack-lg p-inset-md pr-[calc(var(--space-4)+var(--control-size-sm))] sm:p-inset-lg sm:pr-[calc(var(--space-6)+var(--control-size-sm))] md:grid-cols-[minmax(0,1fr)_minmax(280px,380px)] md:items-center md:gap-inline-xl">
-      <div className="min-w-0">
-        <div className="mb-stack-md flex flex-wrap items-center gap-inline-sm">
-          <Badge variant="accent" className="gap-inline-xs">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)]" />
-            {item.type.charAt(0) + item.type.slice(1).toLowerCase()}
-          </Badge>
-        </div>
-
-        <h3 className="line-clamp-2 max-w-[42rem] font-display text-2xl font-semibold leading-[1.18] text-ink sm:text-3xl">
-          {displayTitle}
-        </h3>
-
-        <p className="mt-stack-sm line-clamp-2 max-w-[42rem] text-[length:var(--text-body-size)] leading-7 text-[var(--color-text-secondary)]">
-          {description}
-        </p>
-
-        <div className="mt-stack-lg flex flex-wrap items-center gap-inline-lg text-sm text-[var(--color-text-tertiary)]">
-          <span className="max-w-[18rem] truncate font-medium text-[var(--color-text-secondary)]">
-            {videoTitle}
-          </span>
-          <span className="max-w-[12rem] truncate">{channelName}</span>
-          <span className="inline-flex items-center gap-inline-xs">
-            <Clock className="h-4 w-4" />
-            {readTime}
-          </span>
-        </div>
-      </div>
-
-      <div className="min-w-0">
-        <div className="overflow-hidden rounded-card border border-[var(--color-border-subtle)]">
-          <MediaThumbnail
-            src={item.video.thumbnail ?? ''}
-            alt={item.video.title ?? ''}
-            duration={formatDuration(item.video.duration)}
+    <div className="relative overflow-hidden rounded-card bg-[var(--color-bg-card)] sm:min-h-[320px] lg:min-h-[300px]">
+      <div className="relative aspect-video overflow-hidden bg-surface sm:absolute sm:inset-y-0 sm:left-auto sm:right-0 sm:top-0 sm:h-auto sm:w-[54%] sm:aspect-auto">
+        {item.video.thumbnail ? (
+          <div
+            className="h-full w-full bg-cover bg-center"
+            style={cardBackground}
+            role="img"
+            aria-label={videoTitle}
           />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center bg-[linear-gradient(135deg,#d7ede5_0%,#9fc7b9_45%,#516c63_100%)]">
+            <Sparkles className="h-12 w-12 text-white/70" aria-hidden="true" />
+          </div>
+        )}
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_0%,rgba(255,255,255,0.58)_100%)] sm:bg-[linear-gradient(90deg,rgba(255,255,255,1.9)_0%,rgba(255,255,255,0.48)_34%,rgba(255,255,255,0.02)_68%)]" />
+      </div>
+
+      <div className="relative z-[1] flex flex-col justify-between p-inset-md sm:min-h-[320px] sm:max-w-[70%] sm:p-inset-lg lg:min-h-[300px] lg:max-w-[64%]">
+        <div>
+          <div className="mb-stack-sm flex items-center gap-inline-md">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-surface text-base font-semibold text-ink shadow-[0_14px_32px_rgba(15,23,42,0.14)] ring-4 ring-white/80">
+              {channelName.charAt(0).toUpperCase()}
+            </div>
+            <div className="min-w-0">
+              <h3 className="truncate font-display text-xl font-semibold leading-tight text-ink">
+                {channelName}
+              </h3>
+              <p className="mt-1 line-clamp-1 text-sm font-medium text-[var(--color-text-secondary)]">
+                {videoTitle}
+              </p>
+            </div>
+          </div>
+
+          <p className="line-clamp-2 max-w-[34rem] font-display text-[1.35rem] font-semibold leading-[1.14] text-ink sm:text-2xl">
+            {insight}
+          </p>
+
+          <p className="mt-stack-xs line-clamp-2 max-w-[32rem] text-sm leading-6 text-[var(--color-text-secondary)]">
+            {description}
+          </p>
+
+          <div className="mt-stack-md flex flex-wrap items-center gap-y-stack-sm text-sm text-[var(--color-text-tertiary)]">
+            <div className="pr-inline-md">
+              <div className="flex items-center gap-inline-xs font-semibold text-ink">
+                <Sparkles className="h-4 w-4 fill-current" aria-hidden="true" />
+                {formatScore(item.score)}
+              </div>
+              <div className="mt-1 text-xs">score</div>
+            </div>
+            <div className="border-l border-[var(--color-border-subtle)] px-inline-md">
+              <div className="font-semibold text-ink">{readTime}</div>
+              <div className="mt-1 text-xs">duration</div>
+            </div>
+            <div className="border-l border-[var(--color-border-subtle)] pl-inline-md">
+              <div className="font-semibold text-ink">{titleCase(item.type)}</div>
+              <div className="mt-1 text-xs">type</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-stack-md flex flex-col gap-stack-sm sm:flex-row sm:items-end sm:justify-between sm:pr-44">
+          <div className="flex min-w-0 flex-wrap items-center gap-inline-sm">
+            {keywords.map((keyword) => (
+              <span
+                key={keyword}
+                className="rounded-full bg-white/70 px-inset-sm py-1 text-xs font-semibold text-[var(--color-text-secondary)] shadow-[0_8px_24px_rgba(15,23,42,0.08)] ring-1 ring-black/5 backdrop-blur"
+              >
+                {keyword}
+              </span>
+            ))}
+            {duration && (
+              <span className="inline-flex items-center gap-inline-xs rounded-full bg-white/70 px-inset-sm py-1 text-xs font-semibold text-[var(--color-text-secondary)] shadow-[0_8px_24px_rgba(15,23,42,0.08)] ring-1 ring-black/5 backdrop-blur">
+                <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                {duration}
+              </span>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  );
 
-  return (
-    <Card className="group relative bg-[var(--color-bg-card)]">
+      <div className="relative z-20 flex justify-end px-inset-md pb-inset-md sm:absolute sm:bottom-inset-lg sm:right-inset-lg sm:px-0 sm:pb-0">
+        {onClick ? (
+          <Button
+            type="button"
+            variant="secondary"
+            size="md"
+            iconLeft={Sparkles}
+            className="shrink-0 rounded-full border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] px-inset-xl text-ink shadow-[0_18px_45px_rgba(56,189,248,0.18),0_0_28px_rgba(167,139,250,0.18)] hover:bg-[linear-gradient(rgba(255,255,255,0.92),rgba(255,255,255,0.92))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box]"
+            onClick={(event) => {
+              event.stopPropagation();
+              onClick(item.id);
+            }}
+          >
+            {t('card.openSummary')}
+          </Button>
+        ) : (
+          <Link
+            to={detailTarget}
+            className="inline-flex h-[var(--button-height-md)] shrink-0 items-center justify-center gap-inline-sm rounded-full border border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] px-inset-xl text-[length:var(--button-font-size-md)] font-semibold text-ink no-underline shadow-[0_18px_45px_rgba(56,189,248,0.18),0_0_28px_rgba(167,139,250,0.18)] transition-all hover:bg-[linear-gradient(rgba(255,255,255,0.92),rgba(255,255,255,0.92))_padding-box,linear-gradient(110deg,#34d399,#38bdf8,#a78bfa,#f472b6,#facc15)_border-box] active:scale-[0.98]"
+            onClick={stopCardClick}
+          >
+            <Sparkles className="h-4 w-4 text-[#7c3aed]" aria-hidden="true" />
+            {t('card.openSummary')}
+          </Link>
+        )}
+      </div>
+
       <div className="absolute right-inset-md top-inset-md z-10 flex items-center gap-inline-xs sm:right-inset-lg sm:top-inset-lg">
+        {onSave && (
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            loading={saving}
+            onClick={(event) => {
+              event.stopPropagation();
+              onSave(item.id);
+            }}
+            aria-label={t('keep.button')}
+            className="h-11 min-h-11 w-11 min-w-11 rounded-full border border-white/45 bg-white/55 p-0 text-ink shadow-[0_16px_40px_rgba(15,23,42,0.16)] backdrop-blur-xl hover:bg-white/70"
+          >
+            <Bookmark className="h-4 w-4" aria-hidden="true" />
+            <span className="sr-only">{t('keep.button')}</span>
+          </Button>
+        )}
         <a
           href={item.video.youtubeUrl}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-[var(--control-size-sm)] w-[var(--control-size-sm)] items-center justify-center rounded-full text-[var(--color-text-tertiary)] transition-colors hover:bg-[var(--color-bg-hover)] hover:text-[var(--color-text-primary)]"
+          className="inline-flex h-11 min-h-11 w-11 min-w-11 items-center justify-center rounded-full border border-white/45 bg-white/55 text-ink shadow-[0_16px_40px_rgba(15,23,42,0.16)] backdrop-blur-xl transition-colors hover:bg-white/70"
           aria-label={t('feed.openVideo')}
+          onClick={stopCardClick}
         >
-          <MoreHorizontal className="h-4 w-4" />
+          <ExternalLink className="h-4 w-4" aria-hidden="true" />
         </a>
       </div>
 
-      {onClick ? (
+      {onRemove && (
         <div
-          className="block cursor-pointer text-inherit no-underline"
-          onClick={() => onClick(item.id)}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') onClick(item.id);
-          }}
+          className="absolute bottom-inset-md left-inset-md z-10 sm:bottom-inset-lg sm:left-inset-lg"
+          onClick={stopCardClick}
         >
-          {content}
-        </div>
-      ) : (
-        <Link
-          to={to ?? `/feed/${extractVideoId(item.video.youtubeUrl)}`}
-          className="block text-inherit no-underline"
-        >
-          {content}
-        </Link>
-      )}
-
-      <div className="absolute bottom-inset-md right-inset-md z-10 flex items-center gap-inline-xs sm:bottom-inset-lg sm:right-inset-lg">
-        {onRemove && (
           <IconButton
             icon={Trash2}
             ariaLabel={t('card.remove')}
@@ -137,21 +229,36 @@ function FeedCardComponent({ item, to, onClick, onRemove, onSave, saving = false
             size="sm"
             onClick={() => onRemove(item.id)}
           />
-        )}
-        {onSave && (
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            iconLeft={Bookmark}
-            loading={saving}
-            onClick={() => onSave(item.id)}
-            aria-label={t('keep.button')}
+        </div>
+      )}
+    </div>
+  );
+
+  return (
+    <Card className="relative rounded-card border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] shadow-[0_24px_80px_rgba(15,23,42,0.10)]">
+      {onClick ? (
+        <div
+          className="block cursor-pointer text-inherit no-underline"
+          onClick={handleOpen}
+          role="button"
+          aria-label={`${t('card.openSummary')}: ${videoTitle}`}
+          tabIndex={0}
+          onKeyDown={handleOpenKeyDown}
+        >
+          {content}
+        </div>
+      ) : (
+        <div className="text-inherit no-underline">
+          {content}
+          <Link
+            to={detailTarget}
+            className="absolute inset-0 z-[2]"
+            aria-label={`${t('card.openSummary')}: ${videoTitle}`}
           >
-            <span className="sr-only">{t('keep.button')}</span>
-          </Button>
-        )}
-      </div>
+            <span className="sr-only">{t('card.openSummary')}</span>
+          </Link>
+        </div>
+      )}
     </Card>
   );
 }

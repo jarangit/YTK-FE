@@ -53,7 +53,7 @@
   --font-size-editorial-title: 30px;
   --line-height-editorial-title: 42px;
   --content-read-width: 720px;
-  --card-radius: var(--radius-lg);
+  --card-radius: 28px;
   --card-shadow: var(--shadow-soft);
   --card-hover-shadow: var(--shadow-elevated);
 }
