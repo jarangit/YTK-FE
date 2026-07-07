@@ -113,7 +113,7 @@ describe('ResultContent', () => {
     expect(screen.getByText('One small framing change can improve your next interview.')).toBeInTheDocument();
   });
 
-  it('shows takeaways in the takeaways area', () => {
+  it('renders career inference section', () => {
     render(
       <ResultContent
         video={video}
@@ -123,26 +123,8 @@ describe('ResultContent', () => {
       />,
     );
 
-    expect(screen.getAllByText('Takeaways').length).toBeGreaterThan(0);
-    expect(screen.getByText('Takeaway one')).toBeInTheDocument();
-    expect(screen.getByText('Takeaway two')).toBeInTheDocument();
-  });
-
-  it('renders important points and original context directly on the page', () => {
-    render(
-      <ResultContent
-        video={video}
-        onKeep={() => {}}
-        onRemove={() => {}}
-        initiallyKept={false}
-      />,
-    );
-
-    expect(screen.getAllByText('Key Insights').length).toBeGreaterThan(0);
-    expect(screen.getByText('Insight one')).toBeInTheDocument();
-    expect(screen.getByText('Why it matters')).toBeInTheDocument();
-    expect(screen.getByText('keyword')).toBeInTheDocument();
-    expect(screen.getByText('Jane Doe')).toBeInTheDocument();
+    expect(screen.getAllByText('For this career path').length).toBeGreaterThan(0);
+    expect(screen.getByText('Product manager')).toBeInTheDocument();
   });
 
   it('renders and expands the transcript', async () => {

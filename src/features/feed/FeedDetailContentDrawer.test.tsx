@@ -125,9 +125,7 @@ describe('FeedDetailContent', () => {
     );
 
     expect(useVideoAnalysisQueryMock).toHaveBeenCalledWith('analysis-1');
-    expect(screen.getByText('Takeaways')).toBeInTheDocument();
-    expect(screen.getByText('Key Insights')).toBeInTheDocument();
-    expect(screen.getByText('keyword')).toBeInTheDocument();
+    expect(screen.getByText('First section')).toBeInTheDocument();
     expect(screen.queryByText('Full transcript')).not.toBeInTheDocument();
   });
 

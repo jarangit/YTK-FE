@@ -268,18 +268,10 @@ const en = {
     subtitle: 'The ideas most worth remembering after this video.',
   },
   careerInference: {
-    title: 'Career inference',
-    subtitle: 'A product-level guess about who this video may be most relevant for. Treat it as a signal, not a fact.',
-    confidence: 'Confidence',
-    likelyRoles: 'Likely roles',
-    reasoning: 'Why this was inferred',
-    recommendedTopics: 'Recommended topics',
-    personalizedAdvice: 'Suggested next steps',
-    level: {
-      low: 'Low',
-      medium: 'Medium',
-      high: 'High',
-    },
+    title: 'For this career path',
+    subtitle: 'This content is especially useful for people working in or interested in these fields.',
+    likelyRoles: 'Related career paths',
+    personalizedAdvice: 'Recommendations for you',
   },
   engagementQuestions: {
     title: 'Engagement questions',
