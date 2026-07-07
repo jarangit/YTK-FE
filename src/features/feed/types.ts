@@ -17,7 +17,7 @@ export interface FeedItem {
     id: string;
     language: string;
     status: FeedAnalysisStatus;
-    summary?: string;
+    overview: string;
     createdAt: string;
   };
   video: {
@@ -27,8 +27,10 @@ export interface FeedItem {
     title: string | null;
     thumbnail: string | null;
     channelName: string | null;
+    channelId: string;
+    channelLogo: string | null;
     duration: number | null;
-    publishedAt: string | null;
+    publishedAt?: string | null;
   };
 }
 

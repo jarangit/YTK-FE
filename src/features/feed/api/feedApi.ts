@@ -45,7 +45,7 @@ function filterFeed(items: FeedItem[], params: ListFeedParams = {}) {
     item.keywords.includes(normalizedKeyword) ||
     item.title.includes(normalizedKeyword) ||
     item.body.includes(normalizedKeyword) ||
-    (item.analysis.summary ?? '').includes(normalizedKeyword) ||
+    (item.analysis.overview ?? '').includes(normalizedKeyword) ||
     metadataText(item.metadata).includes(normalizedKeyword) ||
     (item.video.title ?? '').includes(normalizedKeyword) ||
     (item.video.channelName ?? '').includes(normalizedKeyword),

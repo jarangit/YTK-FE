@@ -26,7 +26,7 @@ export function toVideoAnalysis(item: FeedItem): VideoAnalysis {
   const howToApply = metadataString(item, 'howToApply');
   const whyImportant = metadataString(item, 'whyImportant');
   const summary: AnalysisSummary = {
-    summary: item.analysis.summary ?? item.body,
+    summary: item.analysis.overview ?? item.body,
     oneLineSummary: item.body,
     detailedExplanation: [],
     importantDetails: whyImportant ? [whyImportant] : [],

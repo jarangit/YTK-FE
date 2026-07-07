@@ -72,8 +72,8 @@ function FeedCardComponent({
   const isStacked = layout === "stacked";
   const insight = metadataString(item, "insight") || item.body;
   const description =
-    item.analysis.summary && item.analysis.summary !== insight
-      ? item.analysis.summary
+    item.analysis.overview && item.analysis.overview !== insight
+      ? item.analysis.overview
       : item.body;
   const videoTitle = item.video.title ?? "YouTube analysis";
   const channelName = item.video.channelName ?? "Unknown channel";
@@ -148,8 +148,16 @@ function FeedCardComponent({
       >
         <div>
           <div className="mb-stack-sm flex items-center gap-inline-md">
-            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/10 text-base font-semibold text-white shadow-[0_14px_32px_rgba(0,0,0,0.28)] ring-4 ring-black/80">
-              {channelName.charAt(0).toUpperCase()}
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white/10 text-base font-semibold text-white shadow-[0_14px_32px_rgba(0,0,0,0.28)] ring-4 ring-black/80">
+              {item.video.channelLogo ? (
+                <img
+                  src={item.video.channelLogo}
+                  alt={channelName}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                channelName.charAt(0).toUpperCase()
+              )}
             </div>
             <div className="min-w-0">
               <h3 className="truncate font-display text-xl font-semibold leading-tight text-white">

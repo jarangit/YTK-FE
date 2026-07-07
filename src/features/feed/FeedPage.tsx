@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { RefreshCw } from 'lucide-react';
 import FeedCard from './FeedCard';
 import FeedDetailContent from './FeedDetailContent';
@@ -11,12 +12,15 @@ import { useSaveFeedItemMutation } from './hooks/useSaveFeedItemMutation';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { clearSelectedFeedItem, selectFeedItem, setFeedQuery } from './state/feedSlice';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
+import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 
 export default function FeedPage() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const query = useAppSelector((state) => state.feed.query);
   const selectedItemId = useAppSelector((state) => state.feed.selectedItemId);
+  const isMobile = useMediaQuery('(max-width: 639px)');
   const [debouncedQuery, setDebouncedQuery] = useState(query);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const {
@@ -75,8 +79,12 @@ export default function FeedPage() {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const handleCardClick = useCallback((id: string) => {
-    dispatch(selectFeedItem(id));
-  }, [dispatch]);
+    if (isMobile) {
+      navigate(`/feed/${id}`);
+    } else {
+      dispatch(selectFeedItem(id));
+    }
+  }, [dispatch, isMobile, navigate]);
 
   const closeDrawer = useCallback(() => {
     dispatch(clearSelectedFeedItem());

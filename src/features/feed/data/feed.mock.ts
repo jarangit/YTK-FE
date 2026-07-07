@@ -70,7 +70,7 @@ export const feedMock: FeedItem[] = Array.from({ length: 24 }, (_, index) => {
       id: `analysis-${index + 1}`,
       language: 'th',
       status: 'COMPLETED',
-      summary: index % 5 === 0 ? undefined : source.summary,
+      overview: index % 5 === 0 ? '' : source.summary,
       createdAt,
     },
     video: {
@@ -80,6 +80,8 @@ export const feedMock: FeedItem[] = Array.from({ length: 24 }, (_, index) => {
       title: index % 3 === 0 ? null : `Demo video ${index + 1}`,
       thumbnail: null,
       channelName: index % 4 === 0 ? null : 'Youtive Demo',
+      channelId: 'UC_demo_channel',
+      channelLogo: index % 6 === 0 ? null : 'https://yt3.ggpht.com/demo-logo',
       duration: index % 2 === 0 ? null : 420 + index * 31,
       publishedAt: index % 5 === 0 ? null : '2026-06-01T08:00:00.000Z',
     },
