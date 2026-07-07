@@ -9,6 +9,8 @@ import Toast from '../../shared/components/molecules/Toast';
 
 interface TranscriptSectionProps {
   transcript: TranscriptSegment[];
+  transcriptEn?: TranscriptSegment[];
+  transcriptTh?: TranscriptSegment[];
 }
 
 type CopyStatus = 'idle' | 'withTime' | 'withoutTime' | 'error';
@@ -28,13 +30,26 @@ function formatTranscriptTime(totalSeconds: number): string {
   return [minutes, seconds].map((value) => String(value).padStart(2, '0')).join(':');
 }
 
-export default function TranscriptSection({ transcript }: TranscriptSectionProps) {
+export default function TranscriptSection({
+  transcript,
+  transcriptEn,
+  transcriptTh,
+}: TranscriptSectionProps) {
   const { t } = useTranslation();
   const [sectionOpen, setSectionOpen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle');
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const visibleTranscript = expanded ? transcript : transcript.slice(0, PREVIEW_SEGMENT_COUNT);
+
+  const hasEn = transcriptEn && transcriptEn.length > 0;
+  const hasTh = transcriptTh && transcriptTh.length > 0;
+  const isBilingual = hasEn && hasTh;
+
+  const displayTranscript = isBilingual
+    ? transcriptEn!.slice(0, Math.min(transcriptEn!.length, transcriptTh!.length))
+    : transcript;
+
+  const visibleTranscript = expanded ? displayTranscript : displayTranscript.slice(0, PREVIEW_SEGMENT_COUNT);
 
   useEffect(() => () => {
     if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -47,11 +62,23 @@ export default function TranscriptSection({ transcript }: TranscriptSectionProps
   };
 
   const copyTranscript = async (includeTimestamps: boolean) => {
-    const content = transcript
-      .map((segment) => includeTimestamps
-        ? `[${formatTranscriptTime(segment.startSeconds)}] ${segment.text}`
-        : segment.text)
-      .join('\n');
+    let content: string;
+
+    if (isBilingual) {
+      const en = transcriptEn!;
+      const th = transcriptTh!;
+      const count = Math.min(en.length, th.length);
+      content = Array.from({ length: count }, (_, i) => {
+        const prefix = includeTimestamps ? `[${formatTranscriptTime(en[i].startSeconds)}] ` : '';
+        return `${prefix}${en[i].text}\n${prefix}${th[i].text}`;
+      }).join('\n');
+    } else {
+      content = transcript
+        .map((segment) => includeTimestamps
+          ? `[${formatTranscriptTime(segment.startSeconds)}] ${segment.text}`
+          : segment.text)
+        .join('\n');
+    }
 
     try {
       await navigator.clipboard.writeText(content);
@@ -89,7 +116,7 @@ export default function TranscriptSection({ transcript }: TranscriptSectionProps
             />
           </button>
 
-          {sectionOpen && transcript.length > 0 && (
+          {sectionOpen && displayTranscript.length > 0 && (
             <DropdownMenu
               label={t('transcript.copy')}
               icon={Copy}
@@ -119,25 +146,59 @@ export default function TranscriptSection({ transcript }: TranscriptSectionProps
         >
           <div className="min-h-0 overflow-hidden">
             <div className="border-t border-border/50 px-inset-md pb-inset-md pt-inset-md sm:px-inset-lg sm:pb-inset-lg">
-              {transcript.length === 0 ? (
+              {displayTranscript.length === 0 ? (
                 <p className="rounded-card bg-surface p-inset-md text-sm text-ink-muted">
                   {t('transcript.empty')}
                 </p>
               ) : (
                 <>
                   <ol className="divide-y divide-border/60">
-                    {visibleTranscript.map((segment, index) => (
-                      <li key={`${segment.startSeconds}-${index}`} className="grid grid-cols-[72px_1fr] gap-inline-md py-stack-md first:pt-0 last:pb-0">
-                        <span className="inline-flex items-start gap-inline-xs font-mono text-xs font-semibold text-accent">
-                          <Clock className="mt-px h-3.5 w-3.5 shrink-0" />
-                          {formatTranscriptTime(segment.startSeconds)}
-                        </span>
-                        <p className="text-sm leading-6 text-ink">{segment.text}</p>
-                      </li>
-                    ))}
+                    {isBilingual
+                      ? visibleTranscript.map((segment, index) => {
+                          const thSegment = transcriptTh![index];
+                          return (
+                            <li
+                              key={`${segment.startSeconds}-${index}`}
+                              className="grid grid-cols-[72px_1fr] gap-inline-md py-stack-md first:pt-0 last:pb-0"
+                            >
+                              <span className="inline-flex items-start gap-inline-xs font-mono text-xs font-semibold text-accent">
+                                <Clock className="mt-px h-3.5 w-3.5 shrink-0" />
+                                {formatTranscriptTime(segment.startSeconds)}
+                              </span>
+                              <div className="min-w-0 space-y-stack-xs">
+                                <p className="text-sm leading-6 text-ink">
+                                  <span className="inline-flex items-center justify-center w-7 h-4 rounded bg-accent/10 text-[10px] font-semibold text-accent mr-inline-xs shrink-0 align-middle">
+                                    EN
+                                  </span>
+                                  {segment.text}
+                                </p>
+                                {thSegment && (
+                                  <p className="text-sm leading-6 text-ink">
+                                    <span className="inline-flex items-center justify-center w-7 h-4 rounded bg-amber-100 text-[10px] font-semibold text-amber-700 mr-inline-xs shrink-0 align-middle">
+                                      TH
+                                    </span>
+                                    {thSegment.text}
+                                  </p>
+                                )}
+                              </div>
+                            </li>
+                          );
+                        })
+                      : visibleTranscript.map((segment, index) => (
+                          <li
+                            key={`${segment.startSeconds}-${index}`}
+                            className="grid grid-cols-[72px_1fr] gap-inline-md py-stack-md first:pt-0 last:pb-0"
+                          >
+                            <span className="inline-flex items-start gap-inline-xs font-mono text-xs font-semibold text-accent">
+                              <Clock className="mt-px h-3.5 w-3.5 shrink-0" />
+                              {formatTranscriptTime(segment.startSeconds)}
+                            </span>
+                            <p className="text-sm leading-6 text-ink">{segment.text}</p>
+                          </li>
+                        ))}
                   </ol>
 
-                  {transcript.length > PREVIEW_SEGMENT_COUNT && (
+                  {displayTranscript.length > PREVIEW_SEGMENT_COUNT && (
                     <Button
                       variant="ghost"
                       size="sm"
@@ -146,7 +207,7 @@ export default function TranscriptSection({ transcript }: TranscriptSectionProps
                       className="mt-stack-lg"
                       aria-expanded={expanded}
                     >
-                      {expanded ? t('transcript.collapse') : t('transcript.expand', { count: transcript.length })}
+                      {expanded ? t('transcript.collapse') : t('transcript.expand', { count: displayTranscript.length })}
                     </Button>
                   )}
                 </>

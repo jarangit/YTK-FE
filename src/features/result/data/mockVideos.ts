@@ -121,6 +121,16 @@ export const mockVideos: VideoAnalysis[] = [
       { startSeconds: 176, endSeconds: 214, text: 'If you need more time to think, use a natural filler like well or let me think.' },
       { startSeconds: 214, endSeconds: 252, text: 'Practice each sentence out loud three times. Repetition will help the words feel natural when you speak.' },
     ],
+    transcriptTh: [
+      { startSeconds: 0, endSeconds: 18, text: 'ยินดีต้อนรับกลับ วันนี้เราจะมาฝึกภาษาอังกฤษง่ายๆ สำหรับพูดถึงกิจวัตรประจำวันของคุณ' },
+      { startSeconds: 18, endSeconds: 42, text: 'คุณไม่จำเป็นต้องใช้ไวยากรณ์ยากๆ แค่มีรูปประโยคที่มีประโยชน์สองสามแบบที่ใช้ซ้ำได้ทุกวัน' },
+      { startSeconds: 42, endSeconds: 71, text: 'มาเริ่มกันที่ตอนเช้า คุณสามารถพูดว่า: ฉันตื่นนอนตอนเจ็ดโมง ฉันกินอาหารเช้า และฉันไปทำงาน' },
+      { startSeconds: 71, endSeconds: 104, text: 'สังเกตว่าเราใช้ present simple เพราะการกระทำเหล่านี้เป็นส่วนหนึ่งของกิจวัตรประจำวัน' },
+      { startSeconds: 104, endSeconds: 139, text: 'เมื่อมีคนถามว่าวันนี้เป็นอย่างไร ให้เริ่มด้วยคำตอบสั้นๆ เช่น วันนี้ยุ่งแต่ดี' },
+      { startSeconds: 139, endSeconds: 176, text: 'แล้วเพิ่มรายละเอียดหนึ่งอย่าง เช่น ฉันมีประชุมตอนเช้าและเลิกงานตอนหกโมง' },
+      { startSeconds: 176, endSeconds: 214, text: 'ถ้าคุณต้องการเวลาคิดมากขึ้น ให้ใช้คำเชื่อมธรรมชาติเช่น อือ หรือ ขอคิดก่อนนะ' },
+      { startSeconds: 214, endSeconds: 252, text: 'ฝึกพูดแต่ละประโยคออกเสียงดังๆ สามครั้ง การทำซ้ำจะช่วยให้คำพูดรู้สึกเป็นธรรมชาติเวลาคุณพูด' },
+    ],
   },
   {
     id: 'product-discovery',
@@ -218,6 +228,14 @@ export const mockVideos: VideoAnalysis[] = [
       { startSeconds: 94, endSeconds: 131, text: 'Look for workarounds. When people build spreadsheets or manual processes, they are showing you where the product is missing value.' },
       { startSeconds: 131, endSeconds: 169, text: 'Use the five whys to move from the visible symptom toward the root cause.' },
       { startSeconds: 169, endSeconds: 207, text: 'Finally, compare problems by frequency, impact, and the number of customers who experience them.' },
+    ],
+    transcriptTh: [
+      { startSeconds: 0, endSeconds: 26, text: 'การค้นพบผลิตภัณฑ์เริ่มต้นที่ปัญหาของลูกค้า ไม่ใช่ฟีเจอร์ที่ทีมของคุณอยากสร้าง' },
+      { startSeconds: 26, endSeconds: 58, text: 'คำขอฟีเจอร์เป็นหลักฐานที่มีประโยชน์ แต่ยังไม่ใช่คำอธิบายที่ชัดเจนของความต้องการที่แท้จริง' },
+      { startSeconds: 58, endSeconds: 94, text: 'ถามว่าเกิดอะไรขึ้นครั้งสุดท้ายที่ลูกค้าประสบปัญหา เรื่องจริงน่าเชื่อถือกว่าคำตอบสมมติ' },
+      { startSeconds: 94, endSeconds: 131, text: 'มองหาวิธีแก้ปัญหาเฉพาะหน้า เมื่อคนสร้างสเปรดชีตหรือกระบวนการ manual นั่นคือการบอกว่าผลิตภัณฑ์ขาดคุณค่าตรงไหน' },
+      { startSeconds: 131, endSeconds: 169, text: 'ใช้ five whys เพื่อย้ายจากอาการที่เห็นไปสู่สาเหตุที่แท้จริง' },
+      { startSeconds: 169, endSeconds: 207, text: 'สุดท้าย เปรียบเทียบปัญหาด้วยความถี่ ผลกระทบ และจำนวนลูกค้าที่ประสบปัญหา' },
     ],
   },
   {
@@ -318,6 +336,15 @@ export const mockVideos: VideoAnalysis[] = [
       { startSeconds: 128, endSeconds: 166, text: 'Server data should be treated differently from local UI state because it has caching, loading, and synchronization concerns.' },
       { startSeconds: 166, endSeconds: 205, text: 'Choose a global state library only after the application has a real coordination problem that local state cannot solve cleanly.' },
       { startSeconds: 3661, endSeconds: 3694, text: 'For long recordings, timestamps continue to include the hour so copied transcripts remain easy to navigate.' },
+    ],
+    transcriptTh: [
+      { startSeconds: 0, endSeconds: 24, text: 'กฎที่ง่ายที่สุดสำหรับ React state คือเก็บไว้ใกล้กับ component ที่ใช้งานมัน' },
+      { startSeconds: 24, endSeconds: 55, text: 'เริ่มต้นด้วย useState ย้าย state ขึ้นไปข้างบนเมื่อสอง component หรือมากกว่าต้องการค่าเดียวกัน' },
+      { startSeconds: 55, endSeconds: 91, text: 'การส่ง props ผ่านสองสามระดับไม่ใช่ปัญหาโดยอัตโนมัติ Composition มักจะทำให้โค้ดยังคงชัดเจน' },
+      { startSeconds: 91, endSeconds: 128, text: 'Context มีประโยชน์สำหรับค่าอย่าง authentication หรือ theme ที่หลายส่วนของแอปต้องการ' },
+      { startSeconds: 128, endSeconds: 166, text: 'ข้อมูลจาก server ควรรักษาแตกต่างจาก local UI state เพราะมี concerns เรื่อง caching, loading และ synchronization' },
+      { startSeconds: 166, endSeconds: 205, text: 'เลือกใช้ global state library ต่อเมื่อแอปพลิเคชันมีปัญหา coordination จริงๆ ที่ local state แก้ไม่ได้อย่างสะอาด' },
+      { startSeconds: 3661, endSeconds: 3694, text: 'สำหรับการบันทึกที่ยาว timestamps จะรวมชั่วโมงเพื่อให้การคัดลอก transcript ยังคงง่ายต่อการนำทาง' },
     ],
   },
 ];

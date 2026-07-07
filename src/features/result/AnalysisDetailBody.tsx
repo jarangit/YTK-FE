@@ -40,7 +40,11 @@ export default function AnalysisDetailBody({
       <EngagementQuestionsSection questions={engagementQuestions} />
       <KeywordsSection context={video.originalContext} />
       {(!hideEmptySections || hasTranscript) && (
-        <TranscriptSection transcript={video.transcript} />
+        <TranscriptSection
+          transcript={video.transcript}
+          transcriptEn={video.transcriptEn}
+          transcriptTh={video.transcriptTh}
+        />
       )}
     </div>
   );

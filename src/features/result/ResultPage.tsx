@@ -24,6 +24,8 @@ export default function ResultPage() {
   const video = data?.video ?? null;
   const status = data?.status;
   const transcript = data?.transcript ?? [];
+  const transcriptEn = data?.transcriptEn;
+  const transcriptTh = data?.transcriptTh;
   const failureMessage = data?.failureMessage;
   const youtubeUrl = data?.youtubeUrl;
 
@@ -97,7 +99,11 @@ export default function ResultPage() {
           </Card>
 
           {transcript.length > 0 && (
-            <TranscriptSection transcript={transcript} />
+            <TranscriptSection
+              transcript={transcript}
+              transcriptEn={transcriptEn}
+              transcriptTh={transcriptTh}
+            />
           )}
         </div>
       </main>

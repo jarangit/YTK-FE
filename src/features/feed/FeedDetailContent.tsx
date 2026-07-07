@@ -45,6 +45,8 @@ export default function FeedDetailContent({
   const video = data?.video ?? null;
   const status = data?.status;
   const transcript = data?.transcript ?? [];
+  const transcriptEn = data?.transcriptEn;
+  const transcriptTh = data?.transcriptTh;
   const failureMessage = data?.failureMessage;
   const youtubeUrl = data?.youtubeUrl ?? item.video.youtubeUrl;
   const isWaiting = isLoading || status === 'PENDING' || status === 'PROCESSING';
@@ -114,7 +116,11 @@ export default function FeedDetailContent({
           </Card>
 
           {transcript.length > 0 && (
-            <TranscriptSection transcript={transcript} />
+            <TranscriptSection
+              transcript={transcript}
+              transcriptEn={transcriptEn}
+              transcriptTh={transcriptTh}
+            />
           )}
         </div>
       )}

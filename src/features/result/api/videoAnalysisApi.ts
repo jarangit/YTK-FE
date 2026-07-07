@@ -103,6 +103,8 @@ export interface VideoAnalysisResult {
   status: BackendAnalysisStatus;
   video: VideoAnalysis | null;
   transcript: TranscriptSegment[];
+  transcriptEn?: TranscriptSegment[];
+  transcriptTh?: TranscriptSegment[];
   failureCode?: string;
   failureMessage?: string;
   youtubeUrl?: string;
@@ -310,6 +312,25 @@ function extractTranscriptByLanguage(
   return Array.isArray(preferred) ? preferred : Array.isArray(fallback) ? fallback : [];
 }
 
+function extractDualTranscripts(
+  transcript: BackendVideoAnalysisResponse['transcript'],
+): { en: TranscriptSegment[]; th: TranscriptSegment[] } {
+  const result = { en: [] as TranscriptSegment[], th: [] as TranscriptSegment[] };
+
+  if (!transcript || typeof transcript !== 'object' || Array.isArray(transcript)) {
+    return result;
+  }
+
+  if (Array.isArray(transcript.en)) {
+    result.en = transcript.en.map(normalizeTranscriptSegment).filter((s) => s.text.length > 0);
+  }
+  if (Array.isArray(transcript.th)) {
+    result.th = transcript.th.map(normalizeTranscriptSegment).filter((s) => s.text.length > 0);
+  }
+
+  return result;
+}
+
 function normalizeTranscriptSegment(segment: BackendTranscriptSegment): TranscriptSegment {
   return {
     startSeconds: parseClockTimeToSeconds(segment.startTime) || ((segment.minute ?? 0) * 60),
@@ -334,11 +355,14 @@ export function normalizeVideoResponse(payload: BackendVideoAnalysisResponse): V
   const transcript = extractTranscriptByLanguage(payload.transcript, language)
     .map(normalizeTranscriptSegment)
     .filter((segment) => segment.text.length > 0);
+  const dualTranscripts = extractDualTranscripts(payload.transcript);
 
   return {
     id: payload.id,
     analysisId,
     language,
+    transcriptEn: dualTranscripts.en.length > 0 ? dualTranscripts.en : undefined,
+    transcriptTh: dualTranscripts.th.length > 0 ? dualTranscripts.th : undefined,
     videoId: payload.youtubeVideoId,
     title,
     youtubeUrl: payload.youtubeUrl,
@@ -407,6 +431,8 @@ export async function getVideoAnalysisResult(analysisId: string): Promise<VideoA
       status: 'COMPLETED',
       video: mockVideo,
       transcript: mockVideo.transcript,
+      transcriptEn: mockVideo.transcriptEn,
+      transcriptTh: mockVideo.transcriptTh,
       language: mockVideo.language,
     };
   }
@@ -417,6 +443,7 @@ export async function getVideoAnalysisResult(analysisId: string): Promise<VideoA
   const transcript = extractTranscriptByLanguage(payload.transcript, language)
     .map(normalizeTranscriptSegment)
     .filter((segment) => segment.text.length > 0);
+  const dualTranscripts = extractDualTranscripts(payload.transcript);
   const normalizedVideo = hasRenderableVideoData(payload) || payload.status === 'COMPLETED'
     ? normalizeVideoResponse(payload)
     : null;
@@ -431,6 +458,8 @@ export async function getVideoAnalysisResult(analysisId: string): Promise<VideoA
     status: analysisStatus,
     video: normalizedVideo,
     transcript,
+    transcriptEn: dualTranscripts.en.length > 0 ? dualTranscripts.en : undefined,
+    transcriptTh: dualTranscripts.th.length > 0 ? dualTranscripts.th : undefined,
     failureCode,
     failureMessage,
     youtubeUrl: payload.youtubeUrl,

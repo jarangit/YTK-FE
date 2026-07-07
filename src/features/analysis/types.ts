@@ -144,4 +144,6 @@ export interface VideoAnalysis {
   engagementQuestions?: EngagementQuestion[];
   originalContext?: OriginalContext | null;
   transcript: TranscriptSegment[];
+  transcriptEn?: TranscriptSegment[];
+  transcriptTh?: TranscriptSegment[];
 }
