@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RefreshCw } from 'lucide-react';
+import { ArrowRight, RefreshCw, Sparkles } from 'lucide-react';
 import FeedCard from './FeedCard';
 import FeedDetailContent from './FeedDetailContent';
 import Drawer from '../../shared/components/organisms/Drawer';
@@ -11,6 +11,7 @@ import { useFeedQuery } from './hooks/useFeedQuery';
 import { useSaveFeedItemMutation } from './hooks/useSaveFeedItemMutation';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
 import { clearSelectedFeedItem, selectFeedItem, setFeedQuery } from './state/feedSlice';
+import { Link } from 'react-router-dom';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
 import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 
@@ -115,6 +116,27 @@ export default function FeedPage() {
             value={query}
             onChange={handleSearchChange}
           />
+        </div>
+
+        <div className="mb-stack-lg rounded-card border border-accent/20 bg-gradient-to-br from-accent/8 to-accent/3 px-inset-lg py-stack-md">
+          <div className="flex flex-col gap-stack-sm sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-inline-md">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent/15">
+                <Sparkles className="h-4 w-4 text-accent" />
+              </div>
+              <div>
+                <p className="text-[14px] font-semibold text-ink">{t('feed.tryHomeCta')}</p>
+                <p className="mt-0.5 text-[13px] text-ink-muted">{t('feed.tryHomeCtaSub')}</p>
+              </div>
+            </div>
+            <Link
+              to="/"
+              className="inline-flex shrink-0 items-center justify-center gap-inline-sm rounded-full bg-accent px-inset-lg py-stack-sm text-sm font-semibold text-white no-underline shadow-sm transition-all hover:bg-accent-hover hover:shadow-md active:scale-[0.98]"
+            >
+              {t('feed.tryHomeCtaButton')}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
         </div>
 
         <ContentTransition transitionKey={`${debouncedQuery.toLowerCase()}:${contentState}`}>

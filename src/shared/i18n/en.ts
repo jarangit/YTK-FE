@@ -171,6 +171,9 @@ const en = {
     subtitle: 'The link may be old, incorrect, or no longer available.',
   },
   feed: {
+    tryHomeCta: 'Ready to analyze a video?',
+    tryHomeCtaSub: 'Paste a YouTube URL and get instant AI insights',
+    tryHomeCtaButton: 'Try Now',
     eyebrow: 'Community Feed',
     title: 'See what the community has already summarized.',
     subtitle:

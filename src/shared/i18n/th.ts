@@ -170,6 +170,9 @@ const th = {
     subtitle: 'ลิงก์อาจเก่า ไม่ถูกต้อง หรือไม่พร้อมใช้งานแล้ว',
   },
   feed: {
+    tryHomeCta: 'พร้อมวิเคราะห์วิดีโอแล้วหรือยัง?',
+    tryHomeCtaSub: 'วาง URL YouTube แล้วรับ AI insight ทันที',
+    tryHomeCtaButton: 'ลองเลย',
     eyebrow: 'ฟีดจากชุมชน',
     title: 'ดูวิดีโอที่ชุมชนสรุปไว้แล้ว',
     subtitle:
