@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { RefreshCw, Shuffle, Sparkles } from 'lucide-react';
+import { RefreshCw, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../shared/components/atoms/Button';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
@@ -71,28 +71,17 @@ export default function InsightsPage() {
   return (
     <main className="min-h-[calc(100vh-var(--app-header-height))] bg-[var(--color-bg-app)]">
       <section className="mx-auto w-full max-w-[var(--content-max-width)] px-inset-lg pt-stack-xl pb-stack-2xl">
-        <div className="mb-stack-xl grid gap-stack-lg lg:grid-cols-[minmax(0,var(--content-read-width))_1fr] lg:items-end">
+        <div className="mb-stack-lg max-w-read">
           <div>
             <Text as="p" variant="label" color="secondary" className="mb-stack-sm normal-case tracking-[0.08em]">
               {t('insights.eyebrow')}
             </Text>
-            <h1 className="font-display text-3xl font-bold leading-tight tracking-tight text-ink sm:text-5xl md:text-6xl">
+            <h1 className="font-display text-2xl font-bold leading-tight tracking-tight text-ink sm:text-3xl md:text-4xl">
               {t('insights.title')}
             </h1>
-            <Text as="p" variant="body" color="secondary" className="mt-stack-md max-w-read text-[length:var(--font-size-lg)] leading-7">
+            <Text as="p" variant="body" color="secondary" className="mt-stack-sm max-w-read leading-7">
               {t('insights.subtitle')}
             </Text>
-          </div>
-          <div className="rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] p-inset-md shadow-card">
-            <div className="flex items-start gap-inline-md">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
-                <Shuffle className="h-4 w-4" />
-              </div>
-              <div>
-                <Text as="p" variant="caption" className="font-bold">{t('insights.browseHintTitle')}</Text>
-                <Text as="p" variant="caption" color="secondary" className="mt-stack-xs leading-6">{t('insights.browseHintSubtitle')}</Text>
-              </div>
-            </div>
           </div>
         </div>
 
