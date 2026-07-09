@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Bookmark, Library, Menu, Rss, X } from 'lucide-react';
+import { HiHome } from 'react-icons/hi2';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
@@ -128,6 +129,16 @@ export default function AppHeader() {
         )}
       >
         <div className="border-t border-border/60 bg-[color-mix(in_srgb,var(--color-bg-card)_96%,transparent)] backdrop-blur-xl px-inset-lg pb-stack-md pt-stack-sm space-y-stack-xs">
+          {isFeed && (
+            <Link
+              to="/"
+              onClick={closeMenu}
+              className="flex items-center gap-inline-md rounded-[var(--radius-md)] px-inset-md py-stack-sm text-[14px] font-medium no-underline transition-all active:scale-[0.98] cursor-pointer text-ink-muted border-l-2 border-transparent hover:bg-[var(--color-bg-hover)] hover:text-ink"
+            >
+              <HiHome className="h-5 w-5 shrink-0" />
+              {t('nav.home')}
+            </Link>
+          )}
           <Link
             to="/feed"
             onClick={closeMenu}
