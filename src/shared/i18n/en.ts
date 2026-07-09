@@ -61,6 +61,13 @@ const en = {
     feedPreviewMore: 'View more',
     feedPreviewLoading: 'Loading recent summaries...',
     feedPreviewEmpty: 'No summaries are available yet.',
+    insightsPreviewEyebrow: 'Knowledge bites',
+    insightsPreviewTitle: 'Questions worth thinking about',
+    insightsPreviewSubtitle:
+      'Short questions and answers picked from analyzed videos, so you can collect useful ideas before choosing what to watch.',
+    insightsPreviewMore: 'View more',
+    insightsPreviewLoading: 'Loading insight questions...',
+    insightsPreviewEmpty: 'No insight questions are available yet.',
     exampleLoading: 'Loading example analysis',
     exampleErrorTitle: 'The example could not be loaded.',
     exampleErrorDescription: 'Try again to preview the experience before you submit a video.',

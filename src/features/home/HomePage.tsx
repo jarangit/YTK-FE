@@ -7,6 +7,8 @@ import ExampleAnalysisState from './ExampleAnalysisState';
 import { useHomeFeaturedAnalysisQuery } from './hooks/useHomeFeaturedAnalysisQuery';
 import { useFeedQuery } from '../feed/hooks/useFeedQuery';
 import FeedCard from '../feed/FeedCard';
+import InsightsQuestionCard from '../insights/InsightsQuestionCard';
+import { useEngagementQuestionsQuery } from '../insights/hooks/useEngagementQuestionsQuery';
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -20,7 +22,12 @@ export default function HomePage() {
     data: feedPreviewData,
     isLoading: isFeedPreviewLoading,
   } = useFeedQuery('', undefined, 3);
+  const {
+    data: insightsPreviewData,
+    isLoading: isInsightsPreviewLoading,
+  } = useEngagementQuestionsQuery('', 3, true);
   const feedPreviewItems = feedPreviewData?.pages.flatMap((page) => page.items).slice(0, 3) ?? [];
+  const insightsPreviewItems = insightsPreviewData?.pages.flatMap((page) => page.items).slice(0, 3) ?? [];
   const exampleTransitionKey = isExamplePending ? 'loading' : isExampleError ? 'error' : 'success';
 
   return (
@@ -99,6 +106,53 @@ export default function HomePage() {
             ) : (
               <div className="rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] px-inset-lg py-stack-lg text-sm text-[var(--color-text-secondary)]">
                 {t('home.feedPreviewEmpty')}
+              </div>
+            )}
+          </ContentTransition>
+        </div>
+      </section>
+
+      <section className="border-t border-border/50 px-inset-lg pb-16 pt-14 sm:px-8 sm:pb-20 sm:pt-18">
+        <div className="mx-auto max-w-[1120px]">
+          <div className="mb-8 flex flex-col gap-stack-md sm:mb-10 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-faint">
+                {t('home.insightsPreviewEyebrow')}
+              </p>
+              <h2 className="mt-3 font-display text-[24px] font-semibold tracking-[-0.03em] text-ink sm:text-[30px]">
+                {t('home.insightsPreviewTitle')}
+              </h2>
+              <p className="mt-3 max-w-[560px] text-[15px] leading-6 text-ink-muted sm:text-[16px]">
+                {t('home.insightsPreviewSubtitle')}
+              </p>
+            </div>
+
+            <Link
+              to="/insights"
+              className="inline-flex h-[var(--button-height-md)] shrink-0 items-center justify-center gap-inline-xs rounded-full border border-border bg-[var(--color-bg-card)] px-inset-lg text-[length:var(--button-font-size-md)] font-semibold text-ink no-underline transition-colors hover:bg-surface"
+            >
+              {t('home.insightsPreviewMore')}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <ContentTransition transitionKey={isInsightsPreviewLoading ? 'insights-preview-loading' : insightsPreviewItems.map((item) => item.analysisId).join(',')}>
+            {isInsightsPreviewLoading ? (
+              <div className="rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] px-inset-lg py-stack-lg text-sm text-[var(--color-text-secondary)]">
+                {t('home.insightsPreviewLoading')}
+              </div>
+            ) : insightsPreviewItems.length > 0 ? (
+              <div className="grid grid-cols-1 gap-inline-lg lg:grid-cols-3">
+                {insightsPreviewItems.map((item, index) => (
+                  <InsightsQuestionCard
+                    key={`${item.analysisId}:${item.video.id}:${index}`}
+                    item={item}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="rounded-card border border-[var(--color-border-subtle)] bg-[var(--color-bg-card)] px-inset-lg py-stack-lg text-sm text-[var(--color-text-secondary)]">
+                {t('home.insightsPreviewEmpty')}
               </div>
             )}
           </ContentTransition>

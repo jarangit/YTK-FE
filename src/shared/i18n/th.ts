@@ -60,6 +60,13 @@ const th = {
     feedPreviewMore: 'ดูเพิ่มเติม',
     feedPreviewLoading: 'กำลังโหลดสรุปล่าสุด...',
     feedPreviewEmpty: 'ยังไม่มีสรุปในตอนนี้',
+    insightsPreviewEyebrow: 'เกร็ดความรู้',
+    insightsPreviewTitle: 'คำถามที่น่าหยุดคิด',
+    insightsPreviewSubtitle:
+      'คำถามและคำตอบสั้น ๆ ที่คัดจากวิดีโอที่วิเคราะห์แล้ว เพื่อให้คุณเก็บไอเดียก่อนเลือกดูวิดีโอถัดไป',
+    insightsPreviewMore: 'ดูเพิ่มเติม',
+    insightsPreviewLoading: 'กำลังโหลดคำถามอินไซต์...',
+    insightsPreviewEmpty: 'ยังไม่มีคำถามอินไซต์ในตอนนี้',
     exampleLoading: 'กำลังโหลดตัวอย่างการวิเคราะห์',
     exampleErrorTitle: 'ไม่สามารถโหลดตัวอย่างได้',
     exampleErrorDescription: 'ลองอีกครั้งเพื่อดูประสบการณ์ก่อนส่งวิดีโอจริง',
