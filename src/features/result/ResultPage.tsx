@@ -8,7 +8,7 @@ import { useVideoAnalysisQuery } from "./hooks/useVideoAnalysisQuery";
 import ContentTransition from "../../shared/components/atoms/ContentTransition";
 import Card from "../../shared/components/atoms/Card";
 import TranscriptSection from "./TranscriptSection";
-import ResultLoadingSpinner from "./ResultLoadingSpinner";
+import ResultWaitingQuestions from "./ResultWaitingQuestions";
 
 export default function ResultPage() {
   useEffect(() => {
@@ -54,11 +54,7 @@ export default function ResultPage() {
       </main>
     );
   } else if (isWaiting) {
-    content = (
-      <main className="min-h-[calc(100vh-64px)] flex items-center justify-center px-inset-lg">
-        <ResultLoadingSpinner />
-      </main>
-    );
+    content = <ResultWaitingQuestions />;
   } else if (isFailed) {
     content = (
       <main className="min-h-[calc(100vh-64px)] px-inset-lg py-stack-md sm:py-10">

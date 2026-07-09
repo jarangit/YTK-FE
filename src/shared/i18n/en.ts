@@ -220,6 +220,11 @@ const en = {
   result: {
     loading: 'Analyzing your video',
     loadingAnalysis: 'This should only take a moment.',
+    waitingQuestionsEyebrow: 'While the analysis runs',
+    waitingQuestionsTitle: 'This analysis can take a little longer than it should.',
+    waitingQuestionsSubtitle:
+      'We know your time matters. While the API finishes the analysis, we picked a few interesting questions and ideas from other videos for you to read.',
+    waitingQuestionsLoading: 'Picking a few interesting questions for you...',
     error: 'This video could not be analyzed.',
     failed: 'This analysis could not be completed.',
     failedDescription: 'We could not generate the full analysis, but any transcript we captured is still available below.',
