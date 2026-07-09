@@ -6,6 +6,7 @@ import { LIBRARY_ENABLED } from './features/library/CollectionSidebar';
 import HomePage from './features/home/HomePage';
 import FeedPage from './features/feed/FeedPage';
 import FeedDetailPage from './features/feed/FeedDetailPage';
+import InsightsPage from './features/insights/InsightsPage';
 import ResultPage from './features/result/ResultPage';
 import LibraryPage from './features/library/LibraryPage';
 import HistoryPage from './features/history/HistoryPage';
@@ -51,6 +52,7 @@ function AppLayout() {
         <Route path="/terms" element={<StaticPage pageKey="terms" />} />
         <Route path="/feed" element={<FeedPage />} />
         <Route path="/feed/:id" element={<FeedDetailPage />} />
+        <Route path="/insights" element={<InsightsPage />} />
         <Route path="/podcast" element={<PodcastPage />} />
         <Route path="/result" element={<ResultPage />} />
         <Route path="/report" element={<ReportPage />} />

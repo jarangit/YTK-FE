@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Bookmark, Library, Menu, Rss, X } from 'lucide-react';
+import { Bookmark, Lightbulb, Library, Menu, Rss, X } from 'lucide-react';
 import { HiHome } from 'react-icons/hi2';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +12,7 @@ export default function AppHeader() {
   const location = useLocation();
   const navigate = useNavigate();
   const isFeed = location.pathname.startsWith('/feed');
+  const isInsights = location.pathname === '/insights';
   const isLibrary = location.pathname === '/library';
   const { isAuthenticated, openSignInModal, user } = useAuth();
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -75,6 +76,18 @@ export default function AppHeader() {
           >
             <Rss size="var(--app-header-control-icon-size)" />
             <span className="hidden sm:inline">{t('nav.feed')}</span>
+          </Link>
+          <Link
+            to="/insights"
+            className={clsx(
+              'inline-flex h-[var(--app-header-control-height)] items-center gap-[var(--app-header-control-gap)] rounded-full px-[var(--app-header-control-padding-x)] text-[length:var(--app-header-control-font-size)] font-medium no-underline transition-colors',
+              isInsights
+                ? 'bg-surface text-ink'
+                : 'text-ink-muted hover:bg-surface hover:text-ink',
+            )}
+          >
+            <Lightbulb size="var(--app-header-control-icon-size)" />
+            <span className="hidden sm:inline">{t('nav.insights')}</span>
           </Link>
           <Link
             to={isAuthenticated ? '/library' : '/'}
@@ -151,6 +164,19 @@ export default function AppHeader() {
           >
             <Rss className="h-5 w-5 shrink-0" />
             {t('nav.feed')}
+          </Link>
+          <Link
+            to="/insights"
+            onClick={closeMenu}
+            className={clsx(
+              'flex items-center gap-inline-md rounded-[var(--radius-md)] px-inset-md py-stack-sm text-[14px] font-medium no-underline transition-all active:scale-[0.98] cursor-pointer',
+              isInsights
+                ? 'bg-accent-light text-accent border-l-2 border-accent'
+                : 'text-ink-muted border-l-2 border-transparent hover:bg-[var(--color-bg-hover)] hover:text-ink',
+            )}
+          >
+            <Lightbulb className="h-5 w-5 shrink-0" />
+            {t('nav.insights')}
           </Link>
           <Link
             to={isAuthenticated ? '/library' : '/'}
