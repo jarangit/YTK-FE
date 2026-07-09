@@ -57,6 +57,7 @@ describe('InsightsPage', () => {
 
     render(<InsightsPage />);
 
+    expect(useEngagementQuestionsQueryMock).toHaveBeenCalledWith('', 30, true);
     expect(screen.getByText('Question 1')).toBeInTheDocument();
     expect(screen.getByText('Answer 1')).toBeInTheDocument();
     expect(screen.getByText('Video 1')).toBeInTheDocument();

@@ -22,7 +22,7 @@ export default function InsightsPage() {
     fetchNextPage,
     hasNextPage,
     refetch,
-  } = useEngagementQuestionsQuery(debouncedQuery, 10);
+  } = useEngagementQuestionsQuery(debouncedQuery, 30, true);
   const items = useMemo(() => data?.pages.flatMap((page) => page.items) ?? [], [data]);
   const contentState = isLoading
     ? 'loading'
