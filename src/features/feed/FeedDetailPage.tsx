@@ -1,24 +1,15 @@
 import { ArrowLeft } from 'lucide-react';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
 import Text from '../../shared/components/atoms/Text';
 import FeedDetailContent from './FeedDetailContent';
-import { listFeed } from './api/feedApi';
-import { feedKeys } from './hooks/useFeedQuery';
+import { useFeedItemQuery } from './hooks/useFeedItemQuery';
 import { useSaveFeedItemMutation } from './hooks/useSaveFeedItemMutation';
 
 export default function FeedDetailPage() {
   const { id = '' } = useParams();
   const { t } = useTranslation();
-  const { data: item, isLoading } = useQuery({
-    queryKey: feedKeys.detail(id),
-    queryFn: async () => {
-      const page = await listFeed({ limit: 100 });
-      return page.items.find((entry) => entry.id === id) ?? null;
-    },
-    enabled: id.length > 0,
-  });
+  const { data: item, isLoading } = useFeedItemQuery(id);
   const saveFeedItem = useSaveFeedItemMutation();
 
   if (!isLoading && !item) {

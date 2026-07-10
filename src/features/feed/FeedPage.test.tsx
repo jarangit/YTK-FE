@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import '../../shared/i18n';
 import FeedPage from './FeedPage';
@@ -71,6 +72,17 @@ function createFeedItem(id: string): FeedItem {
 describe('FeedPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    });
     useSaveFeedItemMutationMock.mockReturnValue({
       save: vi.fn(),
       isPending: false,
@@ -99,7 +111,9 @@ describe('FeedPage', () => {
 
     const { rerender } = render(
       <Provider store={store}>
-        <FeedPage />
+        <MemoryRouter>
+          <FeedPage />
+        </MemoryRouter>
       </Provider>,
     );
 
@@ -107,7 +121,9 @@ describe('FeedPage', () => {
 
     rerender(
       <Provider store={store}>
-        <FeedPage />
+        <MemoryRouter>
+          <FeedPage />
+        </MemoryRouter>
       </Provider>,
     );
 
