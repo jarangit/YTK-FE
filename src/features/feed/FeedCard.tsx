@@ -8,15 +8,6 @@ import IconButton from "../../shared/components/atoms/IconButton";
 import Card from "../../shared/components/atoms/Card";
 import { Button } from "../../shared/components/atoms/Button";
 
-function extractVideoId(videoUrl: string) {
-  try {
-    const url = new URL(videoUrl);
-    return url.searchParams.get("v") ?? videoUrl;
-  } catch {
-    return videoUrl;
-  }
-}
-
 interface FeedCardProps {
   item: FeedItem;
   to?: string;
@@ -82,7 +73,7 @@ function FeedCardComponent({
     ? `${Math.max(1, Math.ceil(item.video.duration / 60))} min read`
     : `${Math.max(1, Math.ceil(insight.length / 520))} min read`;
   const keywords = item.keywords.slice(0, 3);
-  const detailTarget = to ?? `/feed/${extractVideoId(item.video.youtubeUrl)}`;
+  const detailTarget = to ?? `/result?analysisId=${encodeURIComponent(item.analysis.id)}`;
   const cardBackground = item.video.thumbnail
     ? { backgroundImage: `url(${item.video.thumbnail})` }
     : undefined;

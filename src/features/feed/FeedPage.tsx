@@ -81,11 +81,15 @@ export default function FeedPage() {
 
   const handleCardClick = useCallback((id: string) => {
     if (isMobile) {
-      navigate(`/feed/${id}`);
+      const item = filteredItems.find((entry) => entry.id === id);
+
+      if (item) {
+        navigate(`/result?analysisId=${encodeURIComponent(item.analysis.id)}`);
+      }
     } else {
       dispatch(selectFeedItem(id));
     }
-  }, [dispatch, isMobile, navigate]);
+  }, [dispatch, filteredItems, isMobile, navigate]);
 
   const closeDrawer = useCallback(() => {
     dispatch(clearSelectedFeedItem());

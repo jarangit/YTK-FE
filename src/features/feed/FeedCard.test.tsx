@@ -22,7 +22,7 @@ const item: FeedItem = {
     id: 'analysis-1',
     language: 'en',
     status: 'COMPLETED',
-    summary: 'A practical summary for product discovery.',
+    overview: 'A practical summary for product discovery.',
     createdAt: '2026-06-25T14:38:57.198Z',
   },
   video: {
@@ -61,6 +61,10 @@ describe('FeedCard', () => {
     expect(screen.getByText('Discovery')).toBeInTheDocument();
     expect(screen.queryByText('Extra')).not.toBeInTheDocument();
     expect(screen.getByRole('img', { name: 'Discovery interview patterns' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /open summary: discovery interview patterns/i })).toHaveAttribute(
+      'href',
+      '/result?analysisId=analysis-1',
+    );
   });
 
   it('opens the feed detail from the card and CTA', async () => {
@@ -105,7 +109,7 @@ describe('FeedCard', () => {
             body: 'Fallback body insight',
             analysis: {
               ...item.analysis,
-              summary: undefined,
+              overview: '',
             },
             video: {
               ...item.video,
