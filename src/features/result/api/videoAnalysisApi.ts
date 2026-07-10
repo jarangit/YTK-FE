@@ -41,6 +41,7 @@ interface BackendAnalysisPayload {
   id: string;
   language: string;
   status?: BackendAnalysisStatus;
+   coreMessage?: string | null;
    overview?: string | null;
    timeline?: Array<{
      heading?: string | null;
@@ -178,6 +179,7 @@ function normalizeText(value: unknown) {
 
 function normalizeSummary(analysis?: BackendAnalysisPayload | null): AnalysisSummary {
   const overview = normalizeText(analysis?.overview);
+  const coreMessage = normalizeText(analysis?.coreMessage);
   const keyInsights = normalizeImportantPoints(analysis?.importantPoints).map((item) => ({
     insight: item.point,
     whyImportant: item.whyItMatters,
@@ -194,7 +196,7 @@ function normalizeSummary(analysis?: BackendAnalysisPayload | null): AnalysisSum
 
   return {
     summary: overview,
-    oneLineSummary: overview,
+    oneLineSummary: coreMessage || overview,
     detailedExplanation,
     importantDetails,
     examples: [],

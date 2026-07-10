@@ -267,6 +267,9 @@ const en = {
     showLess: 'Show less',
     overview: 'Overview',
     startHere: 'Start here',
+    summaryOnlyTag: 'Quick summary',
+    summaryOnlyNote: 'This is a condensed overview to help you get started quickly. For full context and detail, we recommend watching the complete video.',
+    coreMessageTitle: 'Short on time? Read this.',
     takeawaysLead: 'The fastest way to retain the practical ideas from this video.',
     keyInsights: 'Key Insights',
     whyImportant: 'Why it matters',
@@ -317,7 +320,7 @@ const en = {
   },
   engagementQuestions: {
     title: 'Engagement questions',
-    subtitle: 'Questions, answers, and hooks that help bring you back into the material.',
+    subtitle: 'Questions and answers that help you revisit the most important ideas.',
     answer: 'Answer',
     whyInteresting: 'Why it stands out',
   },

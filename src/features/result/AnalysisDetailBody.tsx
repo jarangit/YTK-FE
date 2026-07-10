@@ -3,6 +3,7 @@ import OutcomeCard from '../analysis/OutcomeCard';
 import VideoPreviewCard from '../analysis/VideoPreviewCard';
 // import ActionItemsSection from './ActionItemsSection';
 import CareerInferenceSection from './CareerInferenceSection';
+import CoreMessageSection from './CoreMessageSection';
 import EngagementQuestionsSection from './EngagementQuestionsSection';
 // import KeyInsightsSection from './KeyInsightsSection';
 // import KeywordsSection from './KeywordsSection';
@@ -23,14 +24,21 @@ export default function AnalysisDetailBody({
 }: AnalysisDetailBodyProps) {
   const hasTranscript = video.transcript.length > 0;
   const overview = video.overview ?? video.summary.summary;
+  const coreMessageText = video.summary.oneLineSummary !== overview ? video.summary.oneLineSummary : undefined;
   const timeline = video.timeline ?? [];
   const engagementQuestions = video.engagementQuestions ?? [];
 
   return (
     <div className="mx-auto max-w-read space-y-stack-lg sm:space-y-[3.25rem]">
       <VideoPreviewCard video={video} action={action} />
+      {coreMessageText ? (
+        <CoreMessageSection coreMessage={coreMessageText}>
+          <TimelineSection timeline={timeline} embedded />
+        </CoreMessageSection>
+      ) : (
+        <TimelineSection timeline={timeline} />
+      )}
       <OverviewSection overview={overview} />
-      <TimelineSection timeline={timeline} />
       <OutcomeCard outcomes={video.outcomes} />
       {/* <KeyInsightsSection insights={importantPoints} /> */}
       {/* <ActionItemsSection items={takeaways} /> */}

@@ -1,4 +1,4 @@
-import { MessageCircleQuestion, Sparkles } from 'lucide-react';
+import { MessageCircleQuestion } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { EngagementQuestion } from '../analysis/types';
 
@@ -35,12 +35,6 @@ export default function EngagementQuestionsSection({ questions }: EngagementQues
                 <div className="min-w-0 flex-1 space-y-stack-sm">
                   <div>
                     <h3 className="max-w-[38rem] font-display text-[1.1rem] font-semibold leading-7 tracking-[-0.015em] text-ink">{item.question}</h3>
-                    {item.hook && (
-                      <p className="mt-stack-xs inline-flex items-center gap-inline-xs rounded-full border border-accent/20 bg-accent/5 px-3 py-1 text-sm font-medium text-ink">
-                        <Sparkles className="h-3.5 w-3.5" />
-                        {item.hook}
-                      </p>
-                    )}
                   </div>
 
                   {item.answer && (
@@ -49,15 +43,6 @@ export default function EngagementQuestionsSection({ questions }: EngagementQues
                         {t('engagementQuestions.answer')}
                       </p>
                       <p className="mt-stack-xs max-w-[38rem] text-[15px] leading-7 text-ink-muted">{item.answer}</p>
-                    </div>
-                  )}
-
-                  {item.whyInteresting && (
-                    <div>
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-ink-faint">
-                        {t('engagementQuestions.whyInteresting')}
-                      </p>
-                      <p className="mt-stack-xs max-w-[38rem] text-[15px] leading-7 text-ink-muted">{item.whyInteresting}</p>
                     </div>
                   )}
                 </div>

@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
+import { useTranslation } from 'react-i18next';
 
 interface OverviewSectionProps {
   overview?: string;
@@ -20,7 +20,7 @@ export default function OverviewSection({ overview = '' }: OverviewSectionProps)
         <h2 className="mt-stack-sm max-w-[34rem] font-display text-[1.7rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.3rem]">
           {t('summary.overview')}
         </h2>
-        <div className="mt-stack-md max-w-[42rem] border-l-2 border-accent/25 pl-5 sm:pl-6 text-[1.06rem] leading-[1.95] text-ink [&>p]:mb-stack-md [&>p:last-child]:mb-0">
+        <div className="mt-stack-md max-w-[42rem] whitespace-pre-line break-words border-l-2 border-accent/25 pl-5 sm:pl-6 text-[1.06rem] leading-[1.95] text-ink">
           <ReactMarkdown>{normalizedOverview}</ReactMarkdown>
         </div>
       </div>

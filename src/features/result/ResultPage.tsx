@@ -122,13 +122,28 @@ export default function ResultPage() {
     );
   } else {
     content = (
-      <main className="min-h-[calc(100vh-64px)] px-inset-lg py-stack-md sm:py-10">
-        <ResultContent
-          video={video}
-          onKeep={add}
-          onRemove={remove}
-          initiallyKept={check(video.analysisId)}
-        />
+      <main className="min-h-[calc(100vh-64px)]">
+        <section className="border-b border-accent/15 bg-accent/[0.04]">
+          <div className="mx-auto max-w-[var(--app-header-max-width)] px-inset-lg py-3 sm:px-8">
+            <div className="flex flex-col gap-stack-xs sm:flex-row sm:items-center sm:gap-inline-sm">
+              <span className="inline-flex w-fit items-center rounded-full border border-accent/15 bg-accent/5 px-3 py-1 text-xs font-semibold text-accent">
+                {t('summary.summaryOnlyTag')}
+              </span>
+              <p className="text-sm leading-6 text-ink-muted">
+                {t('summary.summaryOnlyNote')}
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <div className="px-inset-lg py-stack-md sm:py-10">
+          <ResultContent
+            video={video}
+            onKeep={add}
+            onRemove={remove}
+            initiallyKept={check(video.analysisId)}
+          />
+        </div>
       </main>
     );
   }
