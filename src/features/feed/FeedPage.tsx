@@ -2,26 +2,21 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, RefreshCw, Sparkles } from 'lucide-react';
 import FeedCard from './FeedCard';
-import FeedDetailContent from './FeedDetailContent';
-import Drawer from '../../shared/components/organisms/Drawer';
 import Text from '../../shared/components/atoms/Text';
 import SearchInput from '../../shared/components/molecules/SearchInput';
 import { useTranslation } from 'react-i18next';
 import { useFeedQuery } from './hooks/useFeedQuery';
 import { useSaveFeedItemMutation } from './hooks/useSaveFeedItemMutation';
 import { useAppDispatch, useAppSelector } from '../../shared/store/hooks';
-import { clearSelectedFeedItem, selectFeedItem, setFeedQuery } from './state/feedSlice';
+import { setFeedQuery } from './state/feedSlice';
 import { Link } from 'react-router-dom';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
-import { useMediaQuery } from '../../shared/hooks/useMediaQuery';
 
 export default function FeedPage() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const query = useAppSelector((state) => state.feed.query);
-  const selectedItemId = useAppSelector((state) => state.feed.selectedItemId);
-  const isMobile = useMediaQuery('(max-width: 639px)');
   const [debouncedQuery, setDebouncedQuery] = useState(query);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const {
@@ -31,15 +26,11 @@ export default function FeedPage() {
     fetchNextPage,
     hasNextPage,
     refetch,
-  } = useFeedQuery(debouncedQuery, undefined, 30);
+  } = useFeedQuery(debouncedQuery, undefined, 20);
   const saveFeedItem = useSaveFeedItemMutation();
   const filteredItems = useMemo(
     () => data?.pages.flatMap((page) => page.items) ?? [],
     [data],
-  );
-  const selectedItem = useMemo(
-    () => filteredItems.find((item) => item.id === selectedItemId) ?? null,
-    [filteredItems, selectedItemId],
   );
   const contentState = isLoading
     ? 'loading'
@@ -80,20 +71,12 @@ export default function FeedPage() {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   const handleCardClick = useCallback((id: string) => {
-    if (isMobile) {
-      const item = filteredItems.find((entry) => entry.id === id);
+    const item = filteredItems.find((entry) => entry.id === id);
 
-      if (item) {
-        navigate(`/result?analysisId=${encodeURIComponent(item.analysis.id)}`);
-      }
-    } else {
-      dispatch(selectFeedItem(id));
+    if (item) {
+      navigate(`/result?analysisId=${encodeURIComponent(item.analysis.id)}`);
     }
-  }, [dispatch, filteredItems, isMobile, navigate]);
-
-  const closeDrawer = useCallback(() => {
-    dispatch(clearSelectedFeedItem());
-  }, [dispatch]);
+  }, [filteredItems, navigate]);
 
   const handleSearchChange = useCallback((value: string) => {
     dispatch(setFeedQuery(value));
@@ -197,18 +180,6 @@ export default function FeedPage() {
           </div>
         </ContentTransition>
       </section>
-
-      <Drawer open={!!selectedItem} onClose={closeDrawer} title="Detail" className="sm:max-w-[760px]">
-        {selectedItem && (
-          <ContentTransition transitionKey={selectedItem.id}>
-            <FeedDetailContent
-              item={selectedItem}
-              onSaveFeedItem={() => saveFeedItem.save(selectedItem.id)}
-              saving={saveFeedItem.isPending && saveFeedItem.variables === selectedItem.id}
-            />
-          </ContentTransition>
-        )}
-      </Drawer>
     </main>
   );
 }
