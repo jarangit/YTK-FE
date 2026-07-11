@@ -16,6 +16,7 @@ interface TrendDataPoint {
   newVideos: number;
   newAnalyses: number;
   events: number;
+  newUsers: number;
 }
 
 interface TrendChartProps {
@@ -26,6 +27,7 @@ const LINE_COLORS = {
   newVideos: 'var(--color-accent)',
   newAnalyses: 'var(--color-success)',
   events: 'var(--color-warning)',
+  newUsers: 'var(--color-text-tertiary)',
 };
 
 function formatDateLabel(val: string): string {
@@ -98,6 +100,15 @@ export default function TrendChart({ data }: TrendChartProps) {
             dataKey="events"
             name={t('report.trendEvents')}
             stroke={LINE_COLORS.events}
+            strokeWidth={2}
+            dot={false}
+            activeDot={{ r: 4 }}
+          />
+          <Line
+            type="monotone"
+            dataKey="newUsers"
+            name={t('report.trendNewUsers')}
+            stroke={LINE_COLORS.newUsers}
             strokeWidth={2}
             dot={false}
             activeDot={{ r: 4 }}

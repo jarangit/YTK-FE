@@ -7,6 +7,8 @@ import StatCard from './components/StatCard';
 import PeriodSelector from './components/PeriodSelector';
 import TrendChart from './components/TrendChart';
 import TopContentSection from './components/TopContentSection';
+import TopViewedVideosSection from './components/TopViewedVideosSection';
+import TopUsersSection from './components/TopUsersSection';
 import { useDashboardQuery } from './hooks/useDashboardQuery';
 import type { PeriodOption } from './types';
 import { useState } from 'react';
@@ -17,6 +19,8 @@ export default function ReportDashboard() {
   const { data, isPending, isError, refetch } = useDashboardQuery(period);
 
   const transitionKey = isPending ? 'loading' : isError ? 'error' : data ? 'success' : 'idle';
+  const analysisEnglishCount = data?.summary.analyses.byLanguage.en ?? 0;
+  const analysisThaiCount = data?.summary.analyses.byLanguage.th ?? 0;
 
   return (
     <PageLayout width="content">
@@ -86,7 +90,7 @@ export default function ReportDashboard() {
                 label={t('report.statAnalyses')}
                 value={data.summary.analyses.total.toLocaleString()}
                 subtitle={t('report.statAnalysesSub')}
-                detail={`EN ${data.summary.analyses.byLanguage.en} · TH ${data.summary.analyses.byLanguage.th}`}
+                detail={`EN ${analysisEnglishCount} · TH ${analysisThaiCount}`}
                 accentColor="color-mix(in srgb, var(--color-warning) 15%, transparent)"
               />
               <StatCard
@@ -115,6 +119,11 @@ export default function ReportDashboard() {
               channels={data.topContent.channels}
               keywords={data.topContent.keywords}
             />
+
+            <div className="grid grid-cols-1 gap-inline-lg xl:grid-cols-[minmax(0,1.5fr)_minmax(320px,1fr)]">
+              <TopViewedVideosSection videos={data.topViewedVideos} />
+              <TopUsersSection users={data.topUsersByDistinctVideosAnalyzed} />
+            </div>
           </div>
         ) : null}
       </ContentTransition>

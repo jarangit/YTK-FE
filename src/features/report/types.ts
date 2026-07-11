@@ -34,6 +34,36 @@ export interface DashboardReport {
     channels: Array<{ channelName: string; videoCount: number }>;
     keywords: Array<{ keyword: string; count: number }>;
   };
+  topViewedVideos: Array<{
+    videoId: string;
+    viewCount: number;
+    rank: number;
+    video: {
+      id: string;
+      youtubeVideoId: string;
+      youtubeUrl: string;
+      title: string;
+      thumbnail: string;
+      channelId: string;
+      channelLogo: string;
+      channelName: string;
+      duration: number;
+    };
+    analysis: {
+      id: string;
+      language: string;
+      status: string;
+      overview: string | null;
+      createdAt: string;
+    };
+  }>;
+  topUsersByDistinctVideosAnalyzed: Array<{
+    userId: string;
+    name: string;
+    email: string;
+    avatarUrl: string;
+    distinctVideoCount: number;
+  }>;
 }
 
 export type PeriodOption = '7d' | '30d' | '90d';
