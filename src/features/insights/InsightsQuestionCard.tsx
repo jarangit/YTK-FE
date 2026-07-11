@@ -1,5 +1,6 @@
 import { ExternalLink, MessageCircleQuestion, Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import Avatar from '../../shared/components/atoms/Avatar';
 import Badge from '../../shared/components/atoms/Badge';
 import Card from '../../shared/components/atoms/Card';
@@ -14,6 +15,7 @@ export default function InsightsQuestionCard({ item }: InsightsQuestionCardProps
   const { t } = useTranslation();
   const videoTitle = item.video.title ?? t('insights.untitledVideo');
   const channelName = item.video.channelName ?? t('insights.unknownChannel');
+  const summaryHref = `/result?analysisId=${encodeURIComponent(item.analysisId)}`;
 
   return (
     <Card className="bg-[var(--color-bg-card)]">
@@ -26,15 +28,25 @@ export default function InsightsQuestionCard({ item }: InsightsQuestionCardProps
                 {channelName}
               </Text>
               <div className="mt-stack-xs flex min-w-0 items-center gap-inline-sm">
-                <div className="relative flex h-8 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[var(--radius-sm)] bg-[var(--color-bg-elevated)] text-ink-muted">
+                <a
+                  href={item.video.youtubeUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="relative flex h-8 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[var(--radius-sm)] bg-[var(--color-bg-elevated)] text-ink-muted transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+                >
                   {item.video.thumbnail ? (
                     <img src={item.video.thumbnail} alt={videoTitle} className="h-full w-full object-cover" loading="lazy" />
                   ) : (
                     <Play className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
                   )}
-                </div>
+                </a>
                 <Text as="p" variant="caption" color="tertiary" className="line-clamp-1">
-                  {videoTitle}
+                  <Link
+                    to={summaryHref}
+                    className="text-inherit no-underline transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+                  >
+                    {videoTitle}
+                  </Link>
                 </Text>
               </div>
             </div>
@@ -47,7 +59,12 @@ export default function InsightsQuestionCard({ item }: InsightsQuestionCardProps
 
         <div className="space-y-stack-md">
           <Text as="h2" variant="display" className="max-w-read font-display text-ink sm:text-3xl">
-            {item.question}
+            <Link
+              to={summaryHref}
+              className="text-inherit no-underline transition-colors hover:text-[var(--color-accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+            >
+              {item.question}
+            </Link>
           </Text>
 
           <section className="rounded-[var(--radius-xl)] bg-[var(--color-bg-elevated)] px-inset-md py-stack-md sm:px-inset-lg">
@@ -61,16 +78,25 @@ export default function InsightsQuestionCard({ item }: InsightsQuestionCardProps
         </div>
 
         <footer className="mt-stack-lg border-t border-[var(--color-border-subtle)] pt-stack-sm">
-          <a
-            href={item.video.youtubeUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex h-[var(--button-height-sm)] items-center justify-center gap-inline-sm rounded-[var(--button-radius)] px-[var(--button-padding-x-sm)] text-[length:var(--button-font-size-sm)] font-semibold text-ink-muted no-underline transition-colors hover:bg-[var(--color-bg-hover)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
-          >
-            <Play className="h-4 w-4 fill-current" />
-            {t('insights.openVideo')}
-            <ExternalLink className="h-4 w-4" />
-          </a>
+          <div className="flex flex-wrap items-center gap-inline-sm">
+            <Link
+              to={summaryHref}
+              className="inline-flex h-[var(--button-height-sm)] items-center justify-center gap-inline-sm rounded-[var(--button-radius)] px-[var(--button-padding-x-sm)] text-[length:var(--button-font-size-sm)] font-semibold text-ink-muted no-underline transition-colors hover:bg-[var(--color-bg-hover)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+            >
+              <MessageCircleQuestion className="h-4 w-4" />
+              {t('card.openSummary')}
+            </Link>
+            <a
+              href={item.video.youtubeUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex h-[var(--button-height-sm)] items-center justify-center gap-inline-sm rounded-[var(--button-radius)] px-[var(--button-padding-x-sm)] text-[length:var(--button-font-size-sm)] font-semibold text-ink-muted no-underline transition-colors hover:bg-[var(--color-bg-hover)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent)]"
+            >
+              <Play className="h-4 w-4 fill-current" />
+              {t('insights.openVideo')}
+              <ExternalLink className="h-4 w-4" />
+            </a>
+          </div>
         </footer>
       </article>
     </Card>

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import '../../shared/i18n';
 import InsightsPage from './InsightsPage';
 import type { EngagementQuestionItem } from './types';
@@ -55,12 +56,18 @@ describe('InsightsPage', () => {
       refetch: vi.fn(),
     });
 
-    render(<InsightsPage />);
+    render(
+      <MemoryRouter>
+        <InsightsPage />
+      </MemoryRouter>,
+    );
 
     expect(useEngagementQuestionsQueryMock).toHaveBeenCalledWith('', 30, true);
     expect(screen.getByText('Question 1')).toBeInTheDocument();
     expect(screen.getByText('Answer 1')).toBeInTheDocument();
     expect(screen.getByText('Video 1')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Open summary' })).toHaveAttribute('href', '/result?analysisId=analysis-1');
+    expect(screen.getByRole('link', { name: 'Open video' })).toHaveAttribute('href', 'https://www.youtube.com/watch?v=youtube-1');
     expect(screen.getByTestId('content-transition')).toHaveAttribute('data-transition-key', ':content');
   });
 
@@ -75,7 +82,11 @@ describe('InsightsPage', () => {
       refetch: vi.fn(),
     });
 
-    render(<InsightsPage />);
+    render(
+      <MemoryRouter>
+        <InsightsPage />
+      </MemoryRouter>,
+    );
 
     expect(screen.getByText('No insight questions found')).toBeInTheDocument();
   });
