@@ -29,6 +29,10 @@ function AppLayout() {
   const { openSignInModal } = useAuth();
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [location.pathname, location.search]);
+
+  useEffect(() => {
     if (!location.state || typeof location.state !== 'object' || !('openSignIn' in location.state)) {
       return;
     }

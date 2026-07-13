@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useSearchParams, Link } from "react-router-dom";
 import { AlertCircle, ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -11,10 +10,6 @@ import TranscriptSection from "./TranscriptSection";
 import ResultWaitingQuestions from "./ResultWaitingQuestions";
 
 export default function ResultPage() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const analysisId =
