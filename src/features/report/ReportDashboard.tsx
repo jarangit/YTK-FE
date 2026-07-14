@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Users, Video, BarChart3, Activity } from 'lucide-react';
+import { Users, Video, BarChart3, Activity, MessageSquare } from 'lucide-react';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
 import PageLayout from '../../shared/components/organisms/PageLayout';
 import PageHeader from '../../shared/components/organisms/PageHeader';
@@ -9,6 +9,7 @@ import TrendChart from './components/TrendChart';
 import TopContentSection from './components/TopContentSection';
 import TopViewedVideosSection from './components/TopViewedVideosSection';
 import TopUsersSection from './components/TopUsersSection';
+import RecentFeedbackSection from './components/RecentFeedbackSection';
 import { useDashboardQuery } from './hooks/useDashboardQuery';
 import type { PeriodOption } from './types';
 import { useState } from 'react';
@@ -64,7 +65,7 @@ export default function ReportDashboard() {
         ) : data ? (
           <div className="space-y-stack-lg">
             {/* ── Summary Cards ── */}
-            <div className="grid grid-cols-1 gap-inline-lg sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-inline-lg sm:grid-cols-2 lg:grid-cols-5">
               <StatCard
                 icon={<Users className="h-4 w-4 text-[var(--color-accent)]" />}
                 label={t('report.statUsers')}
@@ -105,6 +106,14 @@ export default function ReportDashboard() {
                 })}
                 accentColor="color-mix(in srgb, var(--color-text-tertiary) 15%, transparent)"
               />
+              <StatCard
+                icon={<MessageSquare className="h-4 w-4 text-[var(--color-accent)]" />}
+                label={t('report.statFeedback')}
+                value={data.feedbackSummary.total.toLocaleString()}
+                subtitle={t('report.statFeedbackSub')}
+                detail={t('report.statNewToday', { count: data.feedbackSummary.newToday })}
+                accentColor="var(--color-accent-light)"
+              />
             </div>
 
             {/* ── Trend Chart ── */}
@@ -124,6 +133,8 @@ export default function ReportDashboard() {
               <TopViewedVideosSection videos={data.topViewedVideos} />
               <TopUsersSection users={data.topUsersByDistinctVideosAnalyzed} />
             </div>
+
+            <RecentFeedbackSection feedback={data.recentFeedback} />
           </div>
         ) : null}
       </ContentTransition>

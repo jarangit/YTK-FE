@@ -64,6 +64,24 @@ export interface DashboardReport {
     avatarUrl: string;
     distinctVideoCount: number;
   }>;
+  feedbackSummary: {
+    total: number;
+    newToday: number;
+  };
+  recentFeedback: Array<{
+    id: string;
+    rating: string;
+    score: number;
+    comment: string | null;
+    reasons: string[];
+    createdAt: string;
+    analysisId: string | null;
+    user: {
+      id: string;
+      email: string;
+      name: string | null;
+    } | null;
+  }>;
 }
 
 export type PeriodOption = '7d' | '30d' | '90d';

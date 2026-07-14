@@ -149,6 +149,50 @@ export const dashboardReportMock: DashboardReport = {
       distinctVideoCount: 7,
     },
   ],
+  feedbackSummary: {
+    total: 84,
+    newToday: 5,
+  },
+  recentFeedback: [
+    {
+      id: 'feedback-1',
+      rating: 'VERY_HELPFUL',
+      score: 5,
+      comment: 'สรุปเข้าใจง่าย แต่ยังอยากให้มีตัวอย่างมากกว่านี้',
+      reasons: ['NEED_MORE_EXAMPLES'],
+      createdAt: '2026-07-14T09:12:00.000Z',
+      analysisId: 'analysis-1',
+      user: {
+        id: 'user-1',
+        email: 'jaran.dch@gmail.com',
+        name: 'Jaran Donchaaim',
+      },
+    },
+    {
+      id: 'feedback-2',
+      rating: 'OKAY',
+      score: 3,
+      comment: 'เว็บใช้งานดี แต่โหลดช้าไปหน่อย',
+      reasons: [],
+      createdAt: '2026-07-14T07:40:00.000Z',
+      analysisId: null,
+      user: null,
+    },
+    {
+      id: 'feedback-3',
+      rating: 'NOT_HELPFUL',
+      score: 1,
+      comment: null,
+      reasons: ['SUMMARY_UNCLEAR', 'CONTENT_INCOMPLETE'],
+      createdAt: '2026-07-13T22:05:00.000Z',
+      analysisId: 'analysis-2',
+      user: {
+        id: 'user-2',
+        email: 'nina@example.com',
+        name: 'Nina Patel',
+      },
+    },
+  ],
 };
 
 function generateTrends(): DashboardReport['trends'] {
