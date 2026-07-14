@@ -31,6 +31,10 @@ vi.mock('./ExampleAnalysisState', () => ({
   default: () => <section>Example analysis state</section>,
 }));
 
+vi.mock('../feedback/FeedbackForm', () => ({
+  default: () => <form aria-label="feedback form" />,
+}));
+
 vi.mock('../feed/FeedCard', () => ({
   default: ({ item }: { item: FeedItem }) => <article>{item.id}</article>,
 }));

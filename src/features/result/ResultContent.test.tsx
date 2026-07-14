@@ -2,12 +2,18 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/vitest';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import '../..//shared/i18n';
 import ResultContent from './ResultContent';
 import type { VideoAnalysis } from '../analysis/types';
+import { ExitFeedbackProvider } from '../feedback/ExitFeedbackContext';
 
 vi.mock('../analysis/KeepAction', () => ({
   default: () => <button type="button">Keep mock</button>,
+}));
+
+vi.mock('../feedback/FeedbackForm', () => ({
+  default: () => <div>Feedback form mock</div>,
 }));
 
 const video: VideoAnalysis = {
@@ -97,15 +103,23 @@ describe('ResultContent', () => {
     localStorage.setItem('youtive_lang', 'en');
   });
 
-  it('renders the new timeline and engagement sections', () => {
-    render(
-      <ResultContent
-        video={video}
-        onKeep={() => {}}
-        onRemove={() => {}}
-        initiallyKept={false}
-      />,
+  function renderResultContent() {
+    return render(
+      <MemoryRouter>
+        <ExitFeedbackProvider>
+          <ResultContent
+            video={video}
+            onKeep={() => {}}
+            onRemove={() => {}}
+            initiallyKept={false}
+          />
+        </ExitFeedbackProvider>
+      </MemoryRouter>,
     );
+  }
+
+  it('renders the new timeline and engagement sections', () => {
+    renderResultContent();
 
     expect(screen.getAllByText('Timeline').length).toBeGreaterThan(0);
     expect(screen.getByText('First section')).toBeInTheDocument();
@@ -114,14 +128,7 @@ describe('ResultContent', () => {
   });
 
   it('renders career inference section', () => {
-    render(
-      <ResultContent
-        video={video}
-        onKeep={() => {}}
-        onRemove={() => {}}
-        initiallyKept={false}
-      />,
-    );
+    renderResultContent();
 
     expect(screen.getAllByText('For this career path').length).toBeGreaterThan(0);
     expect(screen.getByText('Product manager')).toBeInTheDocument();
@@ -130,14 +137,7 @@ describe('ResultContent', () => {
   it('renders and expands the transcript', async () => {
     const user = userEvent.setup();
 
-    render(
-      <ResultContent
-        video={video}
-        onKeep={() => {}}
-        onRemove={() => {}}
-        initiallyKept={false}
-      />,
-    );
+    renderResultContent();
 
     await user.click(screen.getByRole('button', { name: /Full transcript/i }));
     expect(screen.getByText('Segment one')).toBeInTheDocument();

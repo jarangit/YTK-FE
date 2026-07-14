@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import LanguageSwitcher from './LanguageSwitcher';
 import { useAuth } from '../../shared/auth/AuthContext';
+import { useExitFeedbackGuard } from '../../features/feedback/ExitFeedbackContext';
 
 export default function AppHeader() {
   const { t } = useTranslation();
@@ -15,6 +16,7 @@ export default function AppHeader() {
   const isInsights = location.pathname === '/insights';
   const isLibrary = location.pathname === '/library';
   const { isAuthenticated, openSignInModal, user } = useAuth();
+  const { guardLinkClick } = useExitFeedbackGuard();
   const [isMenuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +50,9 @@ export default function AppHeader() {
 
   const handleLibraryClick = (event: React.MouseEvent) => {
     closeMenu();
+    const to = isAuthenticated ? '/library' : '/';
+    guardLinkClick(event, to);
+    if (event.defaultPrevented) return;
     if (!isAuthenticated) {
       event.preventDefault();
       openSignInModal();
@@ -57,7 +62,7 @@ export default function AppHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-[color-mix(in_srgb,var(--color-bg-app)_88%,transparent)] backdrop-blur-xl">
       <div className="mx-auto flex h-[var(--app-header-height)] max-w-[var(--app-header-max-width)] items-center justify-between px-inset-lg sm:px-8">
-        <Link to="/" className="flex items-center gap-inline-sm text-ink no-underline">
+        <Link to="/" className="flex items-center gap-inline-sm text-ink no-underline" onClick={(event) => guardLinkClick(event, '/')}>
           <Bookmark className="h-5 w-5 text-accent" />
           <span className="font-display font-semibold text-lg tracking-tight">
             {t('app.name')}
@@ -67,6 +72,7 @@ export default function AppHeader() {
         <nav className="hidden sm:flex items-center gap-inline-sm sm:gap-inline-md">
           <Link
             to="/feed"
+            onClick={(event) => guardLinkClick(event, '/feed')}
             className={clsx(
               'inline-flex h-[var(--app-header-control-height)] items-center gap-[var(--app-header-control-gap)] rounded-full px-[var(--app-header-control-padding-x)] text-[length:var(--app-header-control-font-size)] font-medium no-underline transition-colors',
               isFeed
@@ -79,6 +85,7 @@ export default function AppHeader() {
           </Link>
           <Link
             to="/insights"
+            onClick={(event) => guardLinkClick(event, '/insights')}
             className={clsx(
               'inline-flex h-[var(--app-header-control-height)] items-center gap-[var(--app-header-control-gap)] rounded-full px-[var(--app-header-control-padding-x)] text-[length:var(--app-header-control-font-size)] font-medium no-underline transition-colors',
               isInsights
@@ -92,6 +99,9 @@ export default function AppHeader() {
           <Link
             to={isAuthenticated ? '/library' : '/'}
             onClick={(event) => {
+              const to = isAuthenticated ? '/library' : '/';
+              guardLinkClick(event, to);
+              if (event.defaultPrevented) return;
               if (!isAuthenticated) {
                 event.preventDefault();
                 openSignInModal();
@@ -145,7 +155,11 @@ export default function AppHeader() {
           {isFeed && (
             <Link
               to="/"
-              onClick={closeMenu}
+              onClick={(event) => {
+                guardLinkClick(event, '/');
+                if (event.defaultPrevented) return;
+                closeMenu();
+              }}
               className="flex items-center gap-inline-md rounded-[var(--radius-md)] px-inset-md py-stack-sm text-[14px] font-medium no-underline transition-all active:scale-[0.98] cursor-pointer text-ink-muted border-l-2 border-transparent hover:bg-[var(--color-bg-hover)] hover:text-ink"
             >
               <HiHome className="h-5 w-5 shrink-0" />
@@ -154,7 +168,11 @@ export default function AppHeader() {
           )}
           <Link
             to="/feed"
-            onClick={closeMenu}
+            onClick={(event) => {
+              guardLinkClick(event, '/feed');
+              if (event.defaultPrevented) return;
+              closeMenu();
+            }}
             className={clsx(
               'flex items-center gap-inline-md rounded-[var(--radius-md)] px-inset-md py-stack-sm text-[14px] font-medium no-underline transition-all active:scale-[0.98] cursor-pointer',
               isFeed
@@ -167,7 +185,11 @@ export default function AppHeader() {
           </Link>
           <Link
             to="/insights"
-            onClick={closeMenu}
+            onClick={(event) => {
+              guardLinkClick(event, '/insights');
+              if (event.defaultPrevented) return;
+              closeMenu();
+            }}
             className={clsx(
               'flex items-center gap-inline-md rounded-[var(--radius-md)] px-inset-md py-stack-sm text-[14px] font-medium no-underline transition-all active:scale-[0.98] cursor-pointer',
               isInsights

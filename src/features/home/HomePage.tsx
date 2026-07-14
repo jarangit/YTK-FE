@@ -3,8 +3,9 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ContentTransition from '../../shared/components/atoms/ContentTransition';
 import UrlInputForm from './UrlInputForm';
-import ExampleAnalysisState from './ExampleAnalysisState';
-import { useHomeFeaturedAnalysisQuery } from './hooks/useHomeFeaturedAnalysisQuery';
+// import ExampleAnalysisState from './ExampleAnalysisState';
+import FeedbackForm from '../feedback/FeedbackForm';
+// import { useHomeFeaturedAnalysisQuery } from './hooks/useHomeFeaturedAnalysisQuery';
 import { useFeedQuery } from '../feed/hooks/useFeedQuery';
 import FeedCard from '../feed/FeedCard';
 import InsightsQuestionCard from '../insights/InsightsQuestionCard';
@@ -12,12 +13,13 @@ import { useEngagementQuestionsQuery } from '../insights/hooks/useEngagementQues
 
 export default function HomePage() {
   const { t } = useTranslation();
-  const {
-    data: featuredItem,
-    isPending: isExamplePending,
-    isError: isExampleError,
-    refetch: refetchExample,
-  } = useHomeFeaturedAnalysisQuery();
+  // ตัวอย่างผลลัพธ์ (Example analysis) section — disabled for now, not ready to show.
+  // const {
+  //   data: featuredItem,
+  //   isPending: isExamplePending,
+  //   isError: isExampleError,
+  //   refetch: refetchExample,
+  // } = useHomeFeaturedAnalysisQuery();
   const {
     data: feedPreviewData,
     isLoading: isFeedPreviewLoading,
@@ -28,7 +30,7 @@ export default function HomePage() {
   } = useEngagementQuestionsQuery('', 3, true);
   const feedPreviewItems = feedPreviewData?.pages.flatMap((page) => page.items).slice(0, 3) ?? [];
   const insightsPreviewItems = insightsPreviewData?.pages.flatMap((page) => page.items).slice(0, 3) ?? [];
-  const exampleTransitionKey = isExamplePending ? 'loading' : isExampleError ? 'error' : 'success';
+  // const exampleTransitionKey = isExamplePending ? 'loading' : isExampleError ? 'error' : 'success';
 
   return (
     <main className="min-h-[calc(100vh-64px)] bg-[var(--color-bg-app)]">
@@ -159,7 +161,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="border-t border-border/50 px-inset-lg pb-24 pt-14 sm:px-8 sm:pb-28 sm:pt-18">
+      {/* ตัวอย่างผลลัพธ์ (Example analysis) — disabled for now, not ready to show.
+      <section className="border-t border-border/50 px-inset-lg pb-16 pt-14 sm:px-8 sm:pb-20 sm:pt-18">
         <div className="mx-auto max-w-[1120px]">
           <div className="mx-auto max-w-[920px]">
             <div className="mb-8 sm:mb-10">
@@ -185,6 +188,27 @@ export default function HomePage() {
               </ContentTransition>
             </div>
           </div>
+        </div>
+      </section>
+      */}
+
+      <section className="border-t border-border/50 px-inset-lg pb-24 pt-14 sm:px-8 sm:pb-28 sm:pt-18">
+        <div className="mx-auto max-w-[720px]">
+          <div className="mb-8 sm:mb-10">
+            <p className="text-[12px] font-semibold uppercase tracking-[0.08em] text-ink-faint">
+              {t('home.feedbackEyebrow')}
+            </p>
+            <h2 className="mt-3 font-display text-[24px] font-semibold tracking-[-0.03em] text-ink sm:text-[30px]">
+              {t('home.feedbackTitle')}
+            </h2>
+            <p className="mt-3 max-w-[520px] text-[15px] leading-6 text-ink-muted sm:text-[16px]">
+              {t('home.feedbackSubtitle')}
+            </p>
+          </div>
+
+          <ContentTransition transitionKey="home-feedback">
+            <FeedbackForm hideHeader />
+          </ContentTransition>
         </div>
       </section>
     </main>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useExitFeedbackGuard } from '../../features/feedback/ExitFeedbackContext';
 
 const links = [
   { key: 'about', path: '/about' },
@@ -11,6 +12,7 @@ const links = [
 
 export default function AppFooter() {
   const { t } = useTranslation();
+  const { guardLinkClick } = useExitFeedbackGuard();
 
   return (
     <footer className="border-t border-border/60 bg-[var(--color-bg-card)] px-inset-lg py-stack-lg sm:px-8">
@@ -22,6 +24,7 @@ export default function AppFooter() {
           <Link
             key={link.path}
             to={link.path}
+            onClick={(event) => guardLinkClick(event, link.path)}
             className="text-[length:var(--text-caption-size)] font-medium text-ink-muted no-underline transition-colors hover:text-ink"
           >
             {t(`footer.${link.key}`)}

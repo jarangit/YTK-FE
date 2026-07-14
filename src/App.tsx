@@ -21,6 +21,8 @@ import SignInModal from './app/components/SignInModal';
 import ProtectedRoute from './app/components/ProtectedRoute';
 import CookieConsentBanner from './app/components/CookieConsentBanner';
 import { useAuth } from './shared/auth/AuthContext';
+import { ExitFeedbackProvider } from './features/feedback/ExitFeedbackContext';
+import ExitFeedbackModal from './features/feedback/ExitFeedbackModal';
 
 function AppLayout() {
   const location = useLocation();
@@ -94,6 +96,7 @@ function AppLayout() {
       {!usesCollectionShell && <AppFooter />}
       <CookieConsentBanner />
       <SignInModal />
+      <ExitFeedbackModal />
     </>
   );
 }
@@ -102,7 +105,9 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <AppLayout />
+        <ExitFeedbackProvider>
+          <AppLayout />
+        </ExitFeedbackProvider>
       </AuthProvider>
     </BrowserRouter>
   );
