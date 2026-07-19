@@ -8,7 +8,7 @@ interface CoreMessageSectionProps {
 
 export default function CoreMessageSection({ coreMessage, children }: CoreMessageSectionProps) {
   const { t } = useTranslation();
-  const normalized = coreMessage.trim();
+  const normalized = coreMessage.trim().replace(/\n/g, '\n\n');
 
   if (!normalized) return null;
 
