@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, Clock3 } from 'lucide-react';
+import { ChevronDown, Circle, Clock3 } from 'lucide-react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import type { AnalysisTimelineItem } from '../analysis/types';
@@ -71,7 +71,7 @@ export default function TimelineSection({ timeline, embedded = false }: Timeline
                       <ul className="mt-stack-sm space-y-stack-sm">
                         {item.importantDetails.map((detail, detailIndex) => (
                           <li key={`${detail}-${detailIndex}`} className="flex items-start gap-inline-sm text-[15px] leading-7 text-ink-muted">
-                            <span className="mt-[10px] h-1.5 w-1.5 shrink-0 rounded-full bg-accent/60" />
+                            <Circle className="h-2.5 w-2.5 shrink-0 self-center fill-current text-accent/60" />
                             <span>{detail}</span>
                           </li>
                         ))}
