@@ -1,5 +1,5 @@
 import { useSearchParams, Link } from "react-router-dom";
-import { AlertCircle, ArrowLeft } from "lucide-react";
+import { AlertCircle, ArrowLeft, TriangleAlert } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useLibraryQuery } from "../library/hooks/useLibraryQuery";
 import ResultContent from "./ResultContent";
@@ -26,7 +26,10 @@ export default function ResultPage() {
 
   const isWaiting =
     isLoading || status === "PENDING" || status === "PROCESSING";
+  const hasRenderableVideo = Boolean(video);
   const isFailed = status === "FAILED";
+  const isPartialFailure = isFailed && hasRenderableVideo;
+  const isFatalFailure = isFailed && !hasRenderableVideo;
   const isMissingAnalysisId = analysisId.trim().length === 0;
   const resultState = isWaiting ? "loading" : video ? "success" : "error";
 
@@ -50,7 +53,7 @@ export default function ResultPage() {
     );
   } else if (isWaiting) {
     content = <ResultWaitingQuestions />;
-  } else if (isFailed) {
+  } else if (isFatalFailure) {
     content = (
       <main className="min-h-[calc(100vh-64px)] px-inset-lg py-stack-md sm:py-10">
         <div className="mx-auto max-w-read space-y-stack-md sm:space-y-stack-lg">
@@ -118,18 +121,36 @@ export default function ResultPage() {
   } else {
     content = (
       <main className="min-h-[calc(100vh-64px)]">
-        <section className="border-b border-accent/15 bg-accent/[0.04]">
-          <div className="mx-auto max-w-[var(--app-header-max-width)] px-inset-lg py-3 sm:px-8">
-            <div className="flex flex-col gap-stack-xs sm:flex-row sm:items-center sm:gap-inline-sm">
-              <span className="inline-flex w-fit items-center rounded-full border border-accent/15 bg-accent/5 px-3 py-1 text-xs font-semibold text-accent">
-                {t('summary.summaryOnlyTag')}
-              </span>
-              <p className="text-sm leading-6 text-ink-muted">
-                {t('summary.summaryOnlyNote')}
-              </p>
+        {isPartialFailure && (
+          <section className="border-b border-warning/15 bg-warning/[0.04]">
+            <div className="mx-auto max-w-[var(--app-header-max-width)] px-inset-lg py-3 sm:px-8">
+              <div className="flex flex-col gap-stack-xs sm:flex-row sm:items-center sm:gap-inline-sm">
+                <span className="inline-flex w-fit items-center gap-inline-xs rounded-full border border-warning/15 bg-warning/5 px-3 py-1 text-xs font-semibold text-warning">
+                  <TriangleAlert className="h-3 w-3" />
+                  {t('result.failed')}
+                </span>
+                <p className="text-sm leading-6 text-ink-muted">
+                  {t('result.partialWarning')}
+                </p>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
+
+        {!isPartialFailure && (
+          <section className="border-b border-accent/15 bg-accent/[0.04]">
+            <div className="mx-auto max-w-[var(--app-header-max-width)] px-inset-lg py-3 sm:px-8">
+              <div className="flex flex-col gap-stack-xs sm:flex-row sm:items-center sm:gap-inline-sm">
+                <span className="inline-flex w-fit items-center rounded-full border border-accent/15 bg-accent/5 px-3 py-1 text-xs font-semibold text-accent">
+                  {t('summary.summaryOnlyTag')}
+                </span>
+                <p className="text-sm leading-6 text-ink-muted">
+                  {t('summary.summaryOnlyNote')}
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
 
         <div className="px-inset-lg py-stack-md sm:py-10">
           <ResultContent

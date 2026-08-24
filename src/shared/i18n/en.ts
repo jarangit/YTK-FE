@@ -238,6 +238,7 @@ const en = {
     error: 'This video could not be analyzed.',
     failed: 'This analysis could not be completed.',
     failedDescription: 'We could not generate the full analysis, but any transcript we captured is still available below.',
+    partialWarning: 'Some parts of the analysis could not be completed, but the available results are shown below.',
     missing: 'This result link is missing or invalid.',
     retry: 'Try another link',
     openOnYoutube: 'Open on YouTube',
